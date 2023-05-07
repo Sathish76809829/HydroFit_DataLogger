@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="ElpisOpcServer.SunPowerGen.SunPowerGenMainPage"             
+             xmlns:local="clr-namespace:ElpisOpcServer.SunPowerGen"             
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        mc:Ignorable="d" d:DesignHeight="500" d:DesignWidth="800">
+    <Grid Background="#FFF0E6DC">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" Source="Images\sunpowerLogo_EngOnly.jpg"/>
+            <TextBlock TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" FontSize="20" Foreground="Black">SunPowerGen Report Generation</TextBlock>
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackPanel VerticalAlignment="Center">
+                <Button Name="btnStrokeTest" Content="Stroke Test" Width="200" Height="50" Margin="0,0,0,15"
+                    Click="btnStrokeTest_Click" />
+
+                <Button Name="btnHoldTest" Content="Hold\Mid Position Test" Width="200" Height="50" Margin="0,0,0,15" />
+
+                <Button Name="btnSlipTest" Content="Slip\Stick Test" Width="200" Height="50" Margin="0,0,0,15"  />
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

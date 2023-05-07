@@ -1,0 +1,748 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8F031745-F768-4CEF-A4E4-B275976DFDCA}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ElpisOpcServer</RootNamespace>
+    <AssemblyName>ElpisOpcServer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>E:\jElpis\SunPowerGen\Report_Tool\App\Publish\publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SunPowerGen</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;SunPowerGen</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Elpis OnlyLogo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>29B464E322136D87574DA232D1C590C58CCE4D73</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>ElpisOpcServer_1_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Interop.NDISLIKDA">
+      <HintPath>..\Third Party DLLs\Interop.NDISLIKDA.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Third Party DLLs\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Third Party DLLs\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Third Party DLLs\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="Microsoft.EntityFrameworkCore.Abstractions, Version=3.1.27.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Abstractions.3.1.27\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=3.1.27.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.3.1.27\lib\netstandard2.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Memory, Version=3.1.27.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.3.1.27\lib\netstandard2.0\Microsoft.Extensions.Caching.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration, Version=3.1.27.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.3.1.27\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=3.1.27.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.3.1.27\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=3.1.27.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.3.1.27\lib\netstandard2.0\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=3.1.27.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.3.1.27\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=3.1.27.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.3.1.27\lib\netstandard2.0\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=3.1.27.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.3.1.27\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=3.1.27.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.3.1.27\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.Windows.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus4">
+      <HintPath>..\Third Party DLLs\NModbus4.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.CertificateManagementLibrary">
+      <HintPath>..\Third Party DLLs\Opc.Ua.CertificateManagementLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.UserComponents, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Third Party DLLs\Opc.Ua.UserComponents.dll</HintPath>
+    </Reference>
+    <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="SKCLNET">
+      <HintPath>..\Third Party DLLs\SKCLNET.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.7.1\lib\net461\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Controls.Ribbon" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\Third Party DLLs\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AboutPageUI.xaml.cs">
+      <DependentUpon>AboutPageUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddNewGroup.xaml.cs">
+      <DependentUpon>AddNewGroup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationTour.xaml.cs">
+      <DependentUpon>ApplicationTour.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AtReplayMessage.cs" />
+    <Compile Include="IoTSettingsUI.xaml.cs">
+      <DependentUpon>IoTSettingsUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="License.xaml.cs">
+      <DependentUpon>License.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerWindow.xaml.cs">
+      <DependentUpon>LoggerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ElpisOPCServerMainWindow.xaml.cs">
+      <DependentUpon>ElpisOPCServerMainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SocketService\Net\Enums.cs" />
+    <Compile Include="SocketService\Dispatcher\PacketAwaiter.cs" />
+    <Compile Include="SocketService\Dispatcher\PacketDispatecher.cs" />
+    <Compile Include="SocketService\Dispatcher\RawMessagePacket.cs" />
+    <Compile Include="SocketService\Net\Formatters\CharReader.cs" />
+    <Compile Include="SocketService\SocketExtension.cs" />
+    <Compile Include="SocketService\SocketServer\TcpServer.cs" />
+    <Compile Include="SunPowerGen\AllTestUI.xaml.cs">
+      <DependentUpon>AllTestUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\ConnectorSelection.xaml.cs">
+      <DependentUpon>ConnectorSelection.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\GenerateReportMessageBox.xaml.cs">
+      <DependentUpon>GenerateReportMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\HoldMidPositionTestLineBUI.xaml.cs">
+      <DependentUpon>HoldMidPositionTestLineBUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\Hold_MidPositionLineBTestInformation.cs" />
+    <Compile Include="SunPowerGen\Hold_MidPositionTestInformation.cs" />
+    <Compile Include="SunPowerGen\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\ICeritificateInformation.cs" />
+    <Compile Include="SunPowerGen\Enums.cs" />
+    <Compile Include="SunPowerGen\Helper.cs" />
+    <Compile Include="SunPowerGen\Hold_MidPositionLineATestInformation.cs" />
+    <Compile Include="SunPowerGen\HoldMidPositionTestLineAUI.xaml.cs">
+      <DependentUpon>HoldMidPositionTestLineAUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\ICylinderInformation.cs" />
+    <Compile Include="SunPowerGen\InverseAndBooleansToBooleanConverter.cs" />
+    <Compile Include="SocketService\Net\Formatters\IPacketReader.cs" />
+    <Compile Include="SunPowerGen\ITestInformation.cs" />
+    <Compile Include="SunPowerGen\ITextEvent.cs" />
+    <Compile Include="SunPowerGen\MandatoryRule.cs" />
+    <Compile Include="SocketService\Net\MessageHeader.cs" />
+    <Compile Include="SunPowerGen\PDFHeaderFooter.cs" />
+    <Compile Include="SunPowerGen\pumpCustomTooltip.xaml.cs">
+      <DependentUpon>pumpCustomTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\PumpReportGeneration.cs" />
+    <Compile Include="SunPowerGen\PumpTestInformation.cs" />
+    <Compile Include="SunPowerGen\Pump_Test.xaml.cs">
+      <DependentUpon>Pump_Test.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\ReportGeneration.cs" />
+    <Compile Include="SunPowerGen\SlipStickTestUI.xaml.cs">
+      <DependentUpon>SlipStickTestUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\Slip_StickTestInformation.cs" />
+    <Compile Include="SunPowerGen\StrokeTest1.xaml.cs">
+      <DependentUpon>StrokeTest1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\StrokeTestInformation.cs" />
+    <Compile Include="SunPowerGen\StrokeTestUI.xaml.cs">
+      <DependentUpon>StrokeTestUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\StrokeTestWindow.xaml.cs">
+      <DependentUpon>StrokeTestWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\SunPowerGenMainPage.xaml.cs">
+      <DependentUpon>SunPowerGenMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SunPowerGen\TestInformation.cs" />
+    <Compile Include="SunPowerGen\TestTypeFactory.cs" />
+    <Compile Include="UACertificateSettingsUI.xaml.cs">
+      <DependentUpon>UACertificateSettingsUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UAConfigurationSettingsUI.xaml.cs">
+      <DependentUpon>UAConfigurationSettingsUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WaitWindow.xaml.cs">
+      <DependentUpon>WaitWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="AboutPageUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddNewConnectorUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddNewDeviceUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddNewGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddNewTagUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AddNewUserUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ApplicationTour.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConfigurationSettingsUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IoTSettingsUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="License.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoggerViewUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoggerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="AddNewConnectorUI.xaml.cs">
+      <DependentUpon>AddNewConnectorUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddNewDeviceUI.xaml.cs">
+      <DependentUpon>AddNewDeviceUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddNewTagUI.xaml.cs">
+      <DependentUpon>AddNewTagUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddNewUserUI.xaml.cs">
+      <DependentUpon>AddNewUserUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationSettingsUI.xaml.cs">
+      <DependentUpon>ConfigurationSettingsUI.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerViewUI.xaml.cs">
+      <DependentUpon>LoggerViewUI.xaml</DependentUpon>
+    </Compile>
+    <Page Include="ElpisOPCServerMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\Common.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\ListBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\TileButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SunPowerGen\AllTestUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\ConnectorSelection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\GenerateReportMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\HoldMidPositionTestLineAUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\HoldMidPositionTestLineBUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\pumpCustomTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\Pump_Test.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\SlipStickTestUI.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\StrokeTest1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\StrokeTestUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SunPowerGen\StrokeTestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SunPowerGen\SunPowerGenMainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UACertificateSettingsUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UAConfigurationSettingsUI.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WaitWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ElpisOpcServer_1_TemporaryKey.pfx" />
+    <None Include="ElpisOpcServer_TemporaryKey.pfx" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Styles\ListBox.xaml.bak" />
+    <None Include="Styles\TileButton.xaml.bak" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\about.png" />
+    <Resource Include="Images\back.jpg" />
+    <Resource Include="Images\FileOpen.ico" />
+    <Resource Include="Images\help_blue.ico" />
+    <Resource Include="Images\PressureGauge.png" />
+    <Resource Include="Images\save.ico" />
+    <Resource Include="SunPowerGen\Images\sunpowerLogo_EngOnly.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Elpis OnlyLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\appbar.stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\new_project.png" />
+    <Resource Include="Images\open_project13.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\edit_orange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\New Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ErrorRed.png" />
+    <Resource Include="Images\ImportantYellow.png" />
+    <Resource Include="Images\infoBlue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Edit_yellow.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\closefront.png" />
+    <Resource Include="Images\minimizedblack.PNG" />
+    <Resource Include="Images\Export_To_File_2.ico" />
+    <Resource Include="Images\search_Icon_10.png" />
+    <Resource Include="Images\document_export.png" />
+    <Resource Include="Images\viewblack.png" />
+    <Resource Include="Images\reject.png" />
+    <Resource Include="Images\start_black.png" />
+    <Resource Include="Images\stop_black.png" />
+    <Resource Include="Images\icon_activation.png" />
+    <Resource Include="Images\playpause.png" />
+    <Resource Include="Images\emial_sms.png" />
+    <Resource Include="Images\f02a62985cde.png" />
+    <Resource Include="Images\LoggerWindow.png" />
+    <Resource Include="Images\settings.png" />
+    <Resource Include="Images\IOT3.png" />
+    <Resource Include="Images\elpis logo white.png" />
+    <Resource Include="Images\export122.png" />
+    <Resource Include="Images\import122.png" />
+    <Resource Include="Images\view11.png" />
+    <Resource Include="Images\Ok_check.ico" />
+    <Resource Include="Images\Save_As_Icon.ico" />
+    <Resource Include="Images\Save_Icon.ico" />
+    <Resource Include="Images\deletered.png" />
+    <Resource Include="Images\Add_Green.png" />
+    <Resource Include="Images\certification.png" />
+    <Resource Include="Images\IOT.ico" />
+    <Resource Include="Elpis OnlyLogo.ico" />
+    <Resource Include="Images\copyclip_blued.png" />
+    <Resource Include="Images\copy_2.png" />
+    <Resource Include="Images\cert166.png" />
+    <Resource Include="Images\AddUser2.PNG" />
+    <Resource Include="Images\UAConfigSetting.png" />
+    <Resource Include="Images\closed_lock.png" />
+    <Resource Include="Images\accept.png" />
+    <Resource Include="Images\cloud_settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\New_2.png" />
+    <Resource Include="Images\Open_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AppTour\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Certificate.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Configuration-settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\TrayExit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Log.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\UACertificate-settings.png" />
+    <Resource Include="Images\UAConfiguration-settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Monitoring.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SunPowerGen\Images\Export_To_File_2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\FolderSet1.jpg" />
+    <Resource Include="Images\FolderSet2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SunPowerGen\Images\SunPowerGenTitle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\EditB.png" />
+    <Resource Include="Images\SaveB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\SPG_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libplctag-csharp-master\libplctag-csharp-master\LibplctagWrapper\LibplctagWrapper.csproj">
+      <Project>{394abfc2-e570-462e-9994-37b33c348702}</Project>
+      <Name>LibplctagWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OPCEngine\OPCEngine.csproj">
+      <Project>{314d41cd-cc6c-41e9-bc7e-f94bdeb442fe}</Project>
+      <Name>OPCEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Green_Light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\white_blub.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Comment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\flow_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\cylinder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\data-recording.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\report-setting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\monitoring_data.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\generate_report.png" />
+    <Resource Include="Images\reset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\starticon.png" />
+    <Resource Include="Images\stopicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\pump-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="SunPowerGen\Images\elpis_logo.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.1\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

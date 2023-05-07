@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<OpcServerConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <UaServerConfig>
+    <!--Build information for the server application software-->
+    <ApplicationUri>YourCompany/YOURAPPNAME</ApplicationUri>
+    <ManufacturerName>Your Company Inc.</ManufacturerName>
+    <ApplicationName>YOURAPPNAME</ApplicationName>
+    <SoftwareVersion>5.0</SoftwareVersion>
+    <BuildNumber>0</BuildNumber>
+    <!--Build information end-->
+    <!--Server instance information defined for the server installation.
+      [NodeName} can be used as placeholder for the computer name. -->
+    <ServerUri>[NodeName]/YourCompany/YOURAPPNAME</ServerUri>
+    <ServerName>YOURAPPNAME@[NodeName]</ServerName>
+    <!--Server instance information end-->
+    <!--Folder used to store rejected client certificates. Administrators can copy files from here to the trust list.-->
+    <RejectedCertificatesDirectory>[ApplicationPath]/PKI/CA/rejected</RejectedCertificatesDirectory>
+    <!--List of configured Endpoints end-->
+    <!--Endpoint configuration end-->
+    <!--Configuration for supported user identity tokens-->
+    <UserIdentityTokens>
+      <!--Enable anonymous logon true/false-->
+      <EnableAnonymous>true</EnableAnonymous>
+      <!--Enable user/password logon true/false-->
+      <EnableUserPw>false</EnableUserPw>
+    </UserIdentityTokens>
+    <!--User identity token configuration end-->
+    <!--Discovery configuration
+      Configuration for registration with discovery server(s)-->
+    <DiscoveryRegistration>
+      <!--Flag indicating if the certificates should be exchanged with the windows certificate store -->
+      <AutomaticCertificateExchange>true</AutomaticCertificateExchange>
+      <!--File name and path of the discovery server certificate to be stored in the sever trust list -->
+      <DiscoveryServerCertificateFile>[ApplicationPath]/PKI/CA/certs/LocalDiscoveryServer.der</DiscoveryServerCertificateFile>
+      <!--Store name used for the local discovery server in the windows certificate store -->
+      <DiscoveryServerStoreName>UA Applications</DiscoveryServerStoreName>
+      <!--Certificate name of the local discovery server in the windows certificate store -->
+      <DiscoveryServerCertificateName>UA Local Discovery Server</DiscoveryServerCertificateName>
+      <!--Interval in milliseconds for registration with discovery server(s) -->
+      <RegistrationInterval>30000</RegistrationInterval>
+      <!--List of discovery servers to register with.
+        If the list is empty, no registration is executed. 
+        Default ist opc.tcp://localhost:4840 for the local discovery server.
+        Additional remot discovery servers can be added-->
+      <Url>opc.tcp://localhost:4840</Url>
+    </DiscoveryRegistration>
+    <!--Discovery configuration end-->
+    <!--Trace configuration
+      This part of the configuration defines the trace settings for OPC UA Stack and
+      OPC UA Application.-->
+    <Trace>
+      <!--Enable UA stack trace true/false-->
+      <UaStackTraceEnabled>false</UaStackTraceEnabled>
+      <!--Ua stack trace level. Possible values NONE, ERROR, WARNING, SYSTEM, INFO, DEBUG, CONTENT, ALL-->
+      <UaStackTraceLevel>ERROR</UaStackTraceLevel>
+      <!--Enable UA server application trace true/false-->
+      <UaAppTraceEnabled>false</UaAppTraceEnabled>
+      <!--UA server application trace level. Possible values NoTrace, Errors, Warning, Info, InterfaceCall, CtorDtor, ProgramFlow, Data-->
+      <UaAppTraceLevel>Errors</UaAppTraceLevel>
+      <!--Maximum number of trace entries in one file-->
+      <UaAppTraceMaxEntries>100000</UaAppTraceMaxEntries>
+      <!--Maximum number of backup files-->
+      <UaAppTraceMaxBackup>5</UaAppTraceMaxBackup>
+      <!--Trace file-->
+      <UaAppTraceFile>[ApplicationPath]/srvTrace.log</UaAppTraceFile>
+    </Trace>
+    <!--Trace configuration end-->
+    <UaEndpoint>
+      <SerializerType>Binary</SerializerType>
+      <Url>opc.tcp://localhost:59595</Url>
+      <CertificateStore>
+        <OpenSSLStore>
+          <CertificateTrustListLocation>[ApplicationPath]/PKI/CA/certs/</CertificateTrustListLocation>
+          <CACertificateLocation>[ApplicationPath]/PKI/CA/certs/</CACertificateLocation>
+          <CertificateRevocationListLocation>[ApplicationPath]/PKI/CA/crl/examplecrl.crl</CertificateRevocationListLocation>
+          <ServerCertificate>[ApplicationPath]/PKI/CA/certs/MyCertificate.der</ServerCertificate>
+          <ServerPrivateKey>[ApplicationPath]/PKI/CA/private/MyPrivateKey.pem</ServerPrivateKey>
+        </OpenSSLStore>
+        <!-- <WindowsStore>
+        <StoreLocation>LocalMachine</StoreLocation>
+        <StoreName>YOUR APP</StoreName>
+		<ServerCertificateThumbprint></ServerCertificateThumbprint>
+      </WindowsStore>-->
+        <GenerateCertificate>true</GenerateCertificate>
+        <CertificateSettings>
+          <CommonName>[ServerName]</CommonName>
+          <Organization>Organization</Organization>
+          <OrganizationUnit>Unit</OrganizationUnit>
+          <Locality>LocationName</Locality>
+          <State>State</State>
+          <Country>US</Country>
+        </CertificateSettings>
+      </CertificateStore>
+      <SecuritySetting>
+        <SecurityPolicy>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicy>
+        <MessageSecurityMode>None</MessageSecurityMode>
+      </SecuritySetting>
+      <SecuritySetting>
+        <SecurityPolicy>http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15</SecurityPolicy>
+        <MessageSecurityMode>Sign</MessageSecurityMode>
+        <MessageSecurityMode>SignAndEncrypt</MessageSecurityMode>
+      </SecuritySetting>
+      <SecuritySetting>
+        <SecurityPolicy>http://opcfoundation.org/UA/SecurityPolicy#Basic256</SecurityPolicy>
+        <MessageSecurityMode>Sign</MessageSecurityMode>
+        <MessageSecurityMode>SignAndEncrypt</MessageSecurityMode>
+      </SecuritySetting>
+    </UaEndpoint>
+  </UaServerConfig>
+  <General></General>
+</OpcServerConfig>

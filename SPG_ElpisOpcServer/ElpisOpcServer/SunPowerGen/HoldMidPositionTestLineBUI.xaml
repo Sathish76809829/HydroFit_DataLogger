@@ -1,0 +1,300 @@
+﻿<UserControl x:Class="ElpisOpcServer.SunPowerGen.HoldMidPositionTestLineBUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"                                  
+             xmlns:local="clr-namespace:ElpisOpcServer.SunPowerGen"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" Name="HoldMidPositionLineB"            
+             d:DesignHeight="500" d:DesignWidth="900">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="validationErrorTemplate">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                    <Grid Width="12" Height="12">
+                        <Ellipse Width="12" Height="12" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Foreground="White" FontWeight="Heavy" FontSize="8" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"
+                                   ToolTip="{Binding ElementName=ErrorAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" Text="X"/>
+                    </Grid>
+                    <TextBlock Foreground="Red" FontWeight="Bold"  Margin="2,0,0,0" Text="{Binding ElementName=ErrorAdorner, 
+                        Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" TextWrapping="Wrap" />
+                </StackPanel>
+                <AdornedElementPlaceholder x:Name="ErrorAdorner" />
+            </DockPanel>
+        </ControlTemplate>
+
+        <Style x:Key="ButtonEnableStyle" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="IsEnabled" Value="False"/>
+                    </Trigger.Setters>
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CustomTextBoxTextStyle" TargetType="TextBox">
+            <Setter Property="Foreground" Value="Green" />
+            <Setter Property="MaxLength" Value="40" />
+            <!--<Setter Property="Width" Value="392" />-->
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=(Validation.Errors)[0].ErrorContent}"/>
+                        <Setter Property="BorderBrush" Value="Red"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                    </Trigger.Setters>
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+
+        <ControlTemplate x:Key="AnimateForeground">
+            <ControlTemplate.Triggers>
+                <EventTrigger RoutedEvent="TextBlock.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <!--Storyboard.TargetProperty="AnimateForeGround"-->
+                            <ColorAnimation Storyboard.TargetProperty="Color"
+                                                                From="DarkOrange" To="DarkBlue" Duration="0:0:3" AutoReverse="True" RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+
+
+    <Grid Background="#FFF0E6DC" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="5*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"  >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="9*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <StackPanel Name="spDeviceStatus" Orientation="Horizontal" VerticalAlignment="Center" Visibility="Hidden">
+                    <TextBlock Text="Device Status: " Margin="10,0,0,0" FontWeight="Bold" />
+                    <TextBlock Name="tbxDeviceStatus" Text="Disconnected"  />
+                </StackPanel>
+                <Label Name="lblTitle" Content="Hold or Mid Position Test" VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="15" Foreground="DarkBlue" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Label x:Name="lblDateTime" Content="Date &amp; Time" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="96" Visibility="Visible" />
+                    <TextBlock x:Name="tbxDateTine" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="152" HorizontalAlignment="Right" Text="{Binding TestDateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
+                </StackPanel>
+
+            </Grid>
+            <Grid Name="gridMain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" >
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8.5*"/>
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Grid.Column="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="22"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="7*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2" Margin="3,0,0,0">
+                                <TextBlock x:Name="lblReportNumber" Text="Report Number" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" Margin="5,0,5,0" />
+                                <TextBlock x:Name="txtReportNumber" Text="{Binding ReportNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                             Height="Auto" Width="Auto" TextWrapping="Wrap" Foreground="DarkBlue" FontWeight="Bold" FontSize="12" Background="Transparent" />
+                            </StackPanel>
+                            <GroupBox Grid.Column="0" Grid.Row="1" Margin="5,2,0,5" Foreground="#9D2933" BorderBrush="Orange">
+                                <GroupBox.Header>
+                                    <Grid  HorizontalAlignment="Stretch" >
+                                        <TextBlock FontWeight="ExtraBold" TextAlignment="Center" >Pressure Setting</TextBlock>
+                                    </Grid>
+                                </GroupBox.Header>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Vertical" Grid.Row="0">
+                                        <TextBlock Grid.Row="0" x:Name="lblAllowablePressureAB" TextWrapping="Wrap" Text="Allowable Pressure Drop" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                        <TextBlock x:Name="txtAllowablePressureAB" HorizontalAlignment="Center" VerticalAlignment="Top" Width="Auto"  TextWrapping="Wrap"  FontSize="23"
+                                             Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"
+                                                           Text="{Binding AllowablePressureDrop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical" Grid.Row="1">
+                                        <TextBlock Grid.Row="0" x:Name="lblCylinderMovement" TextWrapping="Wrap" Text="Cylinder Movement Position" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                        <TextBlock x:Name="txtCylinderMovement" HorizontalAlignment="Center" TextWrapping="Wrap"  VerticalAlignment="Top" FontSize="23"
+                                             Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" 
+                                                           Text="{Binding CylinderMovement, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" >
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </GroupBox>
+
+                            <GroupBox Margin="10,2,0,5" Grid.Column="1" Grid.Row="1" Foreground="#9D2933" BorderBrush="Orange">
+                                <GroupBox.Header>
+                                    <Grid  HorizontalAlignment="Stretch" >
+                                        <TextBlock FontWeight="ExtraBold" TextAlignment="Center" >Device Live Data</TextBlock>
+                                    </Grid>
+                                </GroupBox.Header>
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+
+
+                                    <Border BorderBrush="WhiteSmoke" CornerRadius="5" BorderThickness="1" Grid.Column="0">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="7*"/>
+                                                <RowDefinition Height="2*"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="Holding Time LineB" FontSize="20" VerticalAlignment="Center"  Grid.Row="1" HorizontalAlignment="Center" />
+                                            <TextBlock Grid.Row="0" Name="txtHoldingTimeB" FontSize="45"  FontWeight="UltraBold"  FontFamily="Arial Black" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                           Text="{Binding HoldingTimeLineB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <TextBlock.Foreground>
+                                                    <SolidColorBrush x:Name="AnimateForeGround1" Color="DarkBlue" />
+                                                </TextBlock.Foreground>
+                                                <TextBlock.Triggers>
+                                                    <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="AnimateForeGround1" Storyboard.TargetProperty="Color"
+                                                                From="DarkBlue" To="DarkOrange" Duration="0:0:5" AutoReverse="True" RepeatBehavior="Forever" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </TextBlock.Triggers>
+                                            </TextBlock>
+
+                                        </Grid>
+                                    </Border>
+
+                                    <Border BorderBrush="WhiteSmoke" BorderThickness="1" CornerRadius="5" Grid.Column="1">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="7*"/>
+                                                <RowDefinition Height="2*"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="Holding Pressure LineB" FontSize="20" VerticalAlignment="Center"  TextAlignment="Center" TextWrapping="Wrap" Grid.Row="1"/>
+                                            <TextBlock Name="txtHoldingPressureB" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="45"  FontWeight="UltraBold"  FontFamily="Arial Black"  
+                                                           Text="{Binding HoldingPressureLineA_B, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+                                                <TextBlock.Foreground>
+                                                    <SolidColorBrush x:Name="AnimateForeGround3" Color="DarkBlue" />
+                                                </TextBlock.Foreground>
+                                                <TextBlock.Triggers>
+                                                    <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="AnimateForeGround3" Storyboard.TargetProperty="Color"
+                                                                From="DarkOrange" To="DarkBlue" Duration="0:0:5" AutoReverse="True" RepeatBehavior="Forever" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </TextBlock.Triggers>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                            </GroupBox>
+
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Column="1" Margin="10,2,2,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="4.5*"/>
+                        </Grid.RowDefinitions>
+                        <Border BorderBrush="Brown" BorderThickness="1" HorizontalAlignment="Stretch">
+                            <StackPanel Grid.Row="0" Margin="0,5,0,0">
+                                <TextBlock Text="Test Status" HorizontalAlignment="Center" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap" />
+                                <TextBlock x:Name="txtTestStatusB" Text="" FontSize="25" FontWeight="Bold" Foreground="DarkBlue" VerticalAlignment="Center"  TextWrapping="Wrap" TextAlignment="Center" Width="Auto" />
+                                <!--Background="LimeGreen"-->
+                            </StackPanel>
+                        </Border>
+                        <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" >
+                            <Button x:Name="btnStartStop" ToolTip="Start Test" Content="Start Test" Width="120" HorizontalAlignment="Center" Margin="0,0,0,5" Height="30" FontWeight="ExtraBold"  Click="btnStartStop_Click" Padding="10,0,10,0">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <!--<Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtJobNumber}" Value="False"/>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtCustName}" Value="False"/>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtAllowablePressureAB}" Value="False"/>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtHoldingTimeA}" Value="False"/>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtHoldingTimeB}" Value="False"/>-->
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+
+                        </StackPanel>
+
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1"  Background="WhiteSmoke">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <!--<ColumnDefinition/>-->
+            </Grid.ColumnDefinitions>
+            <!--<dvc:Chart Name="mcChart" Title="Flow Vs Time"
+           Width="400" Height="300"
+           Background="LightSteelBlue">
+                <dvc:Chart.Axes>
+                    <dvc:LinearAxis Orientation="Y" Title="Flow" />
+                    <dvc:LinearAxis Orientation="X" Title="Time"  />
+                </dvc:Chart.Axes>
+                <dvc:Chart.Series>
+
+                    <dvc:LineSeries Title="Flow1"
+            IndependentValueBinding="{Binding Path=Key}"
+            DependentValueBinding="{Binding Path=Value}"
+                                    ItemsSource="{Binding collection}">
+                    </dvc:LineSeries>
+                  
+                </dvc:Chart.Series>
+            </dvc:Chart>-->
+
+
+            <!--<ContentPresenter Name="content" />-->
+
+
+            <lvc:CartesianChart Name="chartFlow" Series="{Binding PressureSeriesCollection}" LegendLocation="Top" Background="White" Margin="20"   >
+                <lvc:CartesianChart.AxisY>
+                    <lvc:AxesCollection>
+                        <lvc:Axis Title="Flow" LabelFormatter="{Binding YFormatter}">
+                        </lvc:Axis>
+                    </lvc:AxesCollection>
+                </lvc:CartesianChart.AxisY>
+                <lvc:CartesianChart.AxisX>
+                    <lvc:AxesCollection>
+                        <lvc:Axis Title="Time" Name="flowXAxis" Labels="{Binding FlowLabels}"></lvc:Axis>
+                    </lvc:AxesCollection>
+
+                </lvc:CartesianChart.AxisX>
+            </lvc:CartesianChart>
+
+
+
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,1379 @@
+﻿<UserControl 
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElpisOpcServer.SunPowerGen"
+    xmlns:manik="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:ribbon="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"
+             x:Class="ElpisOpcServer.ConfigurationSettingsUI"
+             mc:Ignorable="d"              
+             d:DesignHeight="500" d:DesignWidth="800" Loaded="ConfigurationSettingsUI_Loaded"
+              >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ElpisOpcServer;component/Styles/ListBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Background="#FFE3D0BB">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="#f4a460" >
+            <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                <Image Source="Images\settings.png" Height="22" Width="22" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <Label x:Name="titleForUserControl" 
+                       Content="Configuration Settings"
+                       Foreground="Black" 
+                       FontWeight="Bold"  
+                       VerticalAlignment="Center"  
+                       HorizontalAlignment="Left"
+                       FontSize="16"
+                       FontFamily="Calibri" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Content="Help" Margin="10,0,10,0" Width="40" Height="25" Background="Transparent" BorderBrush="Transparent" Foreground="Black" />
+                <Button Name="btnAbout" Content="About" Margin="0,0,10,0" Width="40" Background="Transparent" BorderBrush="Transparent" Foreground="Black" Click="btnAbout_Click" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" Grid.RowSpan="10" Background="WhiteSmoke">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="65"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Background="Orange" Grid.Row="0" Height="1" VerticalAlignment="Top"/>
+            <Grid Grid.Row="0" >
+                <!--<ribbon:Ribbon x:Name="RibbonMain" FontFamily="Trebuchet MS" FontSize="12"   MouseDoubleClick="RibbonMain_MouseDoubleClick" >
+                    <ribbon:Ribbon.ApplicationMenu>
+                        <ribbon:RibbonApplicationMenu Visibility="Collapsed"/>
+                    </ribbon:Ribbon.ApplicationMenu>
+                    <ribbon:RibbonTab x:Name="HomeTab" Header="Configuration" >
+                        <ribbon:RibbonGroup x:Name="GroupFile" 
+                                    Header="File" Height="100" Margin="0" >
+                            <ribbon:RibbonButton x:Name="btnNew"                                           
+                                         LargeImageSource="Images/new_project.png"
+                                         Label="New" Width="60" Height="60" />
+
+                            <ribbon:RibbonButton x:Name="btnOpen"
+                                         LargeImageSource="Images/open_project13.png"
+                                         Label="Open" Width="60" Height="60" />
+                            <ribbon:RibbonButton x:Name="btnSave" 
+                                         LargeImageSource="Images/save_Icon.ico"
+                                         Label="Save" Width="60" Height="60"/>
+                            <ribbon:RibbonButton x:Name="btnSaveAs" 
+                                         LargeImageSource="Images/save_as_Icon.ico"
+                                         Label="SaveAs" Width="60" Height="60"/>
+                        </ribbon:RibbonGroup>
+                    </ribbon:RibbonTab>
+                    <ribbon:Ribbon.HelpPaneContent>
+                        <ribbon:RibbonButton Name="MinimizeButton" SmallImageSource="Images/navigate-up.ico" 
+                                  Click="RibbonMinimizeButton_Click"  />
+                    </ribbon:Ribbon.HelpPaneContent>
+                </ribbon:Ribbon>-->
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0"  >
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition  />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Border Style="{StaticResource ConfigurationBorder}" Grid.Column="0"   >
+                        <Grid Grid.Column="0" Background="#FFE3D0BB">
+                            <!--BorderBrush="#FFC5A364" BorderThickness="0,0,0,0"-->
+                            <Grid.RowDefinitions>
+                                <RowDefinition  Height="50"/>
+                                <RowDefinition Height="15" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
+                                <Grid Background="#FFE3D0BB" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0" Background="Transparent" >
+                                        <Button  x:Name="creatNewBtn"
+                                         Style="{StaticResource UACertificateButton}"
+                                         ToolTip="New Project" 
+                                         Foreground="#FF211D1D"
+                                         Click="ribbonNewBtn_Click" >
+                                            <StackPanel >
+                                                <Image Source="Images/new_project.png" Height="22" Width="30"/>
+                                                <TextBlock Style="{StaticResource UACertificateTextBlock}"
+                                                   HorizontalAlignment="Center" 
+                                                   Text="New"
+                                                       ToolTip="New Project"
+                                                   FontSize="12" />
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+
+                                    <Grid Grid.Column="1"  >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="3*"/>
+                                            <RowDefinition Height="4*"/>
+                                        </Grid.RowDefinitions>
+                                        <Button x:Name="viewBtn"
+                                        Style="{StaticResource UACertificateButton}"  
+                                        Foreground="Black" 
+                                        ToolTip="Open Project"
+                                        Click="ribbonOpenBtn_Click" Grid.RowSpan="2" >
+                                            <!--Click="viewBtn_Click"-->
+
+                                            <StackPanel>
+                                                <Image Source="Images/open_project13.png" Height="22" Width="30"/>
+                                                <TextBlock HorizontalAlignment="Center" 
+                                                   Style="{StaticResource UACertificateTextBlock}" 
+                                                   Text="Open"  FontSize="12"  ToolTip="Open Project"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+
+                                    <Grid Grid.Column="2" >
+                                        <Button x:Name="SaveBtn"
+                                        Style="{StaticResource UACertificateButton}" 
+                                        Foreground="Black" 
+                                        ToolTip="Save To File"
+                                        Click="ribbonSaveBtn_Click" >
+                                            <StackPanel>
+                                                <Image Source="Images/save_Icon.ico" Height="22" Width="30"/>
+                                                <TextBlock HorizontalAlignment="Center" 
+                                                   Style="{StaticResource UACertificateTextBlock}" 
+                                                   Text="Save" ToolTip="Save Project" 
+                                                      FontSize="12" />
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+
+                                    <Grid Grid.Column="3"  >
+                                        <Button Style="{StaticResource UACertificateButton}" 
+                                        x:Name="SaveAsBtn" 
+                                        Foreground="Black" 
+                                        ToolTip="Save As"
+                                        Click="SaveAsBtn_Click" >
+                                            <StackPanel>
+                                                <Image Source="Images/save_as_Icon.ico" Height="22" Width="30"/>
+                                                <TextBlock HorizontalAlignment="Center" 
+                                                   Style="{StaticResource UACertificateTextBlock}"
+                                                   Text="Save As" ToolTip="Save As"  FontSize="12" />
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                    <Border Grid.Column="4" Background="Transparent" BorderBrush="Transparent" >
+                                        <Grid Grid.Column="4" Margin="0,2,0,-2"  >
+                                            <GridSplitter IsEnabled="False" BorderBrush="#FFEEE7E8" BorderThickness="0.7" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="#FFE0C4C5"/>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                            <Grid Grid.Row="1" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Border BorderBrush="Black" BorderThickness="0,0,0,0" Grid.Column="2">
+                                    <TextBlock  Text="File" Margin="-40,0,0,0" FontFamily="Calibri" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <Grid Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <GridSplitter IsEnabled="False" BorderBrush="#FFEEE7E8" BorderThickness="0.7" Height="15"></GridSplitter>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <!--<Border Style="{StaticResource ConfigurationBorder}">
+                            <GroupBox Name="gbConfiguration"  Background="#FFE3D0BB" HorizontalAlignment="Stretch" VerticalAlignment="Center" BorderThickness="0.8" FontSize="12" FontFamily="Calibri" >
+                                <GroupBox.Header>
+                                    <TextBlock Text="Configuration" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="67"/>
+                                </GroupBox.Header>
+                                <GroupItem>
+                                    <Grid Background="#FFE3D0BB" >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" Background="Transparent" >
+                                            <Button  x:Name="creatNewBtn" 
+                                         Style="{StaticResource UACertificateButton}"
+                                         ToolTip="New Project" 
+                                         Foreground="#FF211D1D"
+                                         Click="ribbonNewBtn_Click" >
+                                                <StackPanel >
+                                                    <Image Source="Images/new_project.png" Height="23" Width="35"/>
+                                                    <TextBlock Style="{StaticResource UACertificateTextBlock}"
+                                                   HorizontalAlignment="Center" 
+                                                   Text="New"
+                                                       ToolTip="New Project"
+                                                   FontSize="12" />
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1"  >
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="3*"/>
+                                                <RowDefinition Height="4*"/>
+                                            </Grid.RowDefinitions>
+                                            <Button x:Name="viewBtn" 
+                                        Style="{StaticResource UACertificateButton}"  
+                                        Foreground="Black" 
+                                        ToolTip="Open Project"
+                                        Click="ribbonOpenBtn_Click" Grid.RowSpan="2" >
+                                                -->
+                    <!--Click="viewBtn_Click"-->
+                    <!--
+
+                                                <StackPanel>
+                                                    <Image Source="Images/open_project13.png" Height="20" Width="35"/>
+                                                    <TextBlock HorizontalAlignment="Center" 
+                                                   Style="{StaticResource UACertificateTextBlock}" 
+                                                   Text="Open"  FontSize="12"  ToolTip="Open Project"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+
+                                        <Grid Grid.Column="2" >
+                                            <Button x:Name="SaveBtn" 
+                                        Style="{StaticResource UACertificateButton}" 
+                                        Foreground="Black" 
+                                        ToolTip="Save To File"
+                                        Click="ribbonSaveBtn_Click" >
+                                                <StackPanel>
+                                                    <Image Source="Images/save_Icon.ico" Height="20" Width="35"/>
+                                                    <TextBlock HorizontalAlignment="Center" 
+                                                   Style="{StaticResource UACertificateTextBlock}" 
+                                                   Text="Save" ToolTip="Save Project" 
+                                                      FontSize="12" />
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+
+                                        <Grid Grid.Column="3"  >
+                                            <Button Style="{StaticResource UACertificateButton}" 
+                                        x:Name="SaveAsBtn"
+                                        Foreground="Black" 
+                                        ToolTip="Save As"
+                                        Click="SaveAsBtn_Click" >
+
+                                                <StackPanel>
+                                                    <Image Source="Images/save_as_Icon.ico" Height="20" Width="35"/>
+                                                    <TextBlock HorizontalAlignment="Center" 
+                                                   Style="{StaticResource UACertificateTextBlock}"
+                                                   Text="Save As" ToolTip="Save As"  FontSize="12" />
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+                                        -->
+                    <!--<Separator Height="5" Width="300" Background="#FF787885" Grid.ColumnSpan="4" VerticalAlignment="Bottom" />-->
+                    <!--<Grid Grid.ColumnSpan="4" Height="5" Background="#FF787885" VerticalAlignment="Bottom">
+                                </Grid>-->
+                    <!--
+                                    </Grid>
+                                </GroupItem>
+                            </GroupBox>
+                        </Border>-->
+                    <!--<Border Style="{StaticResource ConfigurationBorder}" Grid.Column="1" Grid.ColumnSpan="2">
+                        <Grid Grid.Column="1"   Grid.ColumnSpan="2"  >
+                            <Border Style="{StaticResource ConfigurationBorder}">
+                                
+                            </Border>
+                            <Grid />
+                        </Grid>
+                    </Border>-->
+                    <Border Style="{StaticResource ConfigurationBorder}" Grid.Column="1" Grid.ColumnSpan="3">
+                        <Grid Grid.Column="4"   >
+                            <Border Style="{StaticResource ConfigurationBorder}">
+                                <StackPanel Name="spServerRunningTime" Visibility="Hidden" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <TextBlock  Text="Demo Version Expire Status: " FontWeight="Bold" FontSize="14" TextWrapping="Wrap" />
+                                    <TextBlock Name="txtTime" FontWeight="Bold" FontSize="14" />
+                                </StackPanel>
+                            </Border>
+                            <Grid />
+                        </Grid>
+                    </Border>
+                    <!--<Grid Grid.Column="1" >
+                        <Border Style="{StaticResource ConfigurationBorder}">
+                            <WrapPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                                <Button Style="{StaticResource UACertificateButton}" Foreground="#FF211D1D">                           
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <Image Source="Images/export.png" Focusable="True" Height="17" Width="17"/>
+                                        <TextBlock Text="Export Log"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource UACertificateButton}" Foreground="#FF211D1D" >
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <Image Source="Images\ErrorRed.png" Focusable="True" Height="17" Width="17"/>
+                                        <TextBlock Text="Clear Log"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource UACertificateButton}" Foreground="#FF211D1D" >
+                                    <StackPanel VerticalAlignment="Center">
+                                        <Image Source="Images\FileOpen.ico" Focusable="True" Height="17" Width="17"/>
+                                        <TextBlock Text="Open Log file"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </WrapPanel>
+                        </Border>                        
+                    </Grid>-->
+                    <!--<Grid Grid.Column="2">
+                         <Border Style="{StaticResource ConfigurationBorder}" />
+                    </Grid>
+                    <Grid Grid.Column="3" >
+                        <Border Style="{StaticResource ConfigurationBorder}" />
+                    </Grid>-->
+                </Grid>
+
+            </Grid>
+
+            <!--<GridSplitter  VerticalAlignment="Bottom" HorizontalAlignment="Stretch"  Height="3" Background="Gray"/>-->
+            <Grid Grid.Row="1" Grid.RowSpan="6" UseLayoutRounding="True" Name="gridConfiguration">
+                <!--Grid.RowSpan="5">-->
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Name="column1" />
+                        <ColumnDefinition Name="column2"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0" Grid.ColumnSpan="3" Name="GridConnector" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0"  >
+                            <!--Background="#FF76C7E2">-->
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFE3D0BB" Offset="1"/>
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE3D0BB" Offset="0.985"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <!--<Grid Width="1" HorizontalAlignment="Left" Background="#FFE3D0BB"/>
+                            <Grid Width="1" HorizontalAlignment="Right" Background="#FFE3D0BB"/>
+                            <Grid VerticalAlignment="Top" Height="1" Background="#FFE3D0BB"/>-->
+                            <StackPanel Orientation="Horizontal" >
+                                <!--<Image Source="Images/save-as-xxl.png" Height="25" Width="50"/>-->
+                                <Label Content="Connector" FontSize="14" FontWeight="Bold" Height="Auto" FontFamily="Calibri" Foreground="Black"  HorizontalAlignment="Left"/>
+                            </StackPanel>
+                            <StackPanel Name="stackPanelConnector" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,1,8,1" Height="25" Visibility="Visible" Width="115">
+                                <Button Margin="5,0,0,0" Click="NewProtocolMenuItem_Click"  BorderThickness="0" Width="25" HorizontalAlignment="Center" Background="Transparent" >
+                                    <Image Source="Images\Add_Green.png" Height="16"   ToolTip="Create New Connector"></Image>
+                                </Button>
+                                <Button Margin="5,0,0,0" Click="ConnectorPropertiesMenuItem_Click" BorderThickness="0" Width="25" Background="Transparent" >
+                                    <Image Source="Images\Edit_yellow.ICO" Height="16" 
+                                           ToolTip="Edit Connector" HorizontalAlignment="Center" ></Image>
+                                </Button>
+                                <Button Margin="5,0,0,0" Click="DeleteConnectorMenuItem_Click" BorderThickness="0" Width="25" Background="Transparent">
+                                    <Image Source="Images\deletered.png" Height="16"  
+                                           ToolTip="Delete Connector"></Image>
+                                </Button>
+                                <Button Name="btnSearch" Margin="5,0,0,0" Click="btnSearch_Click"  BorderThickness="0" Width="25" HorizontalAlignment="Center" Background="Transparent"  >
+                                    <Image Source="Images\Search_Icon_10.png" Height="15"   ToolTip="Search Connector" />
+                                </Button>
+                            </StackPanel>
+                            <StackPanel Name="stackPanelSerachC" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Height="25" Visibility="Hidden">
+                                <!--<Image Source="Images\viewblack.png" Height="16"   ToolTip="Search Connector" Margin="0,0,3,0"></Image>-->
+                                <TextBox Name="searchBox" 
+                                         TextAlignment= "Left"
+                                         Background="White"
+                                         Foreground="Black"  
+                                         VerticalAlignment="Center"    
+                                         ToolTip="Search Connector" 
+                                         KeyDown="searchBox_KeyDown" 
+                                         TextChanged="searchBox_TextChanged" Height="18" Width="80" BorderBrush="White"/>
+                                <!--BorderBrush="#FFABB2B9"-->
+                                <Button Name="btnCancelSerach" Click="btnCancelSerach_Click" Margin="0,0,0,0" Height="18" BorderBrush="White" Background="White" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center">X</Button>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Width="3" Background="#FFE3D0BB" VerticalAlignment="Bottom"/>
+                        <Grid Grid.Row="1" Grid.RowSpan="5">
+
+                            <ListBox x:Name="ConnectorListBox" 
+                             Background="WhiteSmoke"  
+                             VerticalAlignment="Stretch"  HorizontalAlignment="Stretch"
+                             ItemsSource="{Binding ProtocolCollection}"
+                             
+                             x:FieldModifier="public" 
+                             SelectedIndex="0" 
+                             SelectionChanged="ProtocolListBox_SelectionChanged" 
+                                     PreviewMouseDown="ConnectorListBox_PreviewMouseDown"
+                                     LostFocus="ProtocolListBox_LostFocus"
+                             GotFocus="ProtocolListBox_GotFocus" 
+                             ToolTip="Right click to create Connector"
+                             BorderBrush="Black" 
+                                     BorderThickness="1,1,0,1"
+                                 FontFamily="Calibri" Margin="1,0,-2,0">
+                                <!--DisplayMemberPath="Name"-->
+
+                                <ListBox.ItemContainerStyle>
+                                    <Style x:Name="ProtocolStyle" TargetType="{x:Type ListBoxItem}">
+                                        <Style.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                    <Condition Property="IsFocused" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <MultiTrigger.Setters>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border Name="Border"  BorderBrush="DarkOrange" BorderThickness="1">
+                                                                    <ContentPresenter/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </MultiTrigger.Setters>
+                                            </MultiTrigger>
+                                            <!--<Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="ListBoxItem">
+                                                            <Border Name="Border"  BorderBrush="red" BorderThickness="2">
+                                                                <ContentPresenter/>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsSelected" Value="true">
+                                                                    <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>-->
+                                            <!--<Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="BorderBrush" Value="Red" />
+                                                <Setter Property="BorderBrush" Value="Red" />
+                                                <Setter Property="Background" Value="#f4a460" />
+                                                <Setter Property="Foreground" Value="Red"/>                                                
+                                                <Setter Property="FontWeight" Value="Light" />                                                
+                                                <Setter Property="BorderThickness" Value="2"/>
+                                            </Trigger>-->
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ContextMenu>
+                                    <ContextMenu x:Name="ProtocolContextMenu">
+                                        <MenuItem x:Name="NewProtocolMenuItem" Click="NewProtocolMenuItem_Click">
+                                            <MenuItem.Icon>
+                                                <Image Width="30" Height="15" Source="Images/New Icon.png" />
+                                            </MenuItem.Icon>
+                                            <MenuItem.Header>
+                                                <TextBlock Text="Add Connector" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                        <!--<MenuItem Name="NewProtocolMenuItem" Header="New Protocol" Click="NewProtocolMenuItem_Click"></MenuItem>-->
+                                        <!--<MenuItem Name="DeleteProtocolMenuItem" Header="Delete Protocol" Click="DeleteProtocolMenuItem_Click"></MenuItem>
+                                        <MenuItem Name="ProtocolPropertiesMenuItem" Header="Edit Properties" Click="ProtocolPropertiesMenuItem_Click"></MenuItem>-->
+
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ConnectorName }">
+                                            <TextBlock.ContextMenu>
+                                                <ContextMenu Name="ConnectorItemContextMenu">
+                                                    <MenuItem Name="DeleteProtocolMenuItem" Header="Delete" Click="DeleteConnectorMenuItem_Click"/>
+                                                    <MenuItem Name="ProtocolPropertiesMenuItem" Header="Edit Properties" Click="ConnectorPropertiesMenuItem_Click" />
+                                                </ContextMenu>
+                                            </TextBlock.ContextMenu>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </Grid>
+                    <GridSplitter Grid.Column="3"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Stretch"
+              Background="Black" 
+              ShowsPreview="True" 
+              Width="1.3" 
+              />
+                    <Grid Grid.Column="4" Grid.ColumnSpan="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" >
+                            <!--Background="#FF76C7E2">-->
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFE3D0BB" Offset="1"/>
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE3D0BB" Offset="0.985"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <!--<Grid Width="1" HorizontalAlignment="Left" Background="#FFE3D0BB"/>
+                            <Grid Width="1" HorizontalAlignment="Right" Background="#FFE3D0BB"/>
+                            <Grid VerticalAlignment="Top" Height="1" Background="#FFE3D0BB"/>-->
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Device" Opacity="0.8" FontSize="14"  FontWeight="Bold" FontFamily="Calibri"  Foreground="Black"  HorizontalAlignment="Left"/>
+                            </StackPanel>
+                            <StackPanel Name="spDevice" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Height="25" >
+                                <Button Margin="5,0,0,0" Click="NewDeviceMenuItem_Click"  BorderThickness="0" Width="25" Background="Transparent">
+                                    <Image Source="Images\Add_Green.png" Height="16"  ToolTip="Create Device"></Image>
+                                </Button>
+                                <Button Margin="5,0,0,0" Click="DevicePropertiesMenuItem_Click"  Width="25"  BorderThickness="0" Background="Transparent">
+                                    <Image Source="Images\Edit_yellow.ICO" Height="16" 
+                                           ToolTip="Edit Device" HorizontalAlignment="Center" ></Image>
+                                </Button>
+                                <Button Click="DeleteDeviceMenuItem_Click" Margin="5,0,0,0" BorderThickness="0" Width="25" Background="Transparent">
+                                    <Image Source="Images\deletered.png" Height="16" 
+                                           ToolTip="Delete Device" HorizontalAlignment="Center" ></Image>
+                                </Button>
+                                <Button Name="btnSearchD" Click="btnSearchD_Click" Margin="5,0,0,0"  BorderThickness="0" Width="25" HorizontalAlignment="Center" Background="Transparent" >
+                                    <Image Source="Images\Search_Icon_10.png" Height="15"   ToolTip="Search Device" />
+                                </Button>
+
+                            </StackPanel>
+
+                            <StackPanel Name="spSerachDevice" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Height="25" Visibility="Hidden">
+                                <!--<Image Source="Images\viewblack.png" Height="16"   ToolTip="Search Connector" Margin="0,0,3,0"></Image>-->
+                                <TextBox Name="searchBoxDevice" 
+                                         TextAlignment= "Left"
+                                         Background="White"
+                                         Foreground="Black"  
+                                         VerticalAlignment="Center"    
+                                         ToolTip="Search message" 
+                                         KeyDown="searchBox_KeyDown" 
+                                         TextChanged="searchBox_TextChanged" Height="18" Width="80" BorderBrush="White" />
+                                <!--BorderBrush="#FFABB2B9"-->
+                                <Button Name="btnCancelSerachD" Click="btnCancelSerachD_Click" Margin="0,0,0,0" Height="18" Background="White" BorderBrush="White" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center">X</Button>
+                            </StackPanel>
+                        </Grid>
+                        <Grid Grid.Row="1">
+
+                            <TreeView x:Name="DeviceListBox"  ItemsSource="{Binding DeviceCollection}"
+                                      GotFocus="DeviceListBox_GotFocus" Background="WhiteSmoke" ToolTip="Right click to create Device/Tag Groups"
+                                      SelectedItemChanged="DeviceListBox_SelectionChanged"   BorderBrush="Black" 
+                                     BorderThickness="0,1,0,1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" PreviewMouseDown="ConnectorListBox_PreviewMouseDown"   >
+
+                                <!--PreviewMouseDown="DeviceListBox_MouseDown"-->
+                                <TreeView.ContextMenu>
+                                    <ContextMenu x:Name="DeivceContextMenu">
+                                        <MenuItem x:Name="NewDeviceMenuItem" Click="NewDeviceMenuItem_Click" >
+                                            <MenuItem.Icon>
+                                                <Image Width="25" 
+                                                       Height="15" 
+                                                       Source="Images/New Icon.png" />
+                                            </MenuItem.Icon>
+                                            <MenuItem.Header>
+                                                <TextBlock Text="Add Device" 
+                                                           HorizontalAlignment="Left" 
+                                                           VerticalAlignment="Center" />
+                                            </MenuItem.Header>
+                                        </MenuItem>
+
+                                        <MenuItem x:Name="NewTagGroupMenuItem" Click="NewTagGroupMenuItem_Click" >
+                                            <MenuItem.Icon>
+                                                <Image Width="25" Height="15" Source="Images/New Icon.png" />
+                                            </MenuItem.Icon>
+                                            <MenuItem.Header>
+                                                <TextBlock Text="Add TagGroup" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                        <!--<MenuItem Name="DeleteDeviceMenuItem" Header="Delete Device" Click="DeleteDeviceMenuItem_Click"/>
+                                        <MenuItem Name="DevicePropertiesMenuItem" Header="Properties" Click="DevicePropertiesMenuItem_Click"/>-->
+                                    </ContextMenu>
+
+                                </TreeView.ContextMenu>
+
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate  ItemsSource="{Binding GroupCollection}"  >
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding DeviceName}" Width="{Binding RelativeSource={RelativeSource AncestorType= {x:Type TreeView}, AncestorLevel=1}, Path=ActualWidth,Converter={local:WidthConvertor Factor=24}}">     <!--Width="{Binding RelativeSource={RelativeSource AncestorType= {x:Type TreeView}, AncestorLevel=2}, Path=ActualWidth}"  >-->
+                                                <TextBlock.ContextMenu>
+                                                    <ContextMenu x:Name="DeivceNameContextMenu">
+                                                        <MenuItem x:Name="NewTagGroupMenuItem" Click="NewTagGroupMenuItem_Click" >
+                                                            <MenuItem.Icon>
+                                                                <Image Width="25" Height="15" Source="Images/New Icon.png" />
+                                                            </MenuItem.Icon>
+                                                            <MenuItem.Header>
+                                                                <TextBlock Text="Add Tag Group" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                                            </MenuItem.Header>
+                                                        </MenuItem>
+                                                        <MenuItem Name="DeleteDeviceMenuItem" Header="Delete" Click="DeleteDeviceMenuItem_Click"/>
+                                                        <MenuItem Name="DevicePropertiesMenuItem" Header="Edit Properties" Click="DevicePropertiesMenuItem_Click"/>
+                                                        <MenuItem Name="DeviceDiagnostics" Header="Diagnostics" IsEnabled="False" />
+                                                        <!--<MenuItem Name="DeviceDuplicate" Header="Duplicate" />-->
+                                                    </ContextMenu>
+                                                </TextBlock.ContextMenu>
+                                            </TextBlock>
+                                        </Grid>
+
+                                        <HierarchicalDataTemplate.ItemTemplate>
+                                            <HierarchicalDataTemplate ItemsSource="{Binding GroupCollection }">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="{Binding GroupName}" Width="{Binding RelativeSource={RelativeSource AncestorType= {x:Type TreeView}, AncestorLevel=1}, Path=ActualWidth,Converter={local:WidthConvertor Factor=44}}">  <!--Width="{Binding RelativeSource={RelativeSource AncestorType= {x:Type TreeView}, AncestorLevel=2}, Path=ActualWidth}" HorizontalAlignment="Stretch" >-->
+                                                        <TextBlock.ContextMenu>
+                                                            <ContextMenu >
+                                                                <MenuItem Name="DeleteTagGroupMenuItem" Header="Delete" Click="DeleteDeviceMenuItem_Click"/>
+                                                            </ContextMenu>
+                                                        </TextBlock.ContextMenu>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </HierarchicalDataTemplate>
+                                        </HierarchicalDataTemplate.ItemTemplate>
+                                    </HierarchicalDataTemplate>
+
+                                </TreeView.ItemTemplate>
+
+                                <TreeView.Resources>
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#FFECECE8" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="Black" />
+
+                                    <!--<ContextMenu x:Key="DeviceContext" x:Name="DeivceContextMenu">
+                                        <MenuItem x:Name="NewTagGroupMenuItem" Click="NewTagGroupMenuItem_Click" >
+                                            <MenuItem.Icon>
+                                                <Image Width="25" Height="15" Source="Images/New Icon.png" />
+                                            </MenuItem.Icon>
+                                            <MenuItem.Header>
+                                                <TextBlock Text="Add- New Tag Group" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                        <MenuItem Name="DeleteDeviceMenuItem" Header="Delete Device" Click="DeleteDeviceMenuItem_Click"/>
+                                        <MenuItem Name="DevicePropertiesMenuItem" Header="Edit Properties" Click="DevicePropertiesMenuItem_Click"/>
+                                        <MenuItem Name="DeviceDiagnostics" Header="Diagnostics" />
+                                        -->
+                                    <!--<MenuItem Name="DeviceDuplicate" Header="Duplicate" />-->
+                                    <!--
+                                    </ContextMenu>-->
+                                    <!--<ContextMenu x:Key="GroupContext">
+                                        <MenuItem Name="DeleteTagGroupMenuItem" Header="Delete Tag Group" Click="DeleteDeviceMenuItem_Click"/>
+                                    </ContextMenu>-->
+                                    <!--<ContextMenu x:Key="outContext">
+                                        <MenuItem x:Name="NewDeviceMenuItem" Click="NewDeviceMenuItem_Click" >
+                                            <MenuItem.Icon>
+                                                <Image Width="25" Height="15" Source="Images/New Icon.png" />
+                                            </MenuItem.Icon>
+                                            <MenuItem.Header>
+                                                <TextBlock Text="Add New Device" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                    </ContextMenu>-->
+                                </TreeView.Resources>
+                                <TreeView.ItemContainerStyle>
+                                    <Style TargetType="{x:Type TreeViewItem}">
+
+                                        <Style.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="True"/>
+                                                    <Condition Property="IsFocused" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="BorderBrush" Value="DarkBlue"/>
+                                                <Setter Property="BorderThickness" Value="1"/>
+                                                <Setter Property="Background" Value="#FFF5F5F5"/>
+
+                                                <!--<Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="TreeViewItem">
+                                                                <Border Name="Border"  BorderBrush="DarkBlue" BorderThickness="2">
+                                                                    <ContentPresenter/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsSelectionActive" Value="True">
+                                                                        <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>-->
+                                            </MultiTrigger>
+
+                                            <!--<Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="ListBoxItem">
+                                                            <Border Name="Border"  BorderBrush="DarkBlue" BorderThickness="2">
+                                                                <ContentPresenter/>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsSelected" Value="True">
+                                                                    <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>-->
+                                            <!--<Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True" >
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                                <Setter Property="Background" Value="#f4a460" />
+                                                <Setter Property="Foreground" Value="DarkBlue" />
+                                                <Setter Property="BorderBrush" Value="Pink" />
+                                                <Setter Property="BorderThickness" Value="2" />
+
+                                            </Trigger>-->
+
+                                        </Style.Triggers>
+
+                                        <!--<Style.Resources>
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                                    </Style.Resources>-->
+
+                                    </Style>
+
+                                </TreeView.ItemContainerStyle>
+
+
+                            </TreeView>
+
+                            <!--ItemsSource="{Binding DeviceCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             DisplayMemberPath="DeviceName"
+                            
+                            <!<ListBox x:Name="DeviceListBox" 
+                             Grid.Row="1" 
+                             Background="WhiteSmoke" 
+                             VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                             ItemsSource="{Binding DeviceCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             DisplayMemberPath="DeviceName"
+                             SelectedIndex="0" 
+                             SelectionMode="Single"
+                             SelectionChanged="DeviceListBox_SelectionChanged"
+                                     PreviewMouseDown="TaglListBox_PreviewMouseDown"
+                             GotFocus="DeviceListBox_GotFocus" 
+                             ToolTip="Right click to create new device"
+                             BorderBrush="Black" 
+                                     BorderThickness="0,1,0,1"
+                                 FontFamily="Calibri">
+                                -->
+                            <!--<ListBox.DataContext>
+                                    <TreeView x:Name="tvofDevices" ItemsSource="{Binding DeviceCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   >
+                                        <TreeView.ItemTemplate>
+                                        <HierarchicalDataTemplate ItemsSource="{Binding DeviceName}">
+                                                <TextBlock Text="{Binding GroupCollection}" />
+                                        </HierarchicalDataTemplate>
+                                        </TreeView.ItemTemplate>
+                                    </TreeView>
+                                </ListBox.DataContext>-->
+                            <!--
+
+                                
+                                <ListBox.ItemContainerStyle>                                    
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Style.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                    <Condition Property="IsFocused" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <MultiTrigger.Setters>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border Name="Border"  BorderBrush="DarkBlue" BorderThickness="2">
+                                                                    <ContentPresenter/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </MultiTrigger.Setters>
+                                            </MultiTrigger>
+                                            -->
+                            <!--<Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="ListBoxItem">
+                                                            <Border Name="Border"  BorderBrush="DarkBlue" BorderThickness="2">
+                                                                <ContentPresenter/>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsSelected" Value="True">
+                                                                    <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>-->
+                            <!--<Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True" >
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                                <Setter Property="Background" Value="#f4a460" />
+                                                <Setter Property="Foreground" Value="DarkBlue" />
+                                                <Setter Property="BorderBrush" Value="Pink" />
+                                                <Setter Property="BorderThickness" Value="2" />
+
+                                            </Trigger>-->
+                            <!--
+                                        </Style.Triggers>
+                                        -->
+                            <!--<Style.Resources>
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                                    </Style.Resources>-->
+                            <!--
+                                    </Style>
+                                    
+                                </ListBox.ItemContainerStyle>
+                                -->
+                            <!--<ListBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="2"/>
+                                </Style>
+                            </ListBox.Resources>-->
+                            <!--
+                                
+                                <ListBox.ContextMenu>
+                                    <ContextMenu x:Name="DeivceContextMenu">
+                                        <MenuItem x:Name="NewDeviceMenuItem" Click="NewDeviceMenuItem_Click" >
+                                            <MenuItem.Icon>
+                                                <Image Width="25" 
+                                                       Height="15" 
+                                                       Source="Images/New Icon.png" />
+                                            </MenuItem.Icon>
+                                            <MenuItem.Header>
+                                                <TextBlock Text="New Device" 
+                                                           HorizontalAlignment="Left" 
+                                                           VerticalAlignment="Center" />
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                        -->
+                            <!--<MenuItem Name="NewDeviceMenuItem" Header="New Device" Click="NewDeviceMenuItem_Click" />-->
+                            <!--<MenuItem Name="ImportCSVMenuItem" Header="Import CSV"/>
+                                        <MenuItem Name="ExportCSVMenuItem" Header="Export CSV"/>-->
+                            <!--
+                                        <MenuItem Name="DeleteDeviceMenuItem" Header="Delete Device" Click="DeleteDeviceMenuItem_Click"/>
+                                        <MenuItem Name="DevicePropertiesMenuItem" Header="Properties" Click="DevicePropertiesMenuItem_Click"/>
+                                    </ContextMenu>
+                                </ListBox.ContextMenu>
+                            </ListBox>-->
+                        </Grid>
+                    </Grid>
+                    <GridSplitter Grid.Column="7"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Stretch"
+              Background="Black" 
+              ShowsPreview="True"
+              Width="1.3"
+              />
+                    <Grid Grid.Column="8" Grid.ColumnSpan="3" Name="gridTag">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" >
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFE3D0BB" Offset="1"/>
+                                    <GradientStop Color="White" Offset="0"/>
+                                    <GradientStop Color="#FFE3D0BB" Offset="0.985"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <!--<Grid Width="1" HorizontalAlignment="Left" Background="#FFE3D0BB"/>-->
+                            <!--<Grid Width="1" HorizontalAlignment="Right" Background="#FFE3D0BB"/>-->
+                            <!--<Grid VerticalAlignment="Top" Height="1" Background="#FFE3D0BB"/>-->
+                            <StackPanel Orientation="Horizontal" >
+                                <Label Content="Tags" FontSize="14" FontFamily="Calibri" FontWeight="Bold"  Foreground="Black"  HorizontalAlignment="Left"/>
+                            </StackPanel>
+                            <StackPanel Name="spTag" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Height="25">
+                                <Button Margin="5,0,0,0" Click="NewTagMenuItem_Click"  BorderThickness="0" Width="25" Background="Transparent" HorizontalAlignment="Left">
+                                    <Image Source="Images\Add_Green.png" Height="16"  ToolTip="Create Tag"></Image>
+                                </Button>
+                                <!--<Button Margin="5,0,0,0" Click="NewTagMenuItem_Click"  BorderThickness="0" Width="25" Background="Transparent" HorizontalAlignment="Left">
+                                    <Image Source="Images\group.jpg" Height="16"  ToolTip="Create Tag"></Image>
+                                </Button>-->
+                                <Button Margin="5,0,0,0" Click="TagPropertiesMenuItem_Click"  BorderThickness="0"  Width="25" Background="Transparent">
+                                    <Image Source="Images\Edit_yellow.ICO" Height="16"   
+                                           ToolTip="Edit Tag" HorizontalAlignment="Center" ></Image>
+                                </Button>
+                                <Button Click="DeleteTagMenuItem_Click" Margin="5,0,0,0" BorderThickness="0" Width="25" Background="Transparent">
+                                    <Image Source="Images\deletered.PNG" Height="16" Margin="0,0,0,0" 
+                                           ToolTip="Delete Tag" HorizontalAlignment="Center" ></Image>
+                                </Button>
+                                <Button Name="btnSearchT" Click="btnSearchT_Click" Margin="5,0,0,0"  BorderThickness="0" Width="25" HorizontalAlignment="Center" Background="Transparent" >
+                                    <Image Source="Images\Search_Icon_10.png" Height="15"   ToolTip="Search Tag" />
+                                </Button>
+                                <!--<Button Name="btnTagGroup" Margin="5,0,0,0" Click="btnTagGroup_Click"  Content="T.G"  BorderThickness="0" Width="25" Background="Transparent" HorizontalAlignment="Left">
+                                    -->
+                                <!--<Image Source="Images\Add_Green.png" Height="16"  ToolTip="Create Tag"></Image>-->
+                                <!--
+                                </Button>-->
+                            </StackPanel>
+
+                            <StackPanel Name="spSerachTag" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Height="25" Visibility="Hidden">
+                                <!--<Image Source="Images\viewblack.png" Height="16"   ToolTip="Search Connector" Margin="0,0,3,0"></Image>-->
+                                <TextBox Name="searchBoxTag" 
+                                         TextAlignment= "Left"
+                                         Background="White"
+                                         Foreground="Black"  
+                                         VerticalAlignment="Center"    
+                                         ToolTip="Search message" 
+                                         KeyDown="searchBox_KeyDown" 
+                                         TextChanged="searchBox_TextChanged" Height="18" Width="80" BorderBrush="White" />
+                                <!--BorderBrush="#FFABB2B9"-->
+                                <Button BorderBrush="White" Background="White" Name="btnCancelSerachT" Click="btnCancelSerachT_Click" Margin="0,0,0,0" Height="18" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center">X</Button>
+                            </StackPanel>
+
+                        </Grid>
+                        <Grid Grid.Row="1" >
+                            <ListBox x:Name="TaglListBox"  Visibility="Visible" Background="WhiteSmoke"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                             ItemsSource="{Binding TagCollection, Mode=TwoWay}"                             
+                             SelectedIndex="0"
+                                     SelectionChanged="TaglListBox_SelectionChanged"
+                                     PreviewMouseDown="ConnectorListBox_PreviewMouseDown" 
+                             GotFocus="TaglListBox_GotFocus" 
+                             LostFocus="TaglListBox_LostFocus" 
+                             ToolTip="Right click to create tag"
+                             BorderBrush="Black"
+                                     BorderThickness="0,1,0,1"
+                                 FontFamily="Calibri"
+                                     >
+                                <!--DisplayMemberPath="TagName"  PreviewMouseDown="TaglListBox_PreviewMouseDown"-->
+                                <ListBoxItem >
+                                </ListBoxItem>
+
+                                <!--<ListBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="2"/>
+                                </Style>
+                            </ListBox.Resources>-->
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Style.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                    <Condition Property="IsFocused" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <MultiTrigger.Setters>
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border Name="Border"  BorderBrush="Magenta" BorderThickness="1">
+                                                                    <ContentPresenter/>
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger Property="IsSelected" Value="True">
+                                                                        <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </MultiTrigger.Setters>
+                                            </MultiTrigger>
+                                            <!--<Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="ListBoxItem">
+                                                            <Border Name="Border"  BorderBrush="ForestGreen" BorderThickness="2">
+                                                                <ContentPresenter/>
+                                                            </Border>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsSelected" Value="true">
+                                                                    <Setter TargetName="Border" Property="Background" Value="Transparent"/>
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>-->
+                                            <!--<Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True" >                                                                                             
+                                                <Setter Property="Background" Value="#f4a460" />
+                                                <Setter Property="Foreground" Value="ForestGreen" />
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                                <Setter Property="BorderBrush" Value="Pink" />
+                                                <Setter Property="BorderThickness" Value="2" />
+                                            </Trigger>-->
+                                        </Style.Triggers>
+                                        <!--<Style.Resources>
+                                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                                    </Style.Resources>-->
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+
+                                <ListBox.ContextMenu>
+                                    <ContextMenu x:Name="TagContextMenu">
+                                        <MenuItem x:Name="NewTagMenuItem" Click="NewTagMenuItem_Click">
+                                            <MenuItem.Icon>
+                                                <Image Width="25" 
+                                                       Height="15" 
+                                                       Source="Images/New Icon.png" />
+                                            </MenuItem.Icon>
+                                            <MenuItem.Header>
+                                                <TextBlock Text="Add Tag" 
+                                                           HorizontalAlignment="Left" 
+                                                           VerticalAlignment="Center" />
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                        <!--<MenuItem Name="NewTagMenuItem" Header="New tag" Click="NewTagMenuItem_Click"/>-->
+                                        <!--<MenuItem Name="DeleteTagMenuItem" Header="Delete Tag" Click="DeleteTagMenuItem_Click"/>
+                                        <MenuItem Name="TagPropertiesMenuItem" Header="Properties" Click="TagPropertiesMenuItem_Click"/>-->
+
+                                    </ContextMenu>
+
+                                </ListBox.ContextMenu>
+
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TagName }">
+                                            <TextBlock.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Name="DeleteTagMenuItem" Header="Delete" Click="DeleteTagMenuItem_Click"/>
+                                                    <MenuItem Name="TagPropertiesMenuItem" Header=" Edit Properties" Click="TagPropertiesMenuItem_Click"/>
+
+                                                </ContextMenu>
+                                            </TextBlock.ContextMenu>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </Grid>
+                    <GridSplitter Grid.Column="11"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Stretch"
+              Background="Black" 
+              ShowsPreview="True"
+              Width="1.3"
+              />
+                    <Border BorderBrush="Transparent" BorderThickness="1" Grid.Column="12" Grid.ColumnSpan="4">
+                        <!--<Border.Triggers>
+                            <EventTrigger RoutedEvent="Border.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation
+                                            Storyboard.TargetProperty="BorderThickness"
+                                            Duration="0:0:10" FillBehavior="HoldEnd" From="1,1,1,1" To="14,14,14,14" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>-->
+                        <Expander Name="expProperty" Grid.Column="12" Grid.ColumnSpan="4" IsExpanded="True" ExpandDirection="Left" FontSize="10" FontFamily="Calibri" Collapsed="expProperty_Collapsed" Expanded="expProperty_Expanded">
+                            <Expander.Header>
+                                <TextBlock Text="Properties" FontSize="12" Margin="0,5,0,0">
+                                    <TextBlock.LayoutTransform>
+                                        <RotateTransform Angle="-270"/>
+                                    </TextBlock.LayoutTransform>
+                                </TextBlock>
+                            </Expander.Header>
+                            <!--<Expander.Resources>
+                            <DataTemplate x:Key="verticalHeader">
+                                <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}}, Path=Header}" />
+                            </DataTemplate>
+                            <Style TargetType="{x:Type Expander}">
+                                <Setter Property="HeaderTemplate" Value="{StaticResource verticalHeader}"/>
+                            </Style>
+                        </Expander.Resources>-->
+                            <Grid Grid.Column="12" Grid.ColumnSpan="3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="23"/>
+                                    <RowDefinition   />
+                                    <!--MinHeight="150" MaxHeight="275"/>-->
+                                    <!--<RowDefinition Height="30*"/>-->
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0"  >
+                                    <Grid.Background>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FFE3D0BB" Offset="1"/>
+                                            <GradientStop Color="White" Offset="0"/>
+                                            <GradientStop Color="#FFE3D0BB" Offset="0.985"/>
+                                        </LinearGradientBrush>
+                                    </Grid.Background>
+
+                                    <!--<Grid Width="1" HorizontalAlignment="Left" Background="#FFE3D0BB"/>-->
+                                    <!--<Grid Width="1" HorizontalAlignment="Right" Background="#FFE3D0BB"/>-->
+                                    <!--<Grid VerticalAlignment="Top" Height="1" Background="#FFE3D0BB"/>-->
+
+                                    <Label Name="propertyDisplayLbl"  FontSize="14" FontWeight="Bold" FontFamily="Calibri" Background="Transparent"  Foreground="Black"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                                <Border Grid.Row="1" Name="border" BorderThickness="1,1,1,0" BorderBrush="Transparent">
+                                    <Grid Grid.Row="1"  Visibility="Hidden" Name="gridPropertylbl" >
+                                        <Grid.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="#FFF5D8D8" Offset="0.631"/>
+                                                <GradientStop Color="#FFF9F4F4" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Grid.Background>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="Properties" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold" FontSize="12" />
+                                        <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Center" IsEnabled="False" Background="Transparent" ></GridSplitter>
+                                        <TextBlock Text="Values" Grid.Column="2" HorizontalAlignment="Left" FontWeight="Bold" FontSize="12" />
+
+                                    </Grid>
+                                </Border>
+                                <!--<Expander Grid.Row="2" ExpandDirection="Left" IsExpanded="True" Header="Property" Collapsed="Expander_Collapsed" Expanded="Expander_Expanded" >-->
+                                <!--<Expander.Header>
+                                <TextBlock Text="Property" RenderTransformOrigin="0.6,0.9"  >
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup >
+                                            <RotateTransform Angle="-90"/>
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </Expander.Header>-->
+                                <!--<Expander.Resources>
+                                <DataTemplate x:Key="verticalHeader">
+                                    <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Expander}}, Path=Header}" />
+                                </DataTemplate>
+
+                                <Style TargetType="{x:Type Expander}">
+                                    <Setter Property="HeaderTemplate" Value="{StaticResource verticalHeader}"/>
+                                </Style>
+                            </Expander.Resources>-->
+
+                                <Grid Grid.Row="2" Background="#FFE4E5E8" >
+                                    <xctk:PropertyGrid Name="PropertiesPropertyGrid" Background="WhiteSmoke"  Height="Auto"                                         
+                                               HorizontalAlignment="Stretch" 
+                                               VerticalAlignment="Stretch" 
+                                               HorizontalContentAlignment="Stretch" 
+                                               VerticalContentAlignment="Stretch" 
+                                               ShowSearchBox="False" 
+                                               ShowSortOptions="False"                                               
+                                               ShowTitle="False" 
+                                               ShowPreview="False"
+                                               ShowSummary="True" IsCategorized="True" 
+                                               FontStretch="Expanded" 
+                                               ShowDescriptionByTooltip="True"
+                                               PropertyValueChanged="PropertiesPropertyGrid_PropertyValueChanged"
+                                                       TextInput="PropertiesPropertyGrid_TextInput"
+                                               SelectedPropertyItemChanged="PropertiesPropertyGrid_SelectedPropertyItemChanged"                                              
+                                               SelectedObjectChanged="PropertiesPropertyGrid_SelectedObjectChanged"
+                                               IsReadOnly="True" FontSize="13" 
+                                                ClearPropertyItem="PropertiesPropertyGrid_ClearPropertyItem" >
+                                        <xctk:PropertyGrid.EditorDefinitions>
+                                            <xctk:EditorDefinition TargetType="{x:Type HorizontalAlignment}">
+                                                <xctk:EditorDefinition.EditorTemplate>
+                                                    <DataTemplate>
+                                                        <Border BorderBrush="Transparent" BorderThickness="1">
+                                                            <TextBlock  Background="Transparent"  Text="{Binding Value}" TextWrapping="Wrap" />
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </xctk:EditorDefinition.EditorTemplate>
+                                            </xctk:EditorDefinition>
+                                        </xctk:PropertyGrid.EditorDefinitions>
+                                    </xctk:PropertyGrid>
+
+                                    <!--ShowDescriptionByTooltip="True"-->
+                                    <!--<ListView x:Name="PropertyView" 
+                                      Background="WhiteSmoke"
+                                      Visibility="Hidden"
+                                      Grid.Row="1"
+                                      FontFamily="Calibri"
+                                      ToolTip="These are all some of the properties and its values" 
+                                      SelectionChanged="PropertyView_SelectionChanged" 
+                                      BorderBrush="Transparent" 
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                      >
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True" >
+
+                                                <Setter Property="FontWeight" Value="Bold" />
+
+                                                <Setter Property="Background" Value="#FFE3D0BB" />
+                                                <Setter Property="Foreground" Value="Black" />
+                                                <Setter Property="BorderBrush" Value="Pink" />
+                                                <Setter Property="BorderThickness" Value="1.6" />
+
+                                            </Trigger>
+                                        </Style.Triggers>
+
+                                        <Style.Resources>
+                                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                                        </Style.Resources>
+
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+
+                                <ListBox.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="2"/>
+                                    </Style>
+                                </ListBox.Resources>
+
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Property">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid VerticalAlignment="Center">
+                                                        <TextBlock Name="txtBlkControl" 
+                                                                   Text="{Binding PropertyName}"
+                                                                   Visibility="Visible" 
+                                                                   Foreground="Green"
+                                                                   TextWrapping="Wrap" MinWidth="70">
+                                                        </TextBlock>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Value">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid VerticalAlignment="Center">
+
+                                                        <ComboBox Name="cmbBoxControl"
+                                                          
+                                                          SelectedIndex="{Binding Selectedindex,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                          ItemsSource="{Binding DataAndAccessTypeCollection}"
+                                                          Visibility="{Binding ComboBoxVisibility}">
+
+                                                        </ComboBox>
+
+
+                                                        <TextBlock Name="txtBlockControlForTxtBox" 
+                                                           
+                                                           VerticalAlignment="Center"
+                                                           HorizontalAlignment="Stretch"
+                                                           Text="{Binding ElementName=txtBoxControl,Path=Text}"
+                                                           Visibility="{Binding TextBlockVisibility}" MouseLeftButtonDown="txtBlockControlForTxtBox_MouseLeftButtonDown" TextWrapping="Wrap">
+
+                                                        </TextBlock>
+
+                                                        <TextBox Name="txtBoxControl" 
+                                                         
+                                                         Text="{Binding PropertyValue,Mode=TwoWay}" 
+                                                         VerticalAlignment="Center"
+                                                         HorizontalAlignment="Stretch"
+                                                         Visibility="{Binding TextBoxVisibility}"
+                                                         PreviewTextInput="txtBoxControl_PreviewTextInput" TextWrapping="Wrap">
+
+                                                        </TextBox>
+
+
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>-->
+
+
+                                </Grid>
+                                <!--</Expander>-->
+                                <!--<Grid Grid.Row="3">
+                            <StackPanel Name="spDesc" Background="GhostWhite" Orientation="Horizontal">
+                                <Label Name="lblDescription" Visibility="Hidden" FontWeight="Bold">Description:</Label>
+                                <TextBlock Name="tblDescription" TextWrapping="Wrap" FontStyle="Italic"></TextBlock>
+                            </StackPanel>
+                        </Grid>-->
+                            </Grid>
+                        </Expander>
+                    </Border>
+                </Grid>
+                <!--<GridSplitter   VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="3" Background="#FFE3D0BB"/>-->
+
+            </Grid>
+            <Grid Grid.Row="7" Grid.RowSpan="3"   >
+                <Grid.RowDefinitions>
+                    <!--<RowDefinition Height="20"/>-->
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <!--<Grid Grid.Row="0" Background="#FFE3D0BB">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center">Log Summary</TextBlock>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0">
+                        <Button Background="Transparent" BorderThickness="0" Margin="0,0,30,0" >
+                            <Image Source="Images/document_export.png" Focusable="True" Height="17" Width="20" ToolTip="Export The Logs into .CSV File" />
+                        </Button>
+                        <Button Background="Transparent" BorderThickness="0" Margin="0,0,30,0"  >
+                            <Image Source="Images/deletered.png" Width="17" Height="17" Focusable="True" ToolTip="Clear The Logs"  />
+                        </Button>
+                        <Button Background="Transparent" ToolTip="Copy Logs" BorderThickness="0" Margin="0,0,20,0">
+                            <Image Source="Images/copy_2.png" Width="20" Height="17" Focusable="True" RenderTransformOrigin="0.5,0.5" >
+
+                            </Image>
+                        </Button>
+                        <Image Source="Images\viewblack.png" Height="17" VerticalAlignment="Bottom" ToolTip="Search" Margin="0,0,5,0" HorizontalAlignment="Left" IsHitTestVisible="True"/>
+                        <TextBox Name="searchBox"                     
+                     TextAlignment= "Left"
+                     Background="White"
+                     Foreground="Black" 
+                     VerticalAlignment="Bottom"    
+                     ToolTip="Search message"  Height="18" Width="118" BorderBrush="#FFABB2B9" />
+
+                    </StackPanel>
+                </Grid>-->
+                <Grid Grid.Row="1">
+                    <Border BorderBrush="#FFE3D0BB" BorderThickness="1,2,1,1">
+
+                        <!--<local:LoggerViewUI  x:Name="LoggerUserControl" Grid.Row="1"/>-->
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</UserControl>

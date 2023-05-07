@@ -1,0 +1,89 @@
+﻿using Elpis.Windows.OPC.Server;
+using System;
+using System.ComponentModel;
+using System.Runtime.Serialization;
+using System.Windows;
+
+namespace Elpis.Windows.OPC.Server
+{
+    /// <summary>
+    /// This class is base for Ethernet based device.
+    /// </summary>
+    [Serializable()]
+    public class EthernetDeviceBase : DeviceBase
+    {
+        #region Constructor
+        /// <summary>
+        /// EthernetDeviceBase constructor for Serialization
+        /// </summary>
+        public EthernetDeviceBase() : base()
+        {
+
+        }
+        /// <summary>
+        /// Deserialization Constructor
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
+        public EthernetDeviceBase(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+
+        }
+        #endregion
+
+        [Description("Specify the IP address of the object. The valid IP address is something between integers like 0-255.0-255.0-255.0-255"), DisplayName("IP Address")]
+        public string IPAddress
+        {
+            get { return (string)GetValue(IPAddressProperty); }
+            set
+            {
+                bool flag = Util.ValidateIPAddress(value);
+                if (flag)
+                {
+                    SetValue(IPAddressProperty, value);
+                }
+                else
+                {
+                    MessageBox.Show("Check The IP Address");
+                }
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for ID.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IPAddressProperty =
+            DependencyProperty.Register("IPAddress", typeof(string), typeof(DeviceBase), new PropertyMetadata(null));
+
+        //[Category("Device Properties")]
+        [Description("Specify the port number of the device.The valid range is 0 to 65,535."), DisplayName("Port Number")]
+
+        public ushort Port
+        {
+            get
+            {
+                return (ushort)GetValue(PortProperty);
+            }
+            set
+            {
+                try
+                {
+                    if (value >= ushort.MinValue && value <= ushort.MaxValue)
+                    {
+                        SetValue(PortProperty, value);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Check the port number");
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Check the port number");
+                }
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for Port.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PortProperty =
+            DependencyProperty.Register("Port", typeof(ushort), typeof(DeviceBase), new PropertyMetadata(null));
+    }
+}

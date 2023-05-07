@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "MSSql": "Server=10.121.4.111;database=remosdb;UID=sa;PWD=Testing123$;"
+  }
+}

@@ -1,0 +1,488 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ElpisOpcServer.AboutPageUI" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAACAAAAAAAAAAAAAAQAAQAAAAAAA=</HashCode>
+      <FileName>AboutPageUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.AddNewConnectorUI" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAMACAAICAAAJCABAAAAAAAACAIAAABAAAQIAA=</HashCode>
+      <FileName>AddNewConnectorUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.AddNewDeviceUI" BaseTypeListCollapsed="true">
+    <Position X="18" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAgAAAJCAAAJAABAAAQAAAQAAAAAAAmAQAAAA=</HashCode>
+      <FileName>AddNewDeviceUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.AddNewGroup" BaseTypeListCollapsed="true">
+    <Position X="19.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAACAAAJAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AddNewGroup.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.AddNewTagUI" BaseTypeListCollapsed="true">
+    <Position X="21.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAEAAABCAAAJAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AddNewTagUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.AddNewUserUI" BaseTypeListCollapsed="true">
+    <Position X="23.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAgAAAJAAAAAAAAAAABBAAAAAAEAAAAA=</HashCode>
+      <FileName>AddNewUserUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.App">
+    <Position X="14.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.ApplicationTour" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAABAAAAAAAAAAAEAA=</HashCode>
+      <FileName>ApplicationTour.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.AtReplayMessage">
+    <Position X="18" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AtReplayMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.ConfigurationSettingsUI" BaseTypeListCollapsed="true">
+    <Position X="21.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hAhAwaAkAXkADAgvKiQlJFEI4gkDEiBkAJbAJRZ4YSA=</HashCode>
+      <FileName>ConfigurationSettingsUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.ElpisOPCServerMainWindow" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAYCAAAAEAUAAAEAIBQBCAoIBAiAQBGABAIIBWAwABA=</HashCode>
+      <FileName>ElpisOPCServerMainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.IoTSettingsUI" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="26" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgIAAIABggAAAAgAoABAAAAAAAAAAAAQACwAEAgAAA=</HashCode>
+      <FileName>IoTSettingsUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.License" BaseTypeListCollapsed="true">
+    <Position X="18" Y="26" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAACAAAAAAAAIAABgAAgACgAQAAAAAAAAAAgAAA=</HashCode>
+      <FileName>License.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.LoggerViewUI" BaseTypeListCollapsed="true">
+    <Position X="19.75" Y="26" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICABooAAIEAIgACMKQAAAIAABAAAAACQAAQAkAJcAA=</HashCode>
+      <FileName>LoggerViewUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.LoggerWindow" BaseTypeListCollapsed="true">
+    <Position X="21.5" Y="26" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAQA=</HashCode>
+      <FileName>LoggerWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.UACertificateSettingsUI" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="61" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAIAAAAJAAAAYAABAAUAAUMIAAAAAAAAAQAgAgA=</HashCode>
+      <FileName>UACertificateSettingsUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.UAConfigurationSettingsUI" BaseTypeListCollapsed="true">
+    <Position X="19.25" Y="61" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIYiIAgCIAUAQAgAABAEIBAAEAABQMRgBQiUDgBDA=</HashCode>
+      <FileName>UAConfigurationSettingsUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.WaitWindow" BaseTypeListCollapsed="true">
+    <Position X="21" Y="61" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WaitWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.Properties.Resources">
+    <Position X="25" Y="33.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.Properties.Settings">
+    <Position X="14" Y="51.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SocketService.Dispatcher.PacketAwaiter" BaseTypeListCollapsed="true">
+    <Position X="25" Y="26" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQCAAQQIAAAAAAAAAgAAIAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>SocketService\Dispatcher\PacketAwaiter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SocketService.Dispatcher.PacketDispatecher">
+    <Position X="14.5" Y="33.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgACAAAAAMAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SocketService\Dispatcher\PacketDispatecher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SocketService.Net.Formatters.CharReader" BaseTypeListCollapsed="true">
+    <Position X="19.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAABAAAAAAAAAAAAAAAAAAAAAAAEAEAAABAAAAAAA=</HashCode>
+      <FileName>SocketService\Net\Formatters\CharReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SocketService.SocketExtension">
+    <Position X="17.5" Y="51.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SocketService\SocketExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SocketService.SocketServer.TcpServer">
+    <Position X="14" Y="61" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACAAABACAAAIBABAAAAAAAAIAAAAgAAQAABAAAAgA=</HashCode>
+      <FileName>SocketService\SocketServer\TcpServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.AllTestUI" BaseTypeListCollapsed="true">
+    <Position X="25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunPowerGen\AllTestUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.ConnectorSelection" BaseTypeListCollapsed="true">
+    <Position X="23.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAEAAAAAgAAAABgAAAAAQAACAAAIAAAAAAA=</HashCode>
+      <FileName>SunPowerGen\ConnectorSelection.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.GenerateReportMessageBox" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgBAAAIEAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunPowerGen\GenerateReportMessageBox.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.Helper">
+    <Position X="18" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AigACmMEAQABYBACgAIgEcoiEIFgA4CAApBAxggCAMQ=</HashCode>
+      <FileName>SunPowerGen\Helper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.Hold_MidPositionLineATestInformation">
+    <Position X="3.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>rAQQAqAkMICAA6DIDAQCCBAAYQAQEDBKAgAKKAACgwA=</HashCode>
+      <FileName>SunPowerGen\Hold_MidPositionLineATestInformation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.Hold_MidPositionLineBTestInformation">
+    <Position X="8.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>pwQQAqAEMICAA7DIDAQACBAAQQAREBFKAgADCAACEwA=</HashCode>
+      <FileName>SunPowerGen\Hold_MidPositionLineBTestInformation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.Hold_MidPositionTestInformation">
+    <Position X="10.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>qAQAAqAkAAAAAYDAAAQCAAAAIAAAEDBCAgAKIAAAggA=</HashCode>
+      <FileName>SunPowerGen\Hold_MidPositionTestInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.Hold_MidPositionTestUI" BaseTypeListCollapsed="true">
+    <Position X="19.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMYaIAAACAbBHAJkIQKQAAREIJyYEEDAEAHAQcSEBAI=</HashCode>
+      <FileName>SunPowerGen\HoldMidPositionTestLineAUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.HoldMidPositionTestLineBUI" BaseTypeListCollapsed="true">
+    <Position X="23.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunPowerGen\HoldMidPositionTestLineBUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.HomePage" BaseTypeListCollapsed="true">
+    <Position X="25" Y="11.5" Width="1.25" />
+    <TypeIdentifier>
+      <HashCode>iIIAMAgC1EkCABAkIAAAoCFcWGAAwAQCEIBCoFCIAAA=</HashCode>
+      <FileName>SunPowerGen\HomePage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.InverseAndBooleansToBooleanConverter" BaseTypeListCollapsed="true">
+    <Position X="26.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunPowerGen\InverseAndBooleansToBooleanConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.ITextEvents">
+    <Position X="16.25" Y="26" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAEAAEAAEAAABkAAAAAAAAAAACAAAEAAAAACAAAACAA=</HashCode>
+      <FileName>SunPowerGen\ITextEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.MandatoryRule">
+    <Position X="23.25" Y="26" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>SunPowerGen\MandatoryRule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.PDFHeaderFooter">
+    <Position X="16.25" Y="33.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAACAAAACAA=</HashCode>
+      <FileName>SunPowerGen\PDFHeaderFooter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.Pump_Test" BaseTypeListCollapsed="true">
+    <Position X="18" Y="33.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BG0gAJAFRQ6BBAFkEAMNAQhsPAYhIFjAEIiIomBEiAY=</HashCode>
+      <FileName>SunPowerGen\Pump_Test.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.pumpCustomTooltip" BaseTypeListCollapsed="true">
+    <Position X="19.75" Y="33.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgEAAQAAAAAAAAAAAAAAAAgAAAABAAAAIIARAIBBAAA=</HashCode>
+      <FileName>SunPowerGen\pumpCustomTooltip.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.PumpReportGeneration">
+    <Position X="21.5" Y="33.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAEACAAIJAAsCAAAEAAAgaAAAIAACEEACACACAA=</HashCode>
+      <FileName>SunPowerGen\PumpReportGeneration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.PumpTestInformation">
+    <Position X="5.5" Y="6.5" Width="1.5" />
+    <InheritanceLine Type="ElpisOpcServer.SunPowerGen.TestInformation" ManuallyRouted="true">
+      <Path>
+        <Point X="7.25" Y="5.266" />
+        <Point X="7.25" Y="5.916" />
+        <Point X="6.25" Y="5.916" />
+        <Point X="6.25" Y="6.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>SyQRJEFU0LCAowHACwEQCBIBAAoIBIBVYIWAKZBBARg=</HashCode>
+      <FileName>SunPowerGen\PumpTestInformation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.CustomTooltipModel">
+    <Position X="25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAIAAAAAAAACAQCAAAEAAAAAgAA=</HashCode>
+      <FileName>SunPowerGen\PumpTestInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.ReportGeneration">
+    <Position X="23.25" Y="33.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCIAAAgBAAAABQAsCAAAAAAAoSABAAAACEEIAAAACQA=</HashCode>
+      <FileName>SunPowerGen\ReportGeneration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.Slip_StickTestInformation">
+    <Position X="12" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JwAQACAAMICAAyDoDQAAqBAAQQwQAQBKAgEACxACAQA=</HashCode>
+      <FileName>SunPowerGen\Slip_StickTestInformation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.SlipStickTestUI" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="51.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoIKIAAYBA6BBAAgAAMACAFucAQAEEEAEICCAEACAAI=</HashCode>
+      <FileName>SunPowerGen\SlipStickTestUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.StrokeTest1" BaseTypeListCollapsed="true">
+    <Position X="19.25" Y="51.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAoAQASBRAAMABIIgCEKIAAAAEAAAAAAAAACAAA=</HashCode>
+      <FileName>SunPowerGen\StrokeTest1.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.StrokeTestInformation">
+    <Position X="1" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BACQAIAEEIiYByDIDAAAihAAQWQQAAhIAAQACAAGgUA=</HashCode>
+      <FileName>SunPowerGen\StrokeTestInformation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.StrokeTestUI" BaseTypeListCollapsed="true">
+    <Position X="21" Y="51.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAoAQASARAAEABIIgCAKIAAAAEAAAAAAAAAGAAA=</HashCode>
+      <FileName>SunPowerGen\StrokeTestUI.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.StrokeTestWindow" BaseTypeListCollapsed="true">
+    <Position X="22.75" Y="51.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYIQEQISiAbBBAAoggMIACJcIIQAEECgkIDMAUCCAAI=</HashCode>
+      <FileName>SunPowerGen\StrokeTestWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.SunPowerGenMainPage" BaseTypeListCollapsed="true">
+    <Position X="24.5" Y="51.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CIIABACAVEkCABAgAAEBgCBcUOAAQFQCEIACgBAAAAA=</HashCode>
+      <FileName>SunPowerGen\SunPowerGenMainPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.TestInformation">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAIEgAASAIACIAAAAgAAgAAAAAAAAAACgBAAAoA=</HashCode>
+      <FileName>SunPowerGen\TestInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElpisOpcServer.SunPowerGen.TestTypeFactory">
+    <Position X="15.75" Y="61" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunPowerGen\TestTypeFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="ElpisOpcServer.SocketService.Dispatcher.RawMessagePacket">
+    <Position X="15.75" Y="66" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SocketService\Dispatcher\RawMessagePacket.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ElpisOpcServer.SocketService.Net.MessageHeader">
+    <Position X="14" Y="66" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAABAAAAAAABAACAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>SocketService\Net\MessageHeader.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="ElpisOpcServer.SocketService.Net.Formatters.IPacketReader">
+    <Position X="14" Y="68.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAEAAABAAAAAAA=</HashCode>
+      <FileName>SocketService\Net\Formatters\IPacketReader.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ElpisOpcServer.SunPowerGen.ICeritificateInformation">
+    <Position X="2.25" Y="17.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAACIBAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunPowerGen\ICeritificateInformation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ElpisOpcServer.SunPowerGen.ICylinderInformation">
+    <Position X="0.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAQAQAAAAAAAAAAACAAA=</HashCode>
+      <FileName>SunPowerGen\ICylinderInformation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ElpisOpcServer.SunPowerGen.ITestInformation">
+    <Position X="0.5" Y="19.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SunPowerGen\ITestInformation.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="ElpisOpcServer.SocketService.Net.MessageType">
+    <Position X="15.75" Y="70.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAEAAAAAAEAAAAACAABAAAAAAAAAAIEAGAA=</HashCode>
+      <FileName>SocketService\Net\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ElpisOpcServer.SocketService.Net.DeliveryQuality">
+    <Position X="14" Y="70.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAEAAAAAAAAAAAAAAAAAAAAQEAAAA=</HashCode>
+      <FileName>SocketService\Net\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ElpisOpcServer.SunPowerGen.TestType">
+    <Position X="17.5" Y="70.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIABAAAAAAAAAgAAAAAAEABAAAAAA=</HashCode>
+      <FileName>SunPowerGen\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

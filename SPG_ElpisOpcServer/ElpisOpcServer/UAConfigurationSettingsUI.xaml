@@ -1,0 +1,434 @@
+﻿<UserControl x:Class="ElpisOpcServer.UAConfigurationSettingsUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElpisOpcServer"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="800" Loaded="UAConfiguration_loaded">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ElpisOpcServer;component/Styles/TileButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid  Background="#FFE3D0BB">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="193*"/>
+            <RowDefinition Height="17*"/>
+            <RowDefinition Height="190*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="6*"/>
+        </Grid.RowDefinitions>
+        <!--<Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFE3D0BB"/>
+                <GradientStop Color="White" Offset="1"/>
+                <GradientStop Color="#FFE3D0BB" Offset="1"/>
+                <GradientStop Color="#FFE3D0BB" Offset="0.991"/>
+                <GradientStop Color="#FFE3D0BB" Offset="0.09"/>
+            </LinearGradientBrush>
+        </Grid.Background>-->
+        <Grid Grid.Row="0" Height="30" Background="#f4a460" >
+            <StackPanel Orientation="Horizontal">
+                <Image Source="Images/UAConfigSetting.png" 
+                 HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="1" Height="25" Width="27" Margin="10,0,0,0"/>
+                <Label Name="titleForUserControl" 
+                   Content="UA Configuration Settings"            
+                   VerticalAlignment="Center"
+                   Style="{StaticResource Header}" Foreground="Black" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Content="Help" Margin="10,0,10,0" Width="40" Height="25" Background="Transparent" BorderBrush="Transparent" Foreground="Black" />
+                <Button Name="btnAbout" Content="About" Margin="0,0,10,0" Width="40" Background="Transparent" BorderBrush="Transparent" Foreground="Black" Click="btnAbout_Click" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Background="#FFE3D0BB">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10" />
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="25*"/>
+                <RowDefinition Height="25*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="24*"/>
+                <ColumnDefinition Width="326*"/>
+                <ColumnDefinition Width="38*"/>
+                <ColumnDefinition Width="24*"/>
+                <ColumnDefinition Width="363*"/>
+                <ColumnDefinition Width="25*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox 
+           Name="EndPointsGroup" 
+           Header="Endpoint TCP Connection URL"
+           Grid.RowSpan="3" Grid.Row="1"
+           Grid.Column="1" Style="{StaticResource boxHeader}" Grid.ColumnSpan="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80*" />
+                        <RowDefinition Height="18*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="175*"/>
+                        <ColumnDefinition Width="70*"/>
+                        <ColumnDefinition Width="70*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="endPointList" FontSize="12"
+                        Style="{StaticResource listext}" BorderBrush="DarkGray" BorderThickness="1"
+                        Grid.ColumnSpan="3" 
+                        ItemsSource="{Binding Path=endpointCollection, Mode=TwoWay}"
+                        DisplayMemberPath="endPointName" 
+                        SelectionChanged="endPointList_SelectionChanged"                               
+                        Margin="5" SelectedIndex="0">
+
+                        <!--<DataTemplate>
+                            <Grid>
+                                <TextBlock>
+                                    
+                                </TextBlock>
+                                <TextBox>
+                                    
+                                </TextBox>
+                            </Grid>
+                        </DataTemplate>-->
+                    </ListView>
+                    <Button Name="addEndPointURLBtn" Margin="0,0,5,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Grid.Column="1" Grid.Row="1" Click="addEndPointURLBtn_Click" ToolTip="Add"
+                            Style="{StaticResource customButton}" Height="25" Width="60">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Image Source="Images/Add_Green.png" Style="{StaticResource icon}"/>
+                            <TextBlock Text="  Add" Style="{StaticResource iconText}"/>
+                        </StackPanel>
+                    </Button>
+                    <TextBox Name="endPointText" Margin="5,0,5,0"
+                        Grid.Column="0" 
+                        Grid.Row="1" FontSize="12"
+                        VerticalContentAlignment="Center" 
+                        HorizontalContentAlignment="Left" Height="25">
+                    </TextBox>
+                    <!--<Button Name="editBtn" 
+                       Grid.Column="1" 
+                       Grid.Row="1"    
+                       Click="editBtn_Click"
+                      Style="{StaticResource customButton}">
+                  <StackPanel Orientation="Horizontal">
+                  <Image Source="Images/edit_orange.png" 
+                         Style="{StaticResource icon}">
+                  </Image>
+                  <TextBlock Text=" Edit" 
+                             Style="{StaticResource iconText}" 
+                  />
+                 </StackPanel>
+                </Button>-->
+                    <Button Name="deleteEndPointURLBtn" Margin="0,0,5,0" Height="25" Width="60" 
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Grid.Column="2" 
+                            Grid.Row="1" Click="deleteEndPointURLBtn_Click"
+                            Style="{StaticResource customButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Images/deletered.png" Style="{StaticResource icon}" />
+                            <TextBlock Text=" Delete" Style="{StaticResource iconText}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Name="SecurityGroup" 
+                     Header="Security Policies" 
+                     Grid.Row="1"
+                     Grid.RowSpan="3" 
+                     Grid.Column="4"
+                Style="{StaticResource boxHeader}" Margin="0,0,2,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="8*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Label Name="securityDetailsLbl" 
+                         Content="Security Level :"  
+                         Grid.Row="0"
+                         Grid.Column="1"
+                         Style="{StaticResource boxtextL}">
+                        </Label>
+                    </Grid>
+                    <Label Name="warningDisplayForComboBox" 
+                               Grid.Column="1" 
+                               Grid.Row="0" 
+                               Foreground="Red"
+                               Visibility="Hidden"
+                               Content="Check at least one security level">
+                    </Label>
+
+                    <CheckBox Name="checkNone" 
+                           Content="None" 
+                           Grid.Row="1" 
+                           Grid.Column="1" 
+                           Checked="checkNone_Checked" IsChecked="True"                           
+                              Unchecked="checkNone_Unchecked"
+                           Style="{StaticResource boxtext}"/>
+                    <CheckBox Name="check128Sign" 
+                           Content="Basic128Rsa15 Sign" 
+                           Grid.Row="2"
+                           Grid.Column="1"    
+                           Style="{StaticResource boxtext}" 
+                           Checked="check128Sign_Checked" 
+                           Unchecked="check128Sign_Unchecked"/>
+                    <CheckBox Name="check128SigndEncrypt" 
+                           Content="Basic128Rsa15 Sign and Encrypt" 
+                           Grid.Row="3"
+                           Grid.Column="1" 
+                           Style="{StaticResource boxtext}"
+                           Checked="check128SigndEncrypt_Checked" 
+                           Unchecked="check128SigndEncrypt_Unchecked"/>
+                    <CheckBox Name="check256Sign" 
+                           Content="Basic256 Sign" 
+                           Grid.Row="4"
+                           Grid.Column="1"  
+                           Style="{StaticResource boxtext}" 
+                           Checked="check256Sign_Checked" 
+                           Unchecked="check256Sign_Unchecked"/>
+                    <CheckBox Name="check256SigndEncrypt" 
+                           Content="Basic256 Sign and Encrypt" 
+                           Grid.Row="5"
+                           Grid.Column="1" 
+                           Style="{StaticResource boxtext}"
+                           Checked="check256SigndEncrypt_Checked" 
+                           Unchecked="check256SigndEncrypt_Unchecked"/>
+                </Grid>
+            </GroupBox>
+
+        </Grid>
+
+        <Grid
+       Grid.Row="3" Background="#FFE3D0BB">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="25*"/>
+                <RowDefinition Height="25*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="24*"/>
+                <ColumnDefinition Width="326*"/>
+                <ColumnDefinition Width="38*"/>
+                <ColumnDefinition Width="24*"/>
+                <ColumnDefinition Width="363*"/>
+                <ColumnDefinition Width="25*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox 
+                       Header="User Authentication" 
+                       Grid.RowSpan="3" Margin="0,2,0,0"
+                       Grid.Column="1"  Grid.ColumnSpan="2"    
+           
+                      Style="{StaticResource boxHeader}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="100"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="175*"/>
+                        <ColumnDefinition Width="70*"/>
+                        <ColumnDefinition Width="70*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Name="checkAnonymous" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Checked="checkAnonymous_Checked"
+                                         Unchecked="checkAnonymous_Unchecked"
+                                         Content="Anonymous" 
+                                         Grid.Column="0" 
+                                         Grid.Row="0"
+                                         Style="{StaticResource boxtext}"
+                                />
+                    <CheckBox Name="checkAuthorised"
+                                         Content="Use Authentication" 
+                                         Grid.Column="1" Grid.ColumnSpan="2"
+                                         Style="{StaticResource boxtext}"
+                                         Checked="checkAnonymous_Checked"
+                                         Unchecked="checkAnonymous_Unchecked"
+                                 />
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" MouseLeftButtonDown="Grid_MouseLeftButtonDown" VerticalAlignment="Bottom" Margin="0,0,10,1" >
+                        <Button Name="addUserBtn" Height="20" HorizontalAlignment="Right" Width="25" ToolTip="Add New User" Click="addUserBtn_Click" Style="{StaticResource customButton}"  >
+                            <!--Style="{StaticResource customButton}">-->
+                            <StackPanel Orientation="Horizontal" ToolTip="Add New User" >
+                                <Image Source="Images/adduser2.png" ToolTip="Add User" Style="{StaticResource icon}"/>
+                                <!--<TextBlock Text="Add User" Style="{StaticResource iconText}"/>-->
+                            </StackPanel>
+                        </Button>
+
+                    </Grid>
+                    <ListView Name="userAuthList"
+                               Style="{StaticResource listext}"
+                               Grid.ColumnSpan="3" BorderBrush="DarkGray" BorderThickness="1"
+                               Grid.Row="2"
+                               Grid.Column="0"                                   
+                               ItemsSource="{Binding XPath=UsersCollection, Mode=TwoWay}"
+                               DisplayMemberPath="UserName" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                        <ListView.ContextMenu>
+                            <ContextMenu ToolTip="Add/Remove users right the mouse">
+                                <MenuItem Name="addUserContextMenu" Header="Add User" Click="addUserContextMenu_Click"></MenuItem>
+                                <MenuItem Header="Edit" Click="editBtn_Click" ></MenuItem>
+                                <MenuItem Name="removeUserContextMenu" Header="Remove User" Click="removeUserContextMenu_Click"></MenuItem>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                    </ListView>
+                </Grid>
+            </GroupBox>
+            <GroupBox 
+                                 Header="Discovery Server"        
+                                 Grid.Column="4"
+                                 Grid.ColumnSpan="1" 
+                                 Grid.Row="0" 
+                                 Grid.RowSpan="3" Margin="0,2,2,0"
+      Style="{StaticResource boxHeader}">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15*"/>
+                        <RowDefinition Height="80*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="116*"/>
+                            <ColumnDefinition Width="81*"/>
+                            <ColumnDefinition Width="178*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Name="regIntervalLbl" HorizontalAlignment="Left" Content="Registration Interval :" Grid.Column="0"
+              Style="{StaticResource boxtextL}" Height="26" Margin="0,4,0,5" Width="115"  
+            />
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="5,0,0,0">
+                            <TextBox Name="regIntervalTxt" Grid.Column="1" Grid.ColumnSpan="1" PreviewTextInput="regIntervalTxt_PreviewTextInput" FontSize="12"
+                                     BorderThickness="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" Margin="0,5,5,5" Width="25"/>
+                            <TextBlock Name="unit" 
+                Text="ms"
+               Grid.Column="1" FontSize="12"
+               Style="{StaticResource iconText}"
+                HorizontalAlignment="Left" Height="15"  Width="16"/>
+                        </StackPanel>
+
+
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <GroupBox Name="discoveryURLGroup" 
+                 Header="URL" FontSize="12"
+               
+                 BorderThickness="0"
+                 Style="{StaticResource boxHeader}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="80*"/>
+                                    <RowDefinition Height="30*"/>
+                                </Grid.RowDefinitions>
+                                <ListView Name="discoveryURList" FontSize="12"
+                    Grid.Row="0" BorderBrush="DarkGray" BorderThickness="1"                                            
+                   Style="{StaticResource listext}"
+                   SelectionChanged="discoveryURList_SelectionChanged" SelectedIndex="0"/>
+                                <Grid Grid.Row="1" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="175*"/>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="70*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Name="addDiscoveryURLBtn" Margin="0,5,5,0" Height="25" Width="60"
+                                            Grid.Column="1" 
+                                            Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"                                         
+                                            Click="addDiscoveryURLBtn_Click" 
+                                            ToolTip="Add" 
+                                            Style="{StaticResource customButton}" >
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="Images/Add_Green.png" Style="{StaticResource icon}" />
+                                            <TextBlock Text="  Add" Style="{StaticResource iconText}"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <TextBox Name="urlTxt" Grid.Column="0" Height="25" Margin="0,5,5,0"
+                 VerticalContentAlignment="Center" HorizontalContentAlignment="Left" />
+                                    <Button Name="deleteDiscoveryURLBtn" Margin="2,5,5,0" Grid.Column="2" 
+                                            Grid.Row="1" Height="25" Width="60"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Click="deleteDiscoveryURLBtn_Click"
+                                            Style="{StaticResource customButton}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Source="Images/deletered.png" Style="{StaticResource icon}" />
+                                            <TextBlock Text=" Delete" Style="{StaticResource iconText}"/>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <Grid
+       Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="20*"/>
+            </Grid.ColumnDefinitions>
+            <Button  Margin="20,0,20,0" Height="25" Width="60"
+       Name="okBtn"                          
+       Grid.Column="1"   
+       Grid.ColumnSpan="1"
+       Click="okBtn_Click"
+       Style="{StaticResource customButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Images/ok_check.ico" 
+             ToolTip="Ok"
+             Style="{StaticResource icon}">
+                    </Image>
+                    <TextBlock 
+              Text=" OK" 
+              Style="{StaticResource iconText}"/>
+                </StackPanel>
+            </Button>
+            <Button  Margin="20,0,20,0" Height="25" Width="60"
+          Name="cancelBtn" 
+          Grid.Column="2"   
+       Grid.ColumnSpan="1"
+          Click="cancelBtn_Click"
+          Style="{StaticResource customButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Images/DeleteRed.png" 
+                  ToolTip="Cancel"
+                  Style="{StaticResource icon}" >
+                    </Image>
+                    <TextBlock 
+               Text=" Cancel" 
+             Style="{StaticResource iconText}"/>
+                </StackPanel>
+            </Button>
+            <Button  Margin="20,0,20,0" Height="25" Width="60"
+        Name="helpBtn"
+        Click="helpBtn_Click"
+        Style="{StaticResource customButton}"
+        Grid.Column="3"   
+        Grid.ColumnSpan="1">
+                <StackPanel Orientation="Horizontal">
+                    <Image 
+              Source="Images/Help_blue.ico" 
+              ToolTip="Need Help?"
+              Style="{StaticResource icon}">
+                    </Image>
+                    <TextBlock 
+                Text="Help" 
+                Style="{StaticResource iconText}"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</UserControl>

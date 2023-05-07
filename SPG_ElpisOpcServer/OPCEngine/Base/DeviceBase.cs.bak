@@ -1,0 +1,176 @@
+﻿#region Usings
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
+using System.ComponentModel.Design;
+using System.Drawing.Design;
+using System.Windows;
+using System.Windows.Threading;
+using System.Runtime.Serialization;
+#endregion Usings
+
+#region OPCEngine namespace
+namespace Elpis.Windows.OPC.Server
+{
+    /// <summary>
+    /// This Class defines all the common properties of devices.
+    /// </summary>
+    [Serializable()]
+    public class DeviceBase : SerializableDependencyObject
+    {
+        #region Constructor
+        /// <summary>
+        /// Constructor for Serialization
+        /// </summary>
+        public DeviceBase():base()
+        {
+
+        }
+        /// <summary>
+        /// Constructor for Deserialization
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
+        public DeviceBase(SerializationInfo info, StreamingContext context):base(info,context)
+        {
+
+        }
+        #endregion Constructor
+
+        [ReadOnly(true), DisplayName("Connector Assignment"), Description("Under which connector this device is connected.")]        
+        public string ConnectorAssignment
+        {
+            get { return (string)GetValue(ConnectorAssignmentProperty); }
+            set { SetValue(ConnectorAssignmentProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ProtocolAssignment.
+        // This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ConnectorAssignmentProperty =
+            DependencyProperty.Register("ConnectorAssignment", typeof(string), typeof(DeviceBase), new PropertyMetadata(null));
+
+
+        [Description("Specify the identity of the device."), DisplayName("Name"), PropertyOrder(1)]
+        public string DeviceName
+        {
+            get { return (string)GetValue(DeviceNameProperty); }
+            set { SetValue(DeviceNameProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for DeviceName.
+        // This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DeviceNameProperty =
+            DependencyProperty.Register("DeviceName", typeof(string), typeof(DeviceBase), new PropertyMetadata(null));
+
+
+        [Description("Provide the brief summary of the device or its use."), DisplayName("Description"), PropertyOrder(2)]
+        public string Description
+        {
+            get { return (string)GetValue(DescriptionProperty); }
+            set { SetValue(DescriptionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Description.
+        // This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DescriptionProperty =
+            DependencyProperty.Register("Description", typeof(string), typeof(DeviceBase), new PropertyMetadata(null));
+
+
+        [ReadOnly(true), DisplayName("Type"), Description("Specify type of protocol used to communicate.")]
+        [Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
+
+        //TODO: Discuss whether to have ScanMode at device level or not
+
+        public DeviceType DeviceType 
+        {
+            get { return (DeviceType)GetValue(DeviceTypeProperty); }
+            set { SetValue(DeviceTypeProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for Type.
+        // This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DeviceTypeProperty =
+            DependencyProperty.Register("DeviceType", typeof(DeviceType), typeof(DeviceBase), new PropertyMetadata(null));
+
+
+        [Description("Select the specific type of device associated with this ID. Options depend on the type of communications in use."), DisplayName("Model")]
+        public string Model
+        {
+            get { return (string)GetValue(ModelProperty); }
+            set { SetValue(ModelProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Model.
+        // This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ModelProperty =
+            DependencyProperty.Register("Model", typeof(string), typeof(DeviceBase), new PropertyMetadata(null));
+
+
+
+        [Browsable(true),DisplayName("Retry Count"), Description("Number of times tries to connect device, when device communication is fails.")]
+        public uint RetryCount
+        {
+            get { return (uint)GetValue(RetryCountProperty); }
+            set { SetValue(RetryCountProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for RetryCount.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RetryCountProperty =
+            DependencyProperty.Register("RetryCount", typeof(uint), typeof(DeviceBase), new PropertyMetadata(null));
+
+        [Browsable(false), DisplayName("Retry Counter"), Description("Number of times tries to connect device, when device communication is fails.")]
+        public int RetryCounter
+        {
+            get { return (int)GetValue(RetryCounterProperty); }
+            set { SetValue(RetryCounterProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for RetryCount.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty RetryCounterProperty =
+            DependencyProperty.Register("RetryCounter", typeof(int), typeof(DeviceBase), new PropertyMetadata(null));
+
+
+        [Browsable(false)]
+        public ObservableCollection<Tag> TagsCollection { get; set; }
+
+        [Browsable(false)]
+        public ObservableCollection<TagGroup> GroupCollection { get; set; }
+
+        [Browsable(false)]
+        public string Name { get; set; }
+
+        #region Hide Base Class Properties
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Browsable(false)]
+        public virtual new bool IsSealed
+        {
+            get
+            {
+                return base.IsSealed;
+            }
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Browsable(false)]
+        public virtual new DependencyObjectType DependencyObjectType
+        {
+            get
+            {
+                return base.DependencyObjectType;
+            }
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Browsable(false)]
+        public virtual new Dispatcher Dispatcher
+        {
+            get
+            {
+                return base.Dispatcher;
+            }
+        }
+        #endregion
+       
+    }
+}
+
+#endregion OPCEngine namespace

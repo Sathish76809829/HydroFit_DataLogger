@@ -1,0 +1,53 @@
+﻿<Window x:Class="ElpisOpcServer.SunPowerGen.ConnectorSelection"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ElpisOpcServer.SunPowerGen"
+      mc:Ignorable="d" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" WindowStyle="None"
+      Height="200" Width="400" ResizeMode="NoResize"
+      Title="ConnectorSelection">
+    <Border BorderBrush="Black" BorderThickness="1" MouseLeftButtonDown="GridOfWindow_MouseLeftButtonDown">
+        <Border BorderBrush="#b3d9ff" BorderThickness="5" MouseLeftButtonDown="GridOfWindow_MouseLeftButtonDown">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="8*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="0,0,0,1">
+                    <Grid Background="#b3d9ff" >
+                        <WrapPanel VerticalAlignment="Center">
+                            <!--<Image Source="Images\Export_To_File_2.ico" Height="15" Margin="5,0,0,0"  ToolTip="Create New Connector"></Image>-->
+                            <TextBlock Text="Connector for Communication" FontWeight="DemiBold" Padding="5,2,0,2"/>
+                        </WrapPanel>
+                        <Button Foreground="Red" Name="btnClose" FontSize="15" Background="Transparent" BorderBrush="Red" BorderThickness="1" Padding="5,1,5,1" Margin="0,0,0,3" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                Click="btnClose_Click" IsEnabled="False">
+                            <Button.Content>
+                                <TextBlock Text="X" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                </Border>
+                <StackPanel HorizontalAlignment="Stretch" Grid.Row="1">
+                    <TextBlock Text="Please select Connector and Device from the List for communication." TextWrapping="Wrap" Margin="10,5,0,10" FontWeight="DemiBold"/>
+                    <WrapPanel Margin="15,0,0,0">
+                        <TextBlock Text="Select Connector from List   "/>
+                        <ComboBox Name="cmbConnectorList" SelectionChanged="cmbConnectorList_SelectionChanged" IsEditable="False" MinWidth="130" MaxWidth="180" HorizontalContentAlignment="Stretch"/>
+
+                    </WrapPanel>
+                    <WrapPanel Margin="15,10,0,0">
+                        <TextBlock Text="Select Device from List         "/>
+                        <ComboBox Name="cmbDeviceList" IsEditable="False" MinWidth="130" MaxWidth="180" IsEnabled="False" SelectionChanged="cmbDeviceList_SelectionChanged" HorizontalContentAlignment="Stretch">
+                            <ComboBox.Items>
+                                <ComboBoxItem Content="--Select--" IsSelected="True" />
+                            </ComboBox.Items>
+                        </ComboBox>
+                    </WrapPanel>
+                    <Button Name="btnOk" IsEnabled="False" HorizontalAlignment="Right" Content="OK" Margin="0,20,20,0" Padding="10,2,10,2" FontWeight="Bold"
+                            Click="btnOk_Click"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+    </Border>
+</Window>

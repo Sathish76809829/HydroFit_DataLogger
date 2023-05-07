@@ -1,0 +1,26 @@
+{
+
+
+  "ConnectionStrings": {
+    "MSSql": "Server=10.121.4.111;database=remosdb;UID=sa;PWD=Testing123$;"
+  },
+
+
+
+  "CacheOptions": {
+    "InputCacheInterval": "10:00:00",
+    "FormulaCacheInterval": "08:00:00"
+  },
+  "Pumps": [
+    {
+      "startSignal": "292",
+      "stopSignal": "293",
+      "deviceId": "20"
+    },
+    {
+      "startSignal": "294",
+      "stopSignal": "295",
+      "deviceId": "20"
+    }
+  ]
+}

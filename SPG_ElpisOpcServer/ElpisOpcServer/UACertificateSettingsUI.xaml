@@ -1,0 +1,232 @@
+﻿<UserControl x:Class="ElpisOpcServer.UACertificateSettingsUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElpisOpcServer"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="800" Loaded="UACertificate_loaded" >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ElpisOpcServer;component/Styles/ListBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFC0CBC6"/>
+            <GradientStop Color="White" Offset="1"/>
+            <GradientStop Color="#FFC0CBC6" Offset="1"/>
+            <GradientStop Color="#FFC0CBC6" Offset="0.991"/>
+            <GradientStop Color="#FFC0CBC6" Offset="0.09"/>
+            <!--<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FFFBFBFB" Offset="1"/>
+            <GradientStop Color="#FFE3D0BB" Offset="0.991"/>-->
+        </LinearGradientBrush>
+    </UserControl.Background>
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="21*"/>
+            <ColumnDefinition Width="779*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="294*"/>
+            <RowDefinition Height="35*"/>
+        </Grid.RowDefinitions>
+        <!--<Grid Grid.Row="1" Grid.RowSpan="6">
+            <Grid Width="1" Height="Auto" HorizontalAlignment="Right" Background="#FF787885"> 
+            </Grid>
+        </Grid>-->
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" Background="#f4a460">
+            <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                <Image Source="Images\f02a62985cde.png" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,6" />
+                <Label x:Name="titleForUserControl" 
+                       Content="UA Certificate Settings"
+                       Foreground="Black" 
+                       FontWeight="Bold"  
+                       VerticalAlignment="Center"  
+                       HorizontalAlignment="Left"
+                       FontSize="16"
+                       FontFamily="Calibri" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Content="Help" Margin="10,0,10,0" Width="40" Height="25" Background="Transparent" BorderBrush="Transparent" Foreground="Black" />
+                <Button Name="btnAbout" Content="About" Margin="0,0,10,0" Width="40" Background="Transparent" BorderBrush="Transparent" Foreground="Black" Click="btnAbout_Click" />
+            </StackPanel>
+        </Grid>
+
+
+        <Grid Grid.Row="2" Grid.ColumnSpan="2" Background="#FFE3D0BB"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="33*"/>
+                <ColumnDefinition Width="33*"/>
+                <ColumnDefinition Width="33*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" >
+                <!--<Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="5*"/>
+                </Grid.RowDefinitions>-->
+                <Border Grid.Column="0" BorderBrush="Transparent"
+                        Style="{StaticResource UACertificateBorder}">
+                    <Grid Grid.Column="0"  Background="Transparent" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" Grid.RowSpan="2" >
+                            <Button  Name="createBtn" Style="{StaticResource UACertificateButton}" Height="60" 
+                                             
+                                            Foreground="#FF211D1D" Click="createBtn_Click"  >
+                                <!--Click="createBtn_Click"-->
+                                <StackPanel>
+                                    <Image Source="Images/cert166.png"  
+                                           Height="40"/>
+                                    <TextBlock Style="{StaticResource UACertificateTextBlock}" 
+                                               HorizontalAlignment="Center" 
+                                               Text="Create"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <Grid Grid.Column="1" Grid.RowSpan="2">
+                            <Button Name="viewBtn" Style="{StaticResource UACertificateButton}"  
+                                             Foreground="Black" Height="60"                                          
+                                Click="viewBtn_Click">
+                                <!--Click="viewBtn_Click"-->
+
+                                <StackPanel>
+                                    <Image Source="Images/view11.png" Height="40"/>
+                                    <TextBlock HorizontalAlignment="Center" Style="{StaticResource UACertificateTextBlock}" Text=" View"></TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <Grid Grid.Column="2" Grid.RowSpan="2">
+                            <Button Name="importBtn" Style="{StaticResource UACertificateButton}" 
+                                              Foreground="Black"  Height="60"
+                                             Click="importBtn_Click" >
+                                <!--Click="importBtn_Click"-->
+                                <StackPanel>
+                                    <Image Source="Images/import122.png" Height="40"/>
+                                    <TextBlock HorizontalAlignment="Center" Style="{StaticResource UACertificateTextBlock}" Text="Import"></TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <Grid Grid.Column="3" Grid.RowSpan="2">
+                            <Button Style="{StaticResource UACertificateButton}" Height="60" Name="exportBtn" 
+                                             Foreground="Black"  
+                                              
+                                             Click="exportBtn_Click" >
+                                <!--Click="exportBtn_Click">-->
+                                <StackPanel>
+                                    <Image Source="Images/export122.png" Height="40"/>
+                                    <TextBlock HorizontalAlignment="Center" Style="{StaticResource UACertificateTextBlock}" Text="Export"></TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <!--<Separator Height="5" Width="300" Background="#FF787885" Grid.ColumnSpan="4" VerticalAlignment="Bottom" />-->
+                        <!--<Grid Grid.ColumnSpan="4" Height="5" Background="#FF787885" VerticalAlignment="Bottom">
+                        </Grid>-->
+
+                    </Grid>
+
+                </Border>
+            </Grid>
+            <Grid Grid.Column="2">
+            </Grid>
+
+        </Grid>
+
+        <Grid Grid.Row="3" Grid.ColumnSpan="2" Background="#FFE3D0BB">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="95*"/>
+            </Grid.RowDefinitions>
+            <!--<Grid Grid.Row="0">
+                
+            </Grid>-->
+            <Grid Grid.Row="1" Margin="0,20,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="335*"/>
+                    <ColumnDefinition Width="132*"/>
+                    <ColumnDefinition Width="333*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox  Header="Trusted Certificates" Style="{StaticResource UACertificateGroupBox}"  Margin="24,0,5,15" >
+                        <ListBox x:Name="trustedListBox"  Style="{StaticResource UACertificateListBox}" ItemsSource="{Binding TrustedValue}"  MouseDoubleClick="trustedListBox_MouseDoubleClick" Margin="0,5,0,5" >
+                            <!--MouseDoubleClick="trustedListBox_MouseDoubleClick"-->
+                            <ListBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="2"/>
+                                </Style>
+                            </ListBox.Resources>
+                        </ListBox>
+
+                    </GroupBox>
+                </Grid>
+                <Grid Grid.Column="1" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+
+                        <Button Height="85" Style="{StaticResource UACertificateButton}" Width="80"  Margin="0,0,0,10" VerticalAlignment="Bottom" Click="rejectBtn_Click">
+                            <Border Style="{StaticResource UACertificateBorder}">
+                                <StackPanel Height="60" Width="60" Background="Transparent">
+                                    <Image Source="Images/reject.png" Height="30" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,5,0,3" />
+                                    <TextBlock Style="{StaticResource UACertificateTextBlockfrdback}" HorizontalAlignment="Center">Reject</TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </Button>
+
+                    </Grid>
+                    <Grid Grid.Row="1">
+
+                        <Button Style="{StaticResource UACertificateButton}" Height="85" Width="80"  VerticalAlignment="Top" Click="trustBtn_Click">
+                            <Border Style="{StaticResource UACertificateBorder}"  >
+                                <StackPanel Height="60" Width="60" Background="Transparent">
+                                    <Image Source="Images/accept.png" Height="30" Width="30" HorizontalAlignment="Center" Margin="0,5,0,3"/>
+                                    <TextBlock Style="{StaticResource UACertificateTextBlockfrdback}" HorizontalAlignment="Center">Trust</TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </Button>
+
+                    </Grid>
+                </Grid>
+                <Grid Grid.Column="2">
+                    <GroupBox Header="Rejected Certificates" Style="{StaticResource UACertificateGroupBox}" Margin="0,0,10,15">
+                        <ListBox x:Name="rejectedListBox" Style="{StaticResource UACertificateListBox}" ItemsSource="{Binding RejectedValue}"  Margin="5,5,0,5">
+
+
+                            <!--<Image Source="Images/File-New-icon.png" Height="222"></Image>-->
+                            <ListBox.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="3"/>
+                                </Style>
+                            </ListBox.Resources>
+                        </ListBox>
+                    </GroupBox>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="4" Grid.ColumnSpan="2" Background="#FFE3D0BB" >
+
+        </Grid>
+    </Grid>
+
+</UserControl>

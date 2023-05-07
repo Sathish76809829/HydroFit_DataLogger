@@ -1,0 +1,234 @@
+﻿<UserControl x:Class="ElpisOpcServer.License"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="800" Background="#FFE3D0BB">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ElpisOpcServer;component/Styles/ListBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Horizontal" Background="#f4a460">
+                <Image Source="Images/closed_lock.png" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,0,0,0"  ></Image>
+                <Label Name="titleForUserControl" 
+                  Content=" ELPIS OPC Server - Get License"  Foreground="Black" FontWeight="Bold"  VerticalAlignment="Center"  HorizontalAlignment="Left" FontSize="16" FontFamily="Calibri"  />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Content="Help" Margin="10,0,10,0" Width="40" Height="25" Background="Transparent" BorderBrush="Transparent" Foreground="Black" />
+                <Button Name="btnAbout" Content="About" Margin="0,0,10,0" Width="40" Background="Transparent" BorderBrush="Transparent" Foreground="Black" Click="btnAbout_Click" />
+            </StackPanel>
+        </Grid>
+
+
+        <GroupBox Header="Activate License" Grid.Row="1" Margin="25,25,25,25" BorderBrush="#f4a460" BorderThickness="0.5" FontFamily="Calibri" FontSize="16" Foreground="Black" FontWeight="Bold">
+            <!--<Border Grid.Row="1" Margin="3,3,3,3" BorderBrush="#FF787885" BorderThickness="0.5">-->
+            <Grid>
+                <!--<Grid.RowDefinitions>
+                    <RowDefinition Height="77*"/>
+                    <RowDefinition Height="61*"/>
+                    <RowDefinition Height="83*"/>
+                    <RowDefinition Height="178*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="41*"/>
+                        <ColumnDefinition Width="708*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        --><!--<TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Calibri" FontSize="16" FontWeight="Bold" Foreground="black">-->
+                    <!--Active License
+                        </TextBlock>--><!--
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="17*"/>
+                        <ColumnDefinition Width="63*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <TextBlock FontFamily="Calibri" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">Computer ID</TextBlock>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="59*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <TextBox x:Name="txtComputerId" Width="200" Background="WhiteSmoke" BorderThickness="0.5" Height="40" BorderBrush="#f4a460" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Calibri" FontSize="15" IsReadOnly="True">
+                            </TextBox>
+                            <Label HorizontalAlignment="Left" Content="Please contact ELPIS IT Solution at:" VerticalAlignment="Top" FontFamily="Calibri" FontSize="15" Foreground="black"   Height="30" Width="242" Margin="256,-39,0,0" />
+
+                            <Label HorizontalAlignment="Left" Content="#589,3rd floor," VerticalAlignment="Top" FontFamily="Calibri" FontSize="15" Foreground="black"   Height="30" Width="242" Margin="269,-4,0,0" />
+
+                            <Label HorizontalAlignment="Left" Content="60Feet Road,AECS Layout," VerticalAlignment="Top" FontFamily="Calibri" FontSize="15" Foreground="black"   Height="30" Width="242" Margin="269,11,0,0" />
+
+                            <Label HorizontalAlignment="Left" Content="Kundalahalli,Bangalore" VerticalAlignment="Top" FontFamily="Calibri" FontSize="15" Foreground="black"   Height="30" Width="242" Margin="269,31,0,0" />
+
+                            <Label HorizontalAlignment="Left" Content="Karnataka,India-560 037" VerticalAlignment="Top" FontFamily="Calibri" FontSize="15" Foreground="black"   Height="30" Width="242" Margin="269,48,0,-17" />
+
+                            <Label HorizontalAlignment="Left" Content="Tel:+91 80 41312100" VerticalAlignment="Top" FontFamily="Calibri" FontSize="15" Foreground="black"   Height="30" Width="242" Margin="256,83,0,-52" />
+
+                            <Label HorizontalAlignment="Left" Content="e-mail:support@elpisitsolutions.com" VerticalAlignment="Top" FontFamily="Calibri" FontSize="15" Foreground="black"   Height="30" Width="242" Margin="256,118,0,-87" />
+                                
+                            
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="151*"/>
+                        <ColumnDefinition Width="598*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <TextBlock FontFamily="Calibri" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">License Key</TextBlock>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="12*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <TextBox Name="txtLicenceKey" Width="200" Height="40" Background="WhiteSmoke" BorderBrush="#f4a460" BorderThickness="0.5" FontSize="15" FontFamily="Calibri" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                            </TextBox>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="137*"/>
+                        <ColumnDefinition Width="63*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <TextBlock Name="txtmessage" Text="{Binding LicenseStatus}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto" FontFamily="Calibri" FontSize="16" FontWeight="Bold" Foreground="Black"></TextBlock>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Button x:Name="activebtn" Style="{StaticResource activeStyle}" ToolTip="Activate" Height="80" HorizontalAlignment="Center"  FontFamily="Calibri" FontSize="20" BorderThickness="2" BorderBrush="WhiteSmoke"  Width="80" Click="activebtn_Click" VerticalAlignment="Center">
+                            <StackPanel>
+                                <Image  Source="Images/icon_activation.png" Height="40" Opacity="0.8"/>
+                                <TextBlock Name="txtbuy" Foreground="White" HorizontalAlignment="Center" FontFamily="Calibri" FontSize="15"  VerticalAlignment="Center">Activate</TextBlock>
+                            </StackPanel>
+                        </Button>
+                       
+                    </Grid>
+                </Grid>-->
+
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.5*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="4*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontFamily="Calibri" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">Computer ID</TextBlock>
+                        <TextBox Grid.Column="1" Name="txtComputerId" Width="200" Height="25" Background="WhiteSmoke" BorderBrush="#f4a460" BorderThickness="0.5" FontSize="15" FontFamily="Calibri" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                        </TextBox>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontFamily="Calibri" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">License Key</TextBlock>
+                        <WrapPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"    >
+                            <TextBox
+                                        Name="txtLicenceKey"
+                                        Width="Auto"
+                                        MinWidth="200"
+                                        Height="25"
+                                        HorizontalAlignment="Left"
+                                        HorizontalContentAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Background="WhiteSmoke"
+                                        BorderBrush="#f4a460"
+                                        BorderThickness="0.5"
+                                        FontFamily="Calibri"
+                                        FontSize="15"
+                                          TextChanged="TxtLicenceKey_TextChanged"/>
+                            <TextBlock
+                                        Name="txtError"
+                                        FontSize="15"
+                                        Foreground="Red"
+                                        Text="*"
+                                        Visibility="Hidden" />
+                        </WrapPanel>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.2*"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Name="txtmessage" Text="{Binding LicenseStatus}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="Auto" Height="Auto" FontFamily="Calibri" FontSize="16" FontWeight="Bold" Foreground="Black"></TextBlock>
+                        <Button Grid.Row="1" x:Name="activebtn" Style="{StaticResource activeStyle}" ToolTip="Activate" Height="80" HorizontalAlignment="Center"  FontFamily="Calibri" FontSize="20" BorderThickness="2" BorderBrush="WhiteSmoke"  Width="80" Click="activebtn_Click" VerticalAlignment="Top">
+                            <StackPanel>
+                                <Image  Source="Images/icon_activation.png" Height="40" Opacity="0.8"/>
+                                <TextBlock Name="txtbuy" Foreground="White" HorizontalAlignment="Center" FontFamily="Calibri" FontSize="15"  VerticalAlignment="Center">Activate</TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Grid>
+                
+                
+                <Grid Grid.Column="1">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="8*"/>
+                    </Grid.RowDefinitions>
+                    <Label HorizontalAlignment="Left" Grid.Row="0" Content="Please contact ELPIS IT Solution at:" VerticalAlignment="Bottom" FontFamily="Calibri" FontSize="20" Foreground="black"   Height="30" Width="auto"  />
+
+                    <TextBlock Background="Transparent" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="top" FontSize="18" >
+          3rd Floor, No. 102/1,
+          <LineBreak />     
+          Outer Ring Rd, Kamadhenu Nagar,
+          <LineBreak/> 
+          B Narayanapura, Mahadevapura,                          
+          <LineBreak/> 
+          Bengaluru, Karnataka 560016                     
+          <LineBreak/> 
+          Email: support@elpisitsolutions.com               
+          <LineBreak/>                              
+          Telephone : +91 80 41312100
+                    </TextBlock>
+
+                </Grid>
+
+            </Grid>
+        </GroupBox>
+        <!--</Border>-->
+
+    </Grid>
+</UserControl>

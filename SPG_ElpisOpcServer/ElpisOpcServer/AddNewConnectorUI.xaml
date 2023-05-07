@@ -1,0 +1,115 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:ElpisOpcServer"    
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+    x:Class=" ElpisOpcServer.AddNewConnectorUI" Icon="Images/New Icon.png"
+    mc:Ignorable="d"
+    Title="Add New Connector"
+    Height="400" 
+    Width="400" 
+    WindowStartupLocation="CenterScreen" 
+    ResizeMode="NoResize" Closing="Window_Closing" >
+    <Grid x:Name="MainGrid">
+
+        <Grid Name="protocolGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="230" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />               
+            </Grid.ColumnDefinitions>
+            <Grid  Name="SelectProtocolGrid" 
+                   Grid.Row="0" 
+                   Grid.ColumnSpan="2" >                
+                <StackPanel Orientation="Horizontal" Margin="15,7,0,0">
+                    <Label Content="Select Connector Type :" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="0" FontSize="12" FontWeight="Bold"/>
+                    <ComboBox x:Name="ConnectorTypeCmbBox" 
+                      HorizontalAlignment="Center" 
+                      VerticalAlignment="Center" 
+                      Text="Hardware Protocol" 
+                      HorizontalContentAlignment="Left" 
+                      VerticalContentAlignment="Center"                       
+                      Grid.Row="1" SelectedIndex="3"
+                      SelectionChanged="ProtocolTypeCmbBox_SelectionChanged" Margin="25,0,0,0">
+                        <!--<ComboBoxItem Content="Select Connector Type" IsSelected="" />--> 
+                        <ComboBoxItem Content="Modbus Ethernet TCP/IP" Visibility="Collapsed"/>
+                        <ComboBoxItem Content="Modbus Serial" Visibility="Collapsed" />
+                        <ComboBoxItem Content="AB Micrologix Ethernet" Visibility="Collapsed"/>
+                        <ComboBoxItem Content="TcpSocket"/>
+                        
+                        
+                        
+                    </ComboBox>
+                </StackPanel>
+                
+            </Grid>
+            <Border Grid.Row="1" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness="0.7" Margin="0,5,0,0">
+                <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition/>
+                        <!--<ColumnDefinition/>-->
+                    </Grid.ColumnDefinitions>
+                <TextBlock Text="Properties" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+                    <!--<GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Center" Background="Transparent" IsEnabled="False" ></GridSplitter>-->
+                <TextBlock Text="Values" Grid.Column="1" HorizontalAlignment="Center" FontWeight="Bold" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+            <Grid Name="PropertyGrid" Grid.Row="2" Grid.ColumnSpan="2" >
+                <xctk:PropertyGrid x:Name="ProtocolPropertyGrid" 
+                               Grid.Row="2" 
+                               Grid.ColumnSpan="2"
+                               HorizontalAlignment="Stretch" 
+                               VerticalAlignment="Stretch" 
+                               HorizontalContentAlignment="Stretch" 
+                               VerticalContentAlignment="Stretch"  
+                               NameColumnWidth="180" ShowSearchBox="False" ShowSortOptions="False" ShowTitle="False"
+                               ShowDescriptionByTooltip="True"/>
+                
+
+            </Grid>
+            <Grid Name="FooterGrid" Grid.Row="3" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Name="FinishBtn" 
+                    Content="Save" 
+                    Grid.Row="2" 
+                    Grid.Column="0" 
+                    Height="25" 
+                    Width="100" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Click="FinishBtn_click"/>
+
+                <!--<Button Name="BackBtn" 
+                    Content="Back" 
+                    Grid.Row="2" 
+                    Grid.ColumnSpan="2" 
+                    Height="25" 
+                    Width="100" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Click="BackBtn_click"/>-->
+
+                <Button Name="CancelBtn" 
+                    Content="Cancel" 
+                    Grid.Row="2" 
+                    Grid.Column="1"
+                    Height="25" 
+                    Width="100" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" Click="CancelBtn_click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</Window>

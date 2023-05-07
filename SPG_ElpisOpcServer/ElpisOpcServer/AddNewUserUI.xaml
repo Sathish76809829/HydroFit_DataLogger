@@ -1,0 +1,52 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:ElpisOpcServer"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class=" ElpisOpcServer.AddNewUserUI"
+    mc:Ignorable="d"
+    Title="Add New User" Icon="Images\AddUser2.PNG"
+    Height="400" 
+    Width="400" 
+    WindowStartupLocation="CenterScreen" 
+    ResizeMode="NoResize"
+    Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>        
+            <xctk:PropertyGrid Grid.Row="1" 
+            Name="NewUserPropertyGrid"             
+            HorizontalContentAlignment="Stretch" 
+            VerticalContentAlignment="Stretch" 
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            FontStretch="Expanded" ShowSearchBox="False" ShowSortOptions="False" ShowTitle="False" />
+       
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  />
+                <ColumnDefinition  />
+                <!--<ColumnDefinition Width="135"/>-->
+            </Grid.ColumnDefinitions>
+
+            <Button Name="FinishBtn"
+                    Content="Save" 
+                    Grid.Column="0" 
+                    Height="25" 
+                    Width="100" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" Click="FinishBtn_Click" />
+            <Button Name="CancelBtn" 
+                    Content="Cancel"
+                    Grid.Column="1"
+                    Height="25" 
+                    Width="100" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" Click="CancelBtn_Click"/>
+
+        </Grid>
+    </Grid>
+</Window>

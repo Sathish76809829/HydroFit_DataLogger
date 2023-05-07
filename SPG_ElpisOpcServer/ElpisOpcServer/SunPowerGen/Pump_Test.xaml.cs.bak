@@ -1,0 +1,1319 @@
+﻿using Elpis.Windows.OPC.Server;
+using ElpisOpcServer.SunPowerGen;
+using LiveCharts;
+using LiveCharts.Wpf;
+using Modbus;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Configuration;
+using System.Diagnostics;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+
+namespace ElpisOpcServer.SunPowerGen
+{
+    /// <summary>
+    /// Interaction logic for Pump_Test.xaml
+    /// </summary>
+    public partial class Pump_Test : UserControl
+    {
+        BitmapImage starticon = new BitmapImage();
+        BitmapImage stopicon = new BitmapImage();
+        private DispatcherTimer dispatcherTimer;
+        private bool isInitialPressureSet;
+        private int startAddressPos;
+        private int retryCount;
+        private string connectorName;
+        private string deviceName;
+        private List<string> selectedTagNames = new List<string>();
+        private List<Tuple<string, Tag>> seletedItems;
+        private List<string> allTags = new List<string>();
+        private int dataCounts;
+
+        public List<string> xAxisParaValue { get; set; }
+        public List<string> xAxisTimeValue { get; set; }
+        public Func<double, string> YFormatter { get; set; }
+        private byte slaveId { get; set; }
+        public SeriesCollection SeriesCollections { get; private set; }
+        public AxesCollection YAxisCollection = new AxesCollection();
+        public AxesCollection XAxisCollection = new AxesCollection();
+        public Axis YAxis { get; private set; }
+        public Axis XAxisPara { get; private set; }
+        public Axis XAxisTime { get; private set; }
+        Brush[] graphStrokes = new Brush[] { Brushes.DarkOrange, Brushes.DarkGreen, Brushes.DarkBlue, Brushes.Brown, Brushes.Red, Brushes.DarkCyan, Brushes.DarkMagenta, Brushes.DarkOliveGreen, Brushes.DarkOrange, Brushes.DarkSalmon };
+        private string formulaPara1;
+        private string formulaPara2;
+        Stopwatch stopwatch;
+        private Dictionary<string, List<string>> tempTable = new Dictionary<string, List<string>>();
+        public Pump_Test()
+        {
+
+            InitializeComponent();
+            stopwatch = new Stopwatch();
+            DataContext = this;
+            if (HomePage.PumpTestInformation == null)
+                HomePage.PumpTestInformation = new PumpTestInformation();
+            HomePage.PumpTestInformation.TestName = TestType.PumpTest;
+            HomePage.PumpTestInformation.TableData.Add("Time", new Dictionary<string, string>());
+            HomePage.PumpTestInformation.TableParameterList.Add("Time");
+            //HomePage.PumpTestInformation.TableData = new Dictionary<string, List<string>>();
+            connectorName = HomePage.SelectedConnector;
+            deviceName = HomePage.SelectedDevice;
+            TagsCollection = Helper.GetTagsCollection(TestType.PumpTest, connectorName, deviceName);
+            HomePage.PumpTestInformation.TagInformation = TagsCollection;
+            if (TagsCollection != null)
+            {
+                foreach (var item in TagsCollection)
+                {
+                    allTags.Add(item.TagName+" ("+item.Units+")");
+                }
+                lstAllTags.ItemsSource = allTags;
+            }
+
+            this.gridCeritificateInfo.DataContext = HomePage.PumpTestInformation;
+
+            //chartPressure.AxisY[0].LabelFormatter = value => value.ToString("N2");
+            PressureReadTime = double.Parse(ConfigurationManager.AppSettings["PressureReadInterval"].ToString());
+            starticon.BeginInit();
+            starticon.UriSource = new Uri("/ElpisOpcServer;component/Images/starticon.png", UriKind.Relative);
+            starticon.EndInit();
+            stopicon.BeginInit();
+            stopicon.UriSource = new Uri("/ElpisOpcServer;component/Images/stopicon.png", UriKind.Relative);
+            stopicon.EndInit();
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            dispatcherTimer.Tick += DispatcherTimer_Tick;
+        }
+
+        private void DispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            ReadDeviceData();
+        }
+
+        public double PressureReadTime { get; }
+        public ObservableCollection<Tag> TagsCollection { get; private set; }
+        public LineSeries PumpSeries { get; private set; }
+        public AxesCollection AxisYCollection { get; }
+        public List<string> YaxisParaList = new List<string>();
+
+        private void btnStartStop_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (lblStartStop.Content.ToString() == "Start Record")
+                {
+                    bool isValid = ValidateInputs();
+
+                    bool isXAisSelect = (chkXaxis.IsChecked == true && cmbXAxis.SelectedItem == null) ? false : true;
+                    bool isYAisSelect = chkXaxis.IsChecked == true ? (YaxisParaList.Count > 0 ? true : false) : true;
+                    bool isformualParaSelect = (chkFormula.IsChecked == true && cmbFirstPara.SelectedItem == null && cmbSecondPara.SelectedItem == null) ? false : true;
+
+                    if (isValid)
+                    {
+                        if (isXAisSelect)
+                        {
+                            if (isYAisSelect)
+                            {
+                                if (isformualParaSelect)
+                                {
+                                    if (selectedTagNames.Count > 0)
+                                    {
+                                        if (HomePage.PumpTestInformation.TableParameterList.Count >= 2)
+                                        {
+                                            connectorName = HomePage.SelectedConnector;
+                                            deviceName = HomePage.SelectedDevice;
+
+                                            if (SeriesCollections == null && isValid)
+                                            {
+
+                                                if (!string.IsNullOrEmpty(connectorName) && !string.IsNullOrEmpty(deviceName))
+                                                {
+                                                    this.IsHitTestVisible = false;
+                                                    this.Cursor = Cursors.Wait;
+                                                    lblStartStop.Content = "Stop Record";
+                                                    imgStartStop.Source = stopicon;
+                                                    btnStartStop.ToolTip = "Stop Record";
+                                                    tbxDeviceStatus.Text = "";
+
+                                                    seletedItems = new List<Tuple<string, Tag>>();
+                                                    xAxisParaValue = new List<string>();
+                                                    xAxisTimeValue = new List<string>();
+                                                    List<Tuple<string, bool>> tagStatus = new List<Tuple<string, bool>>();
+                                                    if (TagsCollection != null && TagsCollection.Count > 0)
+                                                    {
+                                                        foreach (var tag in TagsCollection)
+                                                        {
+                                                            foreach (var seletedItem in selectedTagNames)
+                                                            {
+                                                                if (seletedItem.ToLower().Contains(tag.TagName.ToLower()))
+                                                                {
+                                                                    seletedItems.Add(new Tuple<string, Tag>(seletedItem, tag));
+                                                                }
+                                                            }
+
+                                                        }
+
+                                                        if (seletedItems != null)
+                                                        {
+                                                            ConnectDevice();
+                                                            this.IsHitTestVisible = true;
+                                                            this.IsHitTestVisible = true;
+
+                                                            if (tbxDeviceStatus.Text == "Connected")
+                                                            {
+                                                                ElpisOPCServerMainWindow.homePage.PumpTestDisableInputs(true);
+                                                                ElpisOPCServerMainWindow.homePage.btnReset.IsEnabled = false;
+                                                                ElpisOPCServerMainWindow.homePage.btnGenerateReport.IsEnabled = false;
+                                                                ElpisOPCServerMainWindow.homePage.ReportTab.IsEnabled = true;
+                                                                ElpisOPCServerMainWindow.homePage.txtFilePath.IsEnabled = false;
+                                                                ElpisOPCServerMainWindow.homePage.PumpExpanderCertificate.IsExpanded = true;
+
+                                                                SeriesCollections = new SeriesCollection();
+                                                                pumpTestChart.AxisY.Clear();
+
+                                                                foreach (var tupleItem in seletedItems)
+                                                                {
+
+                                                                    if (chkXaxis.IsChecked == true && tupleItem.Item1 == cmbXAxis.SelectedItem.ToString())
+                                                                    {
+                                                                        pumpTestChart.AxisX.Clear();
+                                                                        XAxisPara = new Axis { Title = string.Format(tupleItem.Item1 + "( Time )") };
+                                                                        XAxisPara.LabelFormatter = value => (value).ToString();
+                                                                        XAxisPara.Foreground = Brushes.Black;
+                                                                        XAxisCollection.Add(XAxisPara);
+                                                                        pumpTestChart.AxisX = XAxisCollection;
+
+                                                                        //XAxisTime = new Axis { Title = "Time" };
+                                                                        //XAxisPara.LabelFormatter = value =>value.ToString("HH: mm:ss tt");
+                                                                        //XAxisCollection.Add(XAxisTime);
+
+                                                                        //pumpTestChart.AxisX = XAxisCollection;
+
+
+                                                                    }
+                                                                    if (chkXaxis.IsChecked == false)
+                                                                    {
+                                                                        pumpTestChart.AxisX.Clear();
+                                                                        XAxisTime = new Axis { Title = "Time" };
+                                                                        XAxisTime.Foreground = Brushes.Black;
+                                                                        pumpTestChart.AxisX.Add(XAxisTime);
+
+                                                                    }
+                                                                    if (chkXaxis.IsChecked == true)
+                                                                    {
+                                                                        foreach (var item in YaxisParaList)
+                                                                        {
+                                                                            if (item == tupleItem.Item1)
+                                                                            {
+                                                                                PumpSeries = new LineSeries
+                                                                                {
+                                                                                    Title = tupleItem.Item1,
+                                                                                    Values = new ChartValues<double>(),
+                                                                                    PointGeometrySize = 5,
+                                                                                    ScalesYAt = SeriesCollections.Count,
+                                                                                    ScalesXAt = 0,
+                                                                                    Fill = Brushes.Transparent
+
+
+                                                                                };
+                                                                                //YAxis = new Axis { Title = tupleItem.Item1, MinValue = tupleItem.Item2.MinValue, MaxValue = tupleItem.Item2.MaxValue, Separator = new LiveCharts.Wpf.Separator() { Step = tupleItem.Item2.MaxValue / 10 } };
+                                                                                YAxis = new Axis { Title = tupleItem.Item1 , MinValue = tupleItem.Item2.MinValue, MaxValue = tupleItem.Item2.MaxValue, Separator = new LiveCharts.Wpf.Separator() { Step = tupleItem.Item2.Divisions } };
+                                                                                //YAxis = new Axis { Title = tupleItem.Item1};
+                                                                                YAxis.LabelFormatter = value => (value).ToString("F2");
+                                                                                YAxis.Foreground = Brushes.Black;
+                                                                                YAxisCollection.Add(YAxis);
+                                                                                pumpTestChart.AxisY = YAxisCollection;
+
+                                                                                SeriesCollections.Add(PumpSeries);
+                                                                            }
+                                                                        }
+
+                                                                    }
+                                                                    else if (chkXaxis.IsChecked == false)
+                                                                    {
+                                                                        PumpSeries = new LineSeries
+                                                                        {
+                                                                            Title = tupleItem.Item1,
+                                                                            Values = new ChartValues<double>(),
+                                                                            PointGeometrySize = 5,
+                                                                            ScalesYAt = SeriesCollections.Count,
+                                                                            ScalesXAt = 0,
+                                                                            Fill = Brushes.Transparent
+
+                                                                        }; 
+                                                                        //YAxis = new Axis { Title = tupleItem.Item1, MinValue = tupleItem.Item2.MinValue, MaxValue = tupleItem.Item2.MaxValue, Separator = new LiveCharts.Wpf.Separator() { Step = tupleItem.Item2.MaxValue / 10 } };
+                                                                        YAxis = new Axis { Title = tupleItem.Item1, MinValue = tupleItem.Item2.MinValue, MaxValue = tupleItem.Item2.MaxValue, Separator = new LiveCharts.Wpf.Separator() { Step = tupleItem.Item2.Divisions } };
+                                                                        // YAxis = new Axis { Title = tupleItem.Item1 };
+                                                                        YAxis.LabelFormatter = value => (value).ToString("F2");
+                                                                        YAxis.Foreground = Brushes.Black;
+                                                                        YAxisCollection.Add(YAxis);
+                                                                        pumpTestChart.AxisY = YAxisCollection;
+                                                                        SeriesCollections.Add(PumpSeries);
+                                                                    }
+
+
+
+
+                                                                }
+                                                                if (isformualParaSelect)
+                                                                {
+                                                                    //PumpSeries = new LineSeries
+                                                                    //{
+                                                                    //    Title = "Computed Value",
+                                                                    //    Values = new ChartValues<double>(),
+                                                                    //    PointGeometrySize = 5,
+                                                                    //    ScalesYAt = SeriesCollections.Count,
+                                                                    //    ScalesXAt = 0,
+
+                                                                    //};
+                                                                    //YAxis = new Axis { Title = "Computed Value" };
+                                                                    //YAxis.LabelFormatter = value => (value + 100.00).ToString("N2");
+                                                                    //YAxisCollection.Add(YAxis);
+                                                                    //pumpTestChart.AxisY = YAxisCollection;
+                                                                    //SeriesCollections.Add(PumpSeries);
+                                                                }
+                                                                pumpTestChart.Series = SeriesCollections;
+                                                                pumpTestChart.LegendLocation = LiveCharts.LegendLocation.Top;
+                                                                SunPowerGenMainPage.isTestRunning = true;
+                                                                TriggerPLC(true);
+                                                                stopwatch.Start();
+                                                                dispatcherTimer.Start();
+                                                                HomePage.PumpTestInformation.TestDateTime = DateTime.Now.ToString();
+                                                                dataCounts = 0;
+                                                                blbStateOFF.Visibility = Visibility.Hidden;
+                                                                blbStateON.Visibility = Visibility.Visible;
+                                                                ElpisOPCServerMainWindow.homePage.PumpExpanderCertificate.IsExpanded = false;
+                                                                configGrid.IsEnabled = false;
+                                                                SelectionGrid.IsEnabled = false;
+                                                                ReadDeviceData();
+
+                                                            }
+                                                            else
+                                                            {
+                                                                lblStartStop.Content = "Start Record";
+                                                                imgStartStop.Source = starticon;
+                                                                btnStartStop.ToolTip = "Start Record";
+                                                                this.IsHitTestVisible = true;
+                                                                blbStateOFF.Visibility = Visibility.Visible;
+                                                                blbStateON.Visibility = Visibility.Hidden;
+                                                                ElpisOPCServerMainWindow.homePage.PumpExpanderCertificate.IsExpanded = true;
+                                                                configGrid.IsEnabled = true;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            StopTest();
+                                                            MessageBox.Show("Configuration file having the invalid Tag Names", "SPG Reporting Tool", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+
+                                                        StopTest();
+                                                        MessageBox.Show("Please create tags in configuration section.", "SPG Reporting Tool", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    StopTest();
+                                                    MessageBox.Show("Please configure connector,device and tags in configuration section.", "SPG Reporting Tool", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                MessageBoxResult messageOption = MessageBox.Show("Please reset all fields by clicking reset button, and start new Data Recording.", "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Question);
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("Please select Minimum 2 Parameters for table.", "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        MessageBoxResult messageOption = MessageBox.Show("Please select parameters.", "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Question);
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBoxResult messageOption = MessageBox.Show("Please select formula parameters.", "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Question);
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Please select minimum one parameter for Y Axis .", "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Question);
+                            }
+                        }
+                        else
+                        {
+                            MessageBoxResult messageOption = MessageBox.Show("Please select x Axis parameter.", "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Question);
+                        }
+                    }
+                }
+                else
+                {
+                    StopTest();
+
+                }
+                this.Cursor = Cursors.Arrow;
+            }
+            catch (Exception ex)
+            {
+                this.Cursor = Cursors.Arrow;
+                ElpisServer.Addlogs("Report Tool", "Start Button-Pump Test", ex.Message, LogStatus.Error);
+                StopTest();
+            }
+        }
+
+        internal void ResetPumpTest()
+        {
+            ElpisOPCServerMainWindow.homePage.PumpTestDisableInputs(false);
+            HomePage.PumpTestInformation = null;
+            HomePage.PumpTestInformation = new PumpTestInformation();
+            this.gridCeritificateInfo.DataContext = HomePage.PumpTestInformation;
+            ElpisOPCServerMainWindow.homePage.PumpGridMain.DataContext = HomePage.PumpTestInformation;
+            HomePage.PumpTestInformation.IsTestStarted = true;
+            blbStateOFF.Visibility = Visibility.Visible;
+            blbStateON.Visibility = Visibility.Hidden;
+            SelectionGrid.IsEnabled = true;
+            tablePara.ItemsSource = null;
+            cmbXAxis.ItemsSource = null;
+            YaxisPara.ItemsSource = null;
+            YaxisParaList.Clear();
+            YaxisPara.Items.Clear();
+            //cmbYAxis.ItemsSource = null;
+            cmbFirstPara.ItemsSource = null;
+            cmbSecondPara.ItemsSource = null;
+            chkXaxis.IsEnabled = true;
+            chkXaxis.IsChecked = false;
+            chkFormula.IsChecked = false;
+            chkFormula.IsEnabled = true;
+            configGrid.IsEnabled = true;
+            if(stopwatch!=null)
+            {
+                stopwatch.Reset();
+            }
+            
+            
+
+            if (lstAllTags.Items.Count > 0 || allTags.Count() > 0)
+            {
+                allTags.Clear();
+                lstAllTags.ItemsSource = null;
+            }
+            if (lstSelectedTags.Items.Count > 0 || selectedTagNames.Count() > 0)
+            {
+                selectedTagNames.Clear();
+                lstSelectedTags.ItemsSource = null;
+            }
+            if (tempTable.Count>0)
+            {
+                tempTable.Clear();
+            }
+            HomePage.PumpTestInformation.TableData.Add("Time", new Dictionary<string, string>());
+            HomePage.PumpTestInformation.TableParameterList.Add("Time");
+            connectorName = HomePage.SelectedConnector;
+            deviceName = HomePage.SelectedDevice;
+            TagsCollection = Helper.GetTagsCollection(TestType.PumpTest, connectorName, deviceName);
+            HomePage.PumpTestInformation.TagInformation = TagsCollection;
+            if (TagsCollection != null)
+            {
+                foreach (var item in TagsCollection)
+                {
+                    allTags.Add(item.TagName+ " ("+item.Units+")");
+                }
+                lstAllTags.ItemsSource = allTags;
+
+                this.gridCeritificateInfo.DataContext = HomePage.PumpTestInformation;
+            }
+            if (lblStartStop.Content.ToString() == "Stop Record")
+                StopTest();
+            if (pumpTestChart.Series != null && pumpTestChart.Series.Count > 0)
+            {
+                pumpTestChart.Series.Clear();
+                SeriesCollections.Clear();
+                SeriesCollections = null;
+                xAxisParaValue.Clear();
+                xAxisTimeValue.Clear();
+                pumpTestChart.AxisY.Clear();
+                pumpTestChart.AxisX.Clear();
+
+            }
+            for (int i = ChartView.Children.Count - 1; i > 0; i--)
+            {
+                ChartView.Children.Remove(ChartView.Children[i]);
+
+            }
+            this.DataContext = this;
+        }
+
+        private bool ValidateInputs()
+        {
+            bool isValid = false;
+            try
+            {
+                isValid = true;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.PumpJobNumber) || string.IsNullOrEmpty(HomePage.PumpTestInformation.PumpJobNumber))
+                    isValid = isValid && false;
+
+
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.PumpReportNumber) || string.IsNullOrEmpty(HomePage.PumpTestInformation.PumpReportNumber))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.PumpSPGSerialNo) || string.IsNullOrEmpty(HomePage.PumpTestInformation.PumpSPGSerialNo))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.EqipCustomerName) || string.IsNullOrEmpty(HomePage.PumpTestInformation.EqipCustomerName))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.EquipManufacturer) || string.IsNullOrEmpty(HomePage.PumpTestInformation.EquipManufacturer))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.EquipModelNo) || string.IsNullOrEmpty(HomePage.PumpTestInformation.EquipModelNo))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.EquipType) || string.IsNullOrEmpty(HomePage.PumpTestInformation.EquipType))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.EquipControlType) || string.IsNullOrEmpty(HomePage.PumpTestInformation.EquipControlType))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.EquipPumpType) || string.IsNullOrEmpty(HomePage.PumpTestInformation.EquipPumpType))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.EquipSerialNo) || string.IsNullOrEmpty(HomePage.PumpTestInformation.EquipSerialNo))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.TestManufacture) || string.IsNullOrEmpty(HomePage.PumpTestInformation.TestManufacture))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.TestSerialNo) || string.IsNullOrEmpty(HomePage.PumpTestInformation.TestSerialNo))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.TestType) || string.IsNullOrEmpty(HomePage.PumpTestInformation.TestType))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.TestRange) || string.IsNullOrEmpty(HomePage.PumpTestInformation.TestRange))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.TestedBy) || string.IsNullOrEmpty(HomePage.PumpTestInformation.TestedBy))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.WitnessedBy) || string.IsNullOrEmpty(HomePage.PumpTestInformation.WitnessedBy))
+                    isValid = isValid && false;
+                if (string.IsNullOrWhiteSpace(HomePage.PumpTestInformation.ApprovedBy) || string.IsNullOrEmpty(HomePage.PumpTestInformation.ApprovedBy))
+                    isValid = isValid && false;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                isValid = false;
+            }
+            finally
+            {
+                string reportNumber = HomePage.PumpTestInformation.PumpReportNumber;
+                this.gridCeritificateInfo.DataContext = null;
+                ElpisOPCServerMainWindow.homePage.PumpGridMain.DataContext = null;
+                HomePage.PumpTestInformation.PumpReportNumber = reportNumber;
+                this.gridCeritificateInfo.DataContext = HomePage.PumpTestInformation;
+                ElpisOPCServerMainWindow.homePage.PumpGridMain.DataContext = HomePage.PumpTestInformation;
+            }
+            if (isValid)
+                ElpisOPCServerMainWindow.homePage.PumpExpanderCertificate.IsExpanded = false;
+            else
+                ElpisOPCServerMainWindow.homePage.PumpExpanderCertificate.IsExpanded = true;
+            return isValid;
+        }
+
+        private void ConnectDevice()
+        {
+            try
+            {
+                bool isConnected = false;
+                isConnected = Helper.ConnectingDevice(isConnected, TagsCollection);
+                if (isConnected)
+                {
+                    tbxDeviceStatus.Text = "Connected";
+                    tbxDeviceStatus.Foreground = Brushes.DarkGreen;
+                    startAddressPos = 0;
+                    retryCount = 0;
+                }
+                else
+                {
+                    tbxDeviceStatus.Text = "Not Connected";
+                    tbxDeviceStatus.Foreground = Brushes.Red;
+                }
+
+            }
+
+            catch (Exception)
+            {
+                tbxDeviceStatus.Text = "Not Connected";
+                tbxDeviceStatus.Foreground = Brushes.Red;
+            }
+        }
+
+        private void TriggerPLC(bool v)
+        {
+        }
+
+        private void ReadDeviceData()
+        {
+            try
+            {
+                if (SunPowerGenMainPage.ModbusTcpMaster != null || SunPowerGenMainPage.ModbusSerialPortMaster != null || SunPowerGenMainPage.ABEthernetClient != null && retryCount <= 3)
+                {
+                    #region Modbus Ethernet
+                    if (SunPowerGenMainPage.DeviceObject.DeviceType == DeviceType.ModbusEthernet)
+                    {
+                        var val = "0";
+                        dataCounts++;
+                        foreach (var tupleItem in seletedItems)
+                        {
+                            if (tupleItem.Item2.Address.ToString().Length >= 5)
+                            {
+                                try
+                                {
+                                    if ((tupleItem.Item2.Address.ToString()[0]).ToString() == "3")
+                                    {
+                                        val = Helper.ReadDeviceInputRegisterValue(ushort.Parse(tupleItem.Item2.Address.ToString()), Elpis.Windows.OPC.Server.DataType.Short, DeviceType.ModbusEthernet, startAddressPos, slaveId);
+                                    }
+                                    else if ((tupleItem.Item2.Address.ToString()[0]).ToString() == "4")
+                                    {
+                                        val = Helper.ReadDeviceHoldingRegisterValue(ushort.Parse(tupleItem.Item2.Address.ToString()), Elpis.Windows.OPC.Server.DataType.Short, DeviceType.ModbusEthernet, startAddressPos, slaveId);
+                                    }
+                                }
+                                catch (SlaveException)
+                                {
+                                    startAddressPos = 1;
+                                    retryCount++;
+                                }
+                                catch (Exception ex)
+                                {
+                                    ElpisServer.Addlogs("All", "SPG Reporting Tool-Pump Test", ex.Message, LogStatus.Error);
+                                    StopTest();
+                                }
+                            }
+                            else
+                            {
+
+                                val = SunPowerGenMainPage.ModbusTcpMaster.ReadHoldingRegisters(ushort.Parse(tupleItem.Item2.Address), 1)[0].ToString();
+
+
+                            }
+                            updateData(val, tupleItem);
+                        }
+
+                    }
+                    #endregion Modbus Ethernet
+
+                    #region Serial Device
+                    else if (SunPowerGenMainPage.DeviceObject.DeviceType == DeviceType.ModbusSerial)
+                    {
+                        var val = "0";
+                        dataCounts++;
+                        foreach (var tupleItem in seletedItems)
+                        {
+                            if (tupleItem.Item2.Address.ToString().Length >= 5)
+                            {
+                                try
+                                {
+                                    if ((tupleItem.Item2.Address.ToString()[0]).ToString() == "1")
+                                    {
+                                        val = Helper.ReadDeviceCoilsRegisterValue(ushort.Parse(tupleItem.Item2.Address.ToString()), DeviceType.ModbusSerial, slaveId);
+                                    }
+                                    else if ((tupleItem.Item2.Address.ToString()[0]).ToString() == "2")
+                                    {
+                                        val = Helper.ReadDeviceDiscreteInputRegisterValue(ushort.Parse(tupleItem.Item2.Address.ToString()), DeviceType.ModbusSerial, slaveId);
+                                    }
+                                    else if ((tupleItem.Item2.Address.ToString()[0]).ToString() == "3")
+                                    {
+                                        val = Helper.ReadDeviceInputRegisterValue(ushort.Parse(tupleItem.Item2.Address.ToString()), Elpis.Windows.OPC.Server.DataType.Short, DeviceType.ModbusSerial, 0, slaveId);
+                                    }
+                                    else if ((tupleItem.Item2.Address.ToString()[0]).ToString() == "4")
+                                    {
+                                        val = Helper.ReadDeviceHoldingRegisterValue(ushort.Parse(tupleItem.Item2.Address.ToString()), Elpis.Windows.OPC.Server.DataType.Short, DeviceType.ModbusSerial, 0, slaveId);
+                                    }
+
+                                }
+                                catch (SlaveException)
+                                {
+                                    startAddressPos = 1;
+                                    retryCount++;
+                                }
+                                catch (Exception ex)
+                                {
+                                    ElpisServer.Addlogs("All", "SPG Reporting Tool-Pump Test", ex.Message, LogStatus.Information);
+                                    StopTest();
+                                }
+                            }
+                            else
+                            {
+
+                                val = SunPowerGenMainPage.ModbusSerialPortMaster.ReadHoldingRegisters(slaveId, ushort.Parse(tupleItem.Item2.Address.ToString()), 1)[0].ToString();
+
+
+                            }
+                            updateData(val, tupleItem);
+                        }
+
+
+                    }
+                    #endregion Serial Device
+
+                    #region AB Micrologix Ethernet
+                    else if (SunPowerGenMainPage.DeviceObject.DeviceType == DeviceType.ABMicroLogixEthernet)
+                    {
+                        if (Helper.MappedTagList != null)
+                        {
+                            var val = "0";
+                            dataCounts++;
+                            foreach (var item in Helper.MappedTagList)
+                            {
+                                foreach (var Selecteditem in seletedItems)
+                                {
+                                    if (item.Key.ToLower().Contains(Selecteditem.Item1.ToLower()))
+                                    {
+                                        val = Helper.ReadEthernetIPDevice(item.Value.Item1, item.Value.Item2);
+                                        if (val == null)
+                                        {
+                                            MessageBox.Show(string.Format("Please, check Pump test device connection for One of the following reason:\n1.Device is disconnected.\n2.Processor Selection Mismatch. \n \n Check Tag: \" {0} \" for one of the following reason \n1.Invalid Tag Address.\n2.Mismatch the Tag DataType.", Selecteditem.Item1), "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.ServiceNotification);
+                                            SunPowerGenMainPage.ABEthernetClient.Dispose();
+                                            tbxDeviceStatus.Text = "Not Connected";
+                                            tbxDeviceStatus.Foreground = Brushes.Red;
+                                            StopTest();
+                                            return;
+
+                                        }
+                                        updateData(val, Selecteditem);
+                                    }
+
+                                }
+
+
+                                //if (!string.IsNullOrEmpty(HomePage.PumpTestInformation.Flow) && !string.IsNullOrEmpty(HomePage.PumpTestInformation.Pressure) && !string.IsNullOrEmpty(HomePage.PumpTestInformation.CylinderMovement))
+                                //{
+                                //    if (item.Key.ToLower().Contains("flow"))
+                                //        HomePage.PumpTestInformation.Flow = Helper.ReadEthernetIPDevice(item.Value.Item1, item.Value.Item2);
+                                //    if (HomePage.PumpTestInformation.Flow == null)
+                                //    {
+                                //        SunPowerGenMainPage.ABEthernetClient.Dispose();
+                                //        tbxDeviceStatus.Text = "Not Connected";
+                                //        tbxDeviceStatus.Foreground = Brushes.Red;
+                                //        StopTest();
+                                //        MessageBox.Show("Please, check slip stick test device connection. One of the following are reason:\n1.Device is disconnected.\n2.Invalid Tag Address.\n3.Mismatch the Tag DataType.\n4.Processor Selection Mismatch.", "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.ServiceNotification);
+                                //        return;
+
+                                //    }
+                                //    else if (item.Key.ToLower().Contains("pressure"))
+                                //    {
+                                //        if (HomePage.PumpTestInformation.Pressure == null)
+                                //        {
+                                //            SunPowerGenMainPage.ABEthernetClient.Dispose();
+                                //            tbxDeviceStatus.Text = "Not Connected";
+                                //            tbxDeviceStatus.Foreground = Brushes.Red;
+                                //            StopTest();
+                                //            MessageBox.Show("Please, check slip stick test device connection. One of the following are reason:\n1.Device is disconnected.\n2.Invalid Tag Address.\n3.Mismatch the Tag DataType.\n4.Processor Selection Mismatch.", "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.ServiceNotification);
+                                //            return;
+
+                                //        }
+
+                                //        HomePage.PumpTestInformation.Pressure = Helper.ReadEthernetIPDevice(item.Value.Item1, item.Value.Item2);
+                                //        if (!isInitialPressureSet)
+                                //        {
+                                //            isInitialPressureSet = true;
+                                //        }
+
+
+                                //    }
+                                //    else if (item.Key.ToLower().Contains("cylindermovement"))
+                                //    {
+                                //        HomePage.PumpTestInformation.CylinderMovement = Helper.ReadEthernetIPDevice(item.Value.Item1, item.Value.Item2);
+                                //        if (HomePage.PumpTestInformation.CylinderMovement == null)
+                                //        {
+                                //            SunPowerGenMainPage.ABEthernetClient.Dispose();
+                                //            tbxDeviceStatus.Text = "Not Connected";
+                                //            tbxDeviceStatus.Foreground = Brushes.Red;
+                                //            StopTest();
+                                //            MessageBox.Show("Please, check slip stick test device connection. One of the following are reason:\n1.Device is disconnected.\n2.Invalid Tag Address.\n3.Mismatch the Tag DataType.\n4.Processor Selection Mismatch.", "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.ServiceNotification);
+                                //            return;
+
+                                //        }
+                                //    }
+
+                                //}
+
+
+                                //if (string.IsNullOrEmpty(txtFlow.Text) || string.IsNullOrEmpty(txtCurrentPressure.Text) || string.IsNullOrEmpty(txtCylinderMovement.Text))
+                                //{
+                                //    if (PressureSeries.Values.Count > 0)
+                                //    {
+                                //        HomePage.PumpTestInformation.Pressure = PressureSeries.Values[PressureSeries.Values.Count - 1].ToString();
+
+                                //    }
+                                //    else
+                                //    {
+                                //        HomePage.PumpTestInformation.Pressure = "0";
+                                //        HomePage.PumpTestInformation.PressureAfterFirstCylinderMovement = "0";
+                                //        HomePage.PumpTestInformation.CylinderMovement = "0";
+                                //        HomePage.PumpTestInformation.InitialCylinderMovement = "0";
+                                //        HomePage.PumpTestInformation.CylinderFirstMovement = "0";
+                                //        HomePage.PumpTestInformation.Flow = "0";
+                                //    }
+                                //    //SunPowerGenMainPage.ABEthernetClient.Dispose();
+                                //    //tbxDeviceStatus.Text = "Not Connected";
+                                //    //tbxDeviceStatus.Foreground = Brushes.Red;
+                                //    //StopTest();
+                                //    //MessageBox.Show("Please, check slip stick test device connection. One of the following are reason:\n1.Device is disconnected.\n2.Invalid Tag Address.\n3.Mismatch the Tag DataType.\n4.Processor Selection Mismatch.", "SPG Report Tool", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.ServiceNotification);
+                                //    //return;
+                                //}
+
+                            }
+                        }
+
+                    }
+                    #endregion AB Micrologix Ethernet                       
+
+                    //PressureSeries.Values.Add(double.Parse(txtCurrentPressure.Text.ToString()));
+                    //pressureXAxis.Labels = CylinderMovementLabels;
+                    //DataContext = this;
+
+                }
+                else
+                {
+                    StopTest();
+                    ElpisServer.Addlogs("All", "SPG Reporting Tool-Pump Test", string.Format("Retry Count:{0}", retryCount), LogStatus.Information);
+                    MessageBox.Show("Problem in connecting device, please check it.", "SPG Reporting Tool", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+
+            }
+            catch (Exception exe)
+            {
+                ElpisServer.Addlogs("All", "SPG Reporting Tool-Pump Test", string.Format("Error in Read value.{0}.", exe.Message), LogStatus.Error);
+                StopTest();
+            }
+        }
+
+        internal void ConnectorTypeChanged()
+        {
+            connectorName = HomePage.SelectedConnector;
+            deviceName = HomePage.SelectedDevice;
+            TagsCollection = Helper.GetTagsCollection(TestType.PumpTest, connectorName, deviceName);
+
+            if (TagsCollection != null)
+            {
+                bool checkpara = allTags.SequenceEqual(TagsCollection.Select(x => x.TagName).ToList<string>());
+                if (TagsCollection.Count != allTags.Count || (!checkpara))
+                {
+                    HomePage.PumpTestInformation.TagInformation = TagsCollection;
+
+                    if (lstAllTags.Items.Count > 0)
+                    {
+                        allTags.Clear();
+                        lstAllTags.ItemsSource = null;
+                    }
+                    if (lstSelectedTags.Items.Count > 0)
+                    {
+                        selectedTagNames.Clear();
+                        lstSelectedTags.ItemsSource = null;
+                    }
+                    if (tempTable.Count > 0)
+                    {
+                        tempTable.Clear();
+                    }
+
+
+                    foreach (var item in TagsCollection)
+                    {
+                        if(!allTags.Contains(item.TagName + " (" + item.Units + ")"))
+                        allTags.Add(item.TagName+ " ("+item.Units+")");
+                    }
+                    lstAllTags.ItemsSource = allTags;
+
+                    this.gridCeritificateInfo.DataContext = HomePage.PumpTestInformation;
+                }
+            }
+            else
+            {
+                HomePage.PumpTestInformation.TagInformation = null;
+
+                if (lstAllTags.Items.Count > 0)
+                {
+                    allTags.Clear();
+                    lstAllTags.ItemsSource = null;
+                }
+                if (lstSelectedTags.Items.Count > 0)
+                {
+                    selectedTagNames.Clear();
+                    lstSelectedTags.ItemsSource = null;
+                }
+                if(tempTable.Count>0)
+                {
+                    tempTable.Clear();
+                }
+
+                this.gridCeritificateInfo.DataContext = HomePage.PumpTestInformation;
+
+            }
+        }
+       
+        private void updateData(string val, Tuple<string, Tag> tupleItem)
+        {
+            
+            
+            TimeSpan ts = stopwatch.Elapsed;
+            try
+            {
+
+                //xAxisTimeValue.Add(DateTime.Now.ToString("HH:mm:ss tt"));
+                //var XAxisTime = pumpTestChart.AxisX.FirstOrDefault(e => e.Title == "Time");
+                //XAxisTime.Labels = xAxisTimeValue;
+
+                var selectedxAxis = tempTable.FirstOrDefault(e => e.Key == tupleItem.Item1);
+                if (selectedxAxis.Key != null)
+                    selectedxAxis.Value.Add(val);
+
+
+                if (chkXaxis.IsChecked == true)
+                {
+                    if (tupleItem.Item1 == cmbXAxis.SelectedItem.ToString())
+                    {
+                        //TimeSpan ts = stopwatch.Elapsed;
+                        xAxisParaValue.Add(string.Format(val + " (" + string.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds) + " sec)"));
+                        var XAxis = pumpTestChart.AxisX.FirstOrDefault(e => e.Title == string.Format(cmbXAxis.SelectedItem.ToString() + "( Time )"));
+                        XAxis.Labels = xAxisParaValue;
+                    }
+                    else
+                    {
+                        var ser = pumpTestChart.Series.First(e => e.Title == tupleItem.Item1);
+                        ser.Values.Add(double.Parse(val));
+                    }
+
+                }
+                else
+                {
+                    //TimeSpan ts = stopwatch.Elapsed;
+                    //xAxisTimeValue.Add(DateTime.Now.ToString("HH:mm:ss tt"));
+                    xAxisTimeValue.Add(string.Format("{0:00}:{1:00}:{2:00}", ts.Hours, ts.Minutes, ts.Seconds+" sec"));
+                    var XAxis = pumpTestChart.AxisX.First(e => e.Title == "Time");
+                    XAxis.Labels = xAxisTimeValue;
+                    var ser = pumpTestChart.Series.First(e => e.Title == tupleItem.Item1);
+                    ser.Values.Add(double.Parse(val));
+                }
+
+                //Formula perpose
+                //if (chkFormula.IsChecked == true && cmbFirstPara.SelectedItem != null && cmbSecondPara.SelectedItem != null)
+                //{
+                //    if (tupleItem.Item1 == cmbFirstPara.SelectedItem.ToString())
+                //    {
+                //        formulaPara1 = val;
+                //    }
+                //    if (tupleItem.Item1 == cmbSecondPara.SelectedItem.ToString())
+                //    {
+                //        formulaPara2 = val; ;
+                //    }
+                //    if (formulaPara1 != null && formulaPara2 != null)
+                //    {
+                //        var para = pumpTestChart.Series.FirstOrDefault(e => e.Title == "Computed Value");
+                //        var calVal = (Convert.ToDouble(formulaPara1) * Convert.ToDouble(formulaPara2)) / 180;
+                //        para.Values.Add(calVal);
+                //    }
+                //}
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
+                 
+
+
+
+
+
+
+
+            //////TODO: check this logic
+            //xAxis.Add(dataCounts.ToString());
+            //pressureXAxis.Labels = xAxis;
+
+            //if (HomePage.PumpTestInformation.TableData.Keys.Contains(tupleItem.Item1))
+            //{
+
+            //    var para = HomePage.PumpTestInformation.TableData.FirstOrDefault(e => e.Key == tupleItem.Item1);
+            //    para.Value.Add(val);
+            //}
+            //else
+            //{
+            //   HomePage.PumpTestInformation.TableData.Add(tupleItem.Item1,new List<string> {val});
+
+            //}
+
+        }
+
+        private void StopTest()
+        {
+            lblStartStop.Content = "Start Record";
+            imgStartStop.Source = starticon;
+            btnStartStop.ToolTip = "Start Record";
+            dispatcherTimer.Stop();
+            stopwatch.Stop();
+            SunPowerGenMainPage.isTestRunning = false;
+            this.IsHitTestVisible = true;
+            ElpisOPCServerMainWindow.homePage.btnReset.IsEnabled = true;
+            ElpisOPCServerMainWindow.homePage.btnGenerateReport.IsEnabled = true;
+            ElpisOPCServerMainWindow.homePage.PumpExpanderCertificate.IsExpanded = true;
+            blbStateOFF.Visibility = Visibility.Visible;
+            blbStateON.Visibility = Visibility.Hidden;
+            TriggerPLC(false);
+            GenerateCSVDataFile();
+        }
+
+        private void GenerateCSVDataFile()
+        {
+            try
+            {
+                //PumpReportGeneration reportGeneration = new PumpReportGeneration();
+                //ObservableCollection<LineSeries> lineSeriesList = null;
+                //ObservableCollection<List<string>> labelCollection = null;
+                //HomePage.PumpTestInformation.SeriesCounts = pumpTestChart.Series.Count;
+                //HomePage.PumpTestInformation.SelectedXaxis = pumpTestChart.AxisX.FirstOrDefault().Title;
+                //PumpTestInformation testData = HomePage.PumpTestInformation;
+                //if (SeriesCollections != null)
+                //{
+
+                //    LineSeries series1;
+                //    lineSeriesList = new ObservableCollection<LineSeries>();
+                //    labelCollection = new ObservableCollection<List<string>>() { pumpTestChart.AxisX.FirstOrDefault().Labels.ToList() };
+                //    foreach (var item in pumpTestChart.Series)
+                //    {
+                //        series1 = new LineSeries() { Values = item.Values, Title = item.Title, LabelPoint = item.LabelPoint, Foreground = Brushes.Black };
+                //        lineSeriesList.Add(series1);
+                //    }
+
+                //    reportGeneration.GenerateCSVFile(TestType.PumpTest, testData, lineSeriesList, labelCollection);
+                //}
+
+                //new code
+                PumpReportGeneration reportGeneration = new PumpReportGeneration();
+                ObservableCollection<LineSeries> lineSeriesList = null;
+                // ObservableCollection<List<string>> labelCollection = null;
+                HomePage.PumpTestInformation.SeriesCounts = pumpTestChart.Series.Count;
+                HomePage.PumpTestInformation.SelectedXaxis = pumpTestChart.AxisX.FirstOrDefault().Title;
+                // PumpTestInformation testData = HomePage.PumpTestInformation;
+                if (SeriesCollections != null)
+                {
+
+                    LineSeries series1;
+                    lineSeriesList = new ObservableCollection<LineSeries>();
+                    HomePage.PumpTestInformation.LabelCollection = new ObservableCollection<List<string>>() { pumpTestChart.AxisX.FirstOrDefault().Labels.ToList() };
+                    foreach (var item in pumpTestChart.Series)
+                    {
+                        series1 = new LineSeries() { Values = item.Values, Title = item.Title, LabelPoint = item.LabelPoint, Foreground = Brushes.Black };
+                        lineSeriesList.Add(series1);
+                    }
+
+                    HomePage.PumpTestInformation.LineSeriesList = lineSeriesList;
+
+                    // reportGeneration.GenerateCSVFile(TestType.PumpTest, testData, lineSeriesList, labelCollection);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void lstAllTags_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void lstSelectedTags_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        public void generateButtonClicked()
+        {
+            ConvertXamltoImage(ChartView, (int)ChartView.ActualWidth, (int)ChartView.ActualHeight);
+        }
+
+        private void OnUnsubBtnClick(object sender, RoutedEventArgs e)
+        {
+           
+            if (lstSelectedTags.SelectedItems != null)
+            {
+                
+                for (int i = lstSelectedTags.SelectedItems.Count; i > 0; i--)
+                {
+                    //IPublishers publisher = publisher;//PublisherSettingsPropertyGrid.SelectedObject as IPublishers;
+                    selectedTagNames.Remove(lstSelectedTags.SelectedItems[i - 1].ToString());
+                    tempTable.Remove(lstAllTags.SelectedItems[i - 1].ToString());
+                }
+                lstSelectedTags.ItemsSource = null;
+                tablePara.ItemsSource = null;
+                cmbXAxis.ItemsSource = null;
+                //cmbYAxis.ItemsSource = null;
+                cmbFirstPara.ItemsSource = null;
+                cmbSecondPara.ItemsSource = null;
+                lstAllTags.ItemsSource = allTags.Except(selectedTagNames).ToList();
+                lstSelectedTags.ItemsSource = selectedTagNames;
+                tablePara.ItemsSource = selectedTagNames;
+                cmbXAxis.ItemsSource = selectedTagNames;
+                //cmbYAxis.ItemsSource = selectedTagNames;
+                cmbFirstPara.ItemsSource = selectedTagNames;
+                cmbSecondPara.ItemsSource = selectedTagNames;
+            }
+
+        }
+
+        private void OnSubBtnClick(object sender, RoutedEventArgs e)
+        {
+            if (lstAllTags.SelectedItems != null)
+            {
+                lstSelectedTags.ItemsSource = null;
+                tablePara.ItemsSource = null;
+                cmbXAxis.ItemsSource = null;
+                //cmbYAxis.ItemsSource = null;
+                cmbFirstPara.ItemsSource = null;
+                cmbSecondPara.ItemsSource = null;
+                //int count = lstAllTags.SelectedItems.Count;
+                for (int i = lstAllTags.SelectedItems.Count; i > 0; i--)
+                {
+                    //IPublishers publisher = publisher;//PublisherSettingsPropertyGrid.SelectedObject as IPublishers;
+                    selectedTagNames.Add(lstAllTags.SelectedItems[i - 1].ToString());
+                    tempTable.Add(lstAllTags.SelectedItems[i - 1].ToString(), new List<string>());
+                }
+                lstAllTags.ItemsSource = allTags.Except(selectedTagNames).ToList();
+                lstSelectedTags.ItemsSource = selectedTagNames;
+                tablePara.ItemsSource = selectedTagNames;
+                cmbXAxis.ItemsSource = selectedTagNames;
+                //cmbYAxis.ItemsSource = selectedTagNames;
+                cmbFirstPara.ItemsSource = selectedTagNames;
+                cmbSecondPara.ItemsSource = selectedTagNames;
+
+            }
+
+        }
+
+        private void TablePara_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ChkPrameters_Checked(object sender, RoutedEventArgs e)
+        {
+            var da = e.Source as CheckBox;
+
+            HomePage.PumpTestInformation.TableParameterList.Add(da.Content.ToString());
+            HomePage.PumpTestInformation.TableData.Add(da.Content.ToString(), new Dictionary<string, string>());
+
+            //  ParamterComboLabel();
+        }
+
+        private void ParamterComboLabel()
+        {
+            StringBuilder label = new StringBuilder();
+            foreach (var item in HomePage.PumpTestInformation.TableParameterList)
+            {
+                label.Append(item);
+                label.Append(',');
+            }
+            // tablePara.Text = label.ToString().TrimEnd(new char[] { ',' });
+        }
+
+        private void ChkPrameters_Unchecked(object sender, RoutedEventArgs e)
+        {
+            var da = e.Source as CheckBox;
+            HomePage.PumpTestInformation.TableParameterList.Remove(da.Content.ToString());
+            HomePage.PumpTestInformation.TableData.Remove(da.Content.ToString());
+            // ParamterComboLabel();
+        }
+
+
+        private void PumpTestChart_DataClick(object sender, ChartPoint chartPoint)
+        {
+
+            Point point = Mouse.GetPosition(ChartView);
+            var xVal = pumpTestChart.AxisX.FirstOrDefault().Labels[Convert.ToInt32(chartPoint.X)];
+            var xAxisVal = string.Empty;
+            var xAxisTime = string.Empty;
+            var time = string.Empty;
+            if (chkXaxis.IsChecked == true && cmbXAxis.SelectedItem != null)
+            {
+                xAxisVal = string.Format("{0} : {1}", cmbXAxis.SelectedItem.ToString(), xVal.Split('(')[0]);
+                time = xVal.Split('(')[1].Replace('(', ' ').Replace(')', ' ');
+                xAxisTime = string.Format("{0} : {1}", "Time", time);
+            }
+            else if (chkXaxis.IsChecked == false)
+            {
+                time = xVal;
+                xAxisTime = string.Format("{0} : {1}", "Time", time);
+            }
+
+            int index = -1;
+
+            //Collecting selected points for table
+            foreach (var key in tempTable.Keys)
+            {
+                var tablepara = HomePage.PumpTestInformation.TableData.FirstOrDefault(e => e.Key == key);
+                if (tablepara.Key != null)
+                {
+                    index = tablepara.Value.Count;
+                    tablepara.Value[key + "_" + index] = tempTable.FirstOrDefault(e => e.Key == tablepara.Key).Value[(int)chartPoint.X].ToString();
+
+                }
+            }
+
+
+            CustomTooltipModel customTooltipModel = new CustomTooltipModel()
+            {
+                SeriesName = chartPoint.SeriesView.Title,
+                SeriesValue = chartPoint.Y.ToString(),
+                YAxisValue = string.Format("{0} : {1}", chartPoint.SeriesView.Title, chartPoint.Y.ToString()),
+                XAxisValue = xAxisVal,
+                xAxisTime = xAxisTime,
+                CustomNote = "gfdgdfg",
+                Index = index
+            };
+
+            var va = HomePage.PumpTestInformation.TableData;
+
+
+            HomePage.PumpTestInformation.CustomTooltip = customTooltipModel;
+            //canvasView.DataContext = HomePage.PumpTestInformation.CustomTooltip;
+            //Canvas.SetTop(canvasView, (chartPoint.ChartLocation.Y - 150));
+            //Canvas.SetLeft(canvasView, (chartPoint.ChartLocation.X - 300));
+            //CustomToolTip.Visibility = Visibility.Visible;
+            //canvasView.DataContext = HomePage.PumpTestInformation.CustomTooltip;
+            //createView(chartPoint.ChartLocation.Y, chartPoint.ChartLocation.X);
+            var mousePoint = Mouse.GetPosition(ChartView);
+            string actualVal = string.Format("{0} : {1}", chartPoint.SeriesView.Title, chartPoint.Y.ToString());
+            pumpCustomTooltip pumpCustomTooltip = new pumpCustomTooltip(mousePoint.Y, mousePoint.X, customTooltipModel);
+            //DraggabalePopup draggabalePopup = new DraggabalePopup();
+            //draggabalePopup.IsOpen = true;
+            //pumpCustomTooltip.CustomToolTip.Visibility = Visibility.Visible;
+            //pumpCustomTooltip.canvasView.DataContext = HomePage.PumpTestInformation.CustomTooltip;
+            ChartView.Children.Add(pumpCustomTooltip);
+        }
+
+        private void createView(double y, double x)
+        {
+            Canvas canvas = new Canvas();
+            StackPanel stackPanel = new StackPanel();
+            stackPanel.Name = "canvasView";
+            // stackPanel.Background = (Brush)ColorConverter.ConvertFromString("#FFF0E6DC");
+            stackPanel.Width = 195;
+            stackPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
+
+            StackPanel childStack = new StackPanel()
+            {
+                Orientation = Orientation.Horizontal
+            };
+
+            Binding binding = new Binding()
+            {
+                Source = HomePage.PumpTestInformation.CustomTooltip.SeriesName + " : " + HomePage.PumpTestInformation.CustomTooltip.SeriesValue,
+
+            };
+
+            Label label = new Label();
+            BindingOperations.SetBinding(label, Label.ContentProperty, binding);
+            childStack.Children.Add(label);
+            stackPanel.Children.Add(childStack);
+            Canvas.SetTop(stackPanel, (y - 150));
+            Canvas.SetTop(stackPanel, (x - 300));
+            canvas.Children.Add(stackPanel);
+            Canvas.SetZIndex(stackPanel, 1);
+        }
+
+        public void ConvertXamltoImage(UIElement visual, int Width, int Height)
+        {
+            //UIElement visual = XamlReader.Load(System.Xml.XmlReader.Create(new StringReader(XamlString))) as UIElement;
+
+            RenderTargetBitmap bmpCopied = new RenderTargetBitmap(Width, Height, 92, 92, PixelFormats.Pbgra32);
+            DrawingVisual dv = new DrawingVisual();
+            using (DrawingContext dc = dv.RenderOpen())
+            {
+                VisualBrush vb = new VisualBrush(visual);
+                Rect rect = new Rect(new Point(), new Size(Width, Height));
+                rect.Offset(10, 10);
+                dc.DrawRectangle(vb, null,rect);
+                
+            }
+
+            bmpCopied.Render(dv);
+
+            PngBitmapEncoder png = new PngBitmapEncoder();
+            png.Frames.Add(BitmapFrame.Create(bmpCopied));
+            using (var stream = File.Create(string.Format("{0}\\PumpChart.png", Directory.GetCurrentDirectory())))
+            {
+                png.Save(stream);
+            }
+
+        }
+
+        private void ConfigExpander_Expanded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ConfigExpander_Collapsed(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            ConnectorTypeChanged();
+        }
+
+        private void ChkYaxisPrameters_Checked(object sender, RoutedEventArgs e)
+        {
+            var da = e.Source as CheckBox;
+            YaxisParaList.Add(da.Content.ToString());
+        }
+
+        private void ChkYaxisPrameters_Unchecked(object sender, RoutedEventArgs e)
+        {
+            var da = e.Source as CheckBox;
+            YaxisParaList.Remove(da.Content.ToString());
+        }
+
+        private void CmbXAxis_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (cmbXAxis.SelectedItem != null)
+                {
+                    YaxisParaList.Clear();
+                    if (YaxisPara.Items.Count > 0)
+                        YaxisPara.Items.Clear();
+                    foreach (var tag in TagsCollection)
+                    {
+                        foreach (var seletedItem in selectedTagNames)
+                        {
+                            if (seletedItem.ToLower().Contains(tag.TagName.ToLower()+" ("+tag.Units.ToLower()+")") && seletedItem != cmbXAxis.SelectedItem.ToString())
+                            {
+
+                                YaxisPara.Items.Add(seletedItem);
+
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+    }
+}

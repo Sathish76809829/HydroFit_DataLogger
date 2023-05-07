@@ -1,0 +1,720 @@
+﻿<UserControl x:Class="ElpisOpcServer.SunPowerGen.StrokeTestWindow"
+             x:Name="StrokeTestUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElpisOpcServer.SunPowerGen"       
+             xmlns:local1="clr-namespace:Elpis.Windows.OPC.Server;assembly=OPCEngine"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             Loaded="StrokeTestUI_Loaded"
+             mc:Ignorable="d"   d:DesignHeight="550" d:DesignWidth="900" 
+            >
+    <!--d:DesignHeight="500" d:DesignWidth="800"-->
+    <UserControl.Resources>
+        <ControlTemplate x:Key="validationErrorTemplate" >
+            <DockPanel >
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                    <Grid Width="10" Height="10">
+                        <Ellipse Width="11" Height="11" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Foreground="White" FontWeight="Heavy" FontSize="6" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"
+                                   ToolTip="{Binding ElementName=ErrorAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" Text="X"/>
+                    </Grid>
+                    <TextBlock Foreground="Red" FontSize="10" FontWeight="Medium" Margin="1,0,0,0" Text="{Binding ElementName=ErrorAdorner, 
+                        Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" TextWrapping="Wrap"
+                               Width="{Binding RelativeSource={RelativeSource AncestorType= {x:Type ControlTemplate }, AncestorLevel=3}, Path=ActualWidth,Converter={local1:WidthConvertor Factor=15}}"/>
+                </StackPanel>
+                <AdornedElementPlaceholder x:Name="ErrorAdorner" />
+            </DockPanel>
+        </ControlTemplate>
+
+        <Style x:Key="ButtonEnableStyle" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="IsEnabled" Value="False"/>
+                    </Trigger.Setters>
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CustomTextBoxTextStyle" TargetType="TextBox">
+            <Setter Property="Foreground" Value="Green" />
+            <Setter Property="MaxLength" Value="40" />
+            <!--<Setter Property="Width" Value="392" />-->
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=(Validation.Errors)[0].ErrorContent}"/>
+                        <Setter Property="BorderBrush" Value="Red"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                    </Trigger.Setters>
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Button" x:Key="ButtonStyle">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter x:Name="MyContentPresenter" 
+                                          Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center" 
+                                          VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+            <Style.Resources>
+                <Style TargetType="Image">
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <ControlTemplate x:Key="AnimateForeground">
+            <ControlTemplate.Triggers>
+                <EventTrigger RoutedEvent="TextBlock.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <!--Storyboard.TargetProperty="AnimateForeGround"-->
+                            <ColorAnimation Storyboard.TargetProperty="Color"
+                                                                From="DarkOrange" To="DarkBlue" Duration="0:0:3" AutoReverse="True" RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >
+        <Grid Background="#FFF0E6DC">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3.5*"/>
+                <RowDefinition Height="6.5*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Name="gridCeritificateInfo" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="8.5*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="51*"/>
+                        <ColumnDefinition Width="98*"/>
+
+                        <ColumnDefinition Width="76*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Name="spDeviceStatus" Orientation="Horizontal" VerticalAlignment="Center" Visibility="Hidden" Grid.Column="0" Height="16" Margin="0,7,0,7.4">
+                        <TextBlock Text="Device Status: " Margin="10,0,0,0" FontWeight="Bold" />
+                        <TextBlock Name="tbxDeviceStatus" Text="Disconnected"  />
+                    </StackPanel>
+
+                    <Label Name="lblTitle" Content="Stroke Test" VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontSize="15" Foreground="Black" Grid.Column="1" Height="30" Margin="152,0" Width="88" />
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="Hidden" Grid.Column="2" Height="28" Margin="0,1,0,1.4" Width="248">
+                        <Label x:Name="lblDateTime" Content="Date &amp; Time" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="96" Visibility="Visible" />
+                        <TextBlock x:Name="tbxDateTine" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="152" HorizontalAlignment="Right" Text="{Binding TestDateTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0" />
+                    </WrapPanel >
+                    <StackPanel Name="DataIntervalPanal" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,2,10,2.4" Grid.Column="2" Height="26" Width="292" LostFocus="btnSaveOperation_Click">
+                        <Label x:Name="lblTimer" Content="Data Read Interval (hh:mm:ss:ms)" HorizontalAlignment="Right"  VerticalAlignment="Top"  Visibility="Visible" Margin="0,0,0,-0.4" Width="191" />
+
+                        <TextBox x:Name="txtTimer" Text="00" MaxLength="2" TextWrapping="Wrap"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,-3,0"
+                               Visibility="Visible" BorderThickness="0" Background="White" FontWeight="DemiBold" TextChanged="txtTimer_TextChanged" />
+                        <Label Content=":" Width="12"   VerticalAlignment="Stretch"/>
+                        <TextBox x:Name="txtTimerMin" Text="00"  MaxLength="2"  TextWrapping="Wrap"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="-3,0,-3,0"
+                               Visibility="Visible" BorderThickness="0" Background="White" FontWeight="DemiBold" TextChanged="txtTimer_TextChanged" />
+                        <Label Content=":" Width="12" VerticalAlignment="Center"/>
+                        <TextBox x:Name="txtTimerSec" Text="02" MaxLength="2" TextWrapping="Wrap"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="-3,0,-3,0"
+                               Visibility="Visible" BorderThickness="0" Background="White" FontWeight="DemiBold"  TextChanged="txtTimer_TextChanged" />
+                        <Label Content=":" Width="12" VerticalAlignment="Center"/>
+                        <TextBox x:Name="txtTimerMilliSec" Text="000" MaxLength="3" TextWrapping="Wrap"  VerticalAlignment="Center" HorizontalAlignment="Right" Margin="-3,0,-3,0"
+                               Visibility="Visible" BorderThickness="0" Background="White" FontWeight="DemiBold" TextChanged="txtTimer_TextChanged"  />
+                        <Button Name="btnTimer" Content=" Set " BorderThickness="1.5" Margin="10,5,5,5" Click="btnTimer_Click"  />
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8.7*"/>
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Grid.Column="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="22"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <!--<ColumnDefinition Width="2.5*"/>
+                            <ColumnDefinition Width="2.2*" />-->
+                                <!--<ColumnDefinition Width="2.2*" />
+                            <ColumnDefinition Width="3.2*" />-->
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2" Margin="10,0,0,0">
+                                <TextBlock x:Name="lblReportNumber" Text="Report Number" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" Margin="5,0,5,0" />
+                                <TextBlock x:Name="txtReportNumber" Text="{Binding ReportNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                             Height="Auto" Width="Auto" TextWrapping="Wrap" Foreground="DarkBlue" FontWeight="Bold" FontSize="12" Background="Transparent" />
+                            </StackPanel>
+
+                            <!--<GroupBox Grid.Column="0" Margin="5,2,0,5" Foreground="#9D2933" BorderBrush="Orange" >
+                            <GroupBox.Header>
+                                <TextBlock FontWeight="Bold">Certificate Information</TextBlock>
+                            </GroupBox.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                   
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Vertical" Grid.Row="0">
+                                    <Label Grid.Row="0" x:Name="lblCustName" Content="Customer Name" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    <TextBox Grid.Row="1" x:Name="txtCustName"  HorizontalAlignment="Left" Height="Auto"  TextWrapping="Wrap"   MinWidth="130" MaxLength="16" Width="Auto"
+                                             Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" Style="{StaticResource CustomTextBoxTextStyle}">
+                                        <TextBox.Text>
+                                            <Binding Path="CustomerName" UpdateSourceTrigger="PropertyChanged" TargetNullValue="" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                                                <Binding.ValidationRules>
+                                                    <local:MandatoryRule PropertyName="CustomerName"/>
+                                                    <ExceptionValidationRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                                <Grid Grid.Row="1">                                   
+                                    <StackPanel Orientation="Vertical" Grid.Column="0">
+
+                                        <Label  Grid.Row="2" x:Name="lblJobNumber" Content="Job Number" HorizontalAlignment="Left"  VerticalAlignment="Top" Height="Auto"/>
+                                        <TextBox Grid.Row="3" x:Name="txtJobNumber" HorizontalAlignment="Left"  TextWrapping="Wrap" MaxLength="16"  MinWidth="130" Width="Auto" Height="Auto" TextChanged="txtJobNumber_TextChanged"
+                                         Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" Style="{StaticResource CustomTextBoxTextStyle}" >
+                                          
+                                            <TextBox.Text>
+                                                <Binding Path="JobNumber" UpdateSourceTrigger="PropertyChanged" TargetNullValue="" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                                                    <Binding.ValidationRules>
+                                                        <local:MandatoryRule PropertyName="JobNumber"/>
+                                                        <ExceptionValidationRule/>
+                                                    </Binding.ValidationRules>
+                                                </Binding>
+
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>                                    
+                                </Grid>
+                                <StackPanel Orientation="Vertical" Grid.Row="2">
+                                    <Label Grid.Row="4" x:Name="lblReportNumber" Content="Report Number" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                                    <TextBox  Grid.Row="5" x:Name="txtReportNumber" Text="{Binding ReportNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" HorizontalAlignment="Left" 
+                                             Height="Auto"  MinWidth="150" Width="Auto" TextWrapping="Wrap" Background="WhiteSmoke" /> 
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Grid.Row="3" Margin="2,-3,0,0">
+                                    <Label  Grid.Row="2" x:Name="lblCylinderNumber" Content="Cylinder Number" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                                    <TextBox Grid.Row="3" x:Name="txtCylinderNumber" HorizontalAlignment="Left"  TextWrapping="Wrap" MinWidth="80" MaxLength="10" Width="Auto" Height="Auto"
+                                         Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" Style="{StaticResource CustomTextBoxTextStyle}" >                                      
+                                        <TextBox.Text>
+                                            <Binding Path="CylinderNumber" UpdateSourceTrigger="PropertyChanged" TargetNullValue="" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                                                <Binding.ValidationRules>
+                                                    <local:MandatoryRule PropertyName="Cylinder Number"/>
+                                                    <ExceptionValidationRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>-->
+
+                            <!--<GroupBox Grid.Column="1" Margin="5,2,0,5" Foreground="#9D2933" BorderBrush="Orange">
+                            <GroupBox.Header>
+                                <TextBlock FontWeight="Bold">Cylinder Information</TextBlock>
+                            </GroupBox.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>                                    
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Vertical" Grid.Row="0">
+                                    <Label Grid.Row="0" x:Name="lblBoreSize" Content="Bore Size" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    <TextBox Grid.Row="1" x:Name="txtBoreSize" HorizontalAlignment="Left" Height="Auto" Width="100"  TextWrapping="Wrap"  VerticalAlignment="Center"
+                                             Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" Style="{StaticResource CustomTextBoxTextStyle}">
+                                        <TextBox.Text>
+                                            <Binding Path="BoreSize" UpdateSourceTrigger="PropertyChanged" TargetNullValue="" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                                                <Binding.ValidationRules>
+                                                    <local:MandatoryRule PropertyName="BoreSize"/>
+                                                    <ExceptionValidationRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Grid.Row="1">
+                                    <Label Grid.Row="2" x:Name="lblRodSize" Content="Rod Size" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                                    <TextBox Grid.Row="3" x:Name="txtRodSize" HorizontalAlignment="Left" Height="Auto" TextWrapping="Wrap" VerticalAlignment="Center"  Width="100"
+                                             Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" Style="{StaticResource CustomTextBoxTextStyle}">
+                                        <TextBox.Text>
+                                            <Binding Path="RodSize" UpdateSourceTrigger="PropertyChanged" TargetNullValue="" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                                                <Binding.ValidationRules>
+                                                    <local:MandatoryRule PropertyName="RodSize"/>
+                                                    <ExceptionValidationRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" Grid.Row="2">
+                                    <Label Grid.Row="4" x:Name="lblStrokeLength" Content="Stroke Length" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                                    <TextBox Grid.Row="5" x:Name="txtStrokeLength" HorizontalAlignment="Left" Height="Auto"  TextWrapping="Wrap" VerticalAlignment="Center"  Width="100"
+                                             Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" Style="{StaticResource CustomTextBoxTextStyle}">
+                                        <TextBox.Text>
+                                            <Binding Path="StrokeLength" UpdateSourceTrigger="PropertyChanged" TargetNullValue="" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+                                                <Binding.ValidationRules>
+                                                    <local:MandatoryRule PropertyName="StrokeLength"/>
+                                                    <ExceptionValidationRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>-->
+
+                            <GroupBox Grid.Row="1" Grid.Column="0" Margin="3,0,0,5" Foreground="#9D2933"  BorderBrush="Orange">
+                                <GroupBox.Header>
+                                    <TextBlock FontWeight="Bold" Margin="0,0,0,1" >Pressure Setting</TextBlock>
+
+                                </GroupBox.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <!--<StackPanel Grid.Column="0" Orientation="Vertical">
+                                        <TextBlock Grid.Row="0" x:Name="lblNoofCycles" Text="Number of Cycles" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Black"/>
+                                        <TextBox Grid.Row="1" x:Name="txtNoofCycles"  IsReadOnly="True" Background="Transparent" FontSize="23" FontWeight="Bold" BorderBrush="Transparent" Foreground="DarkBlue" HorizontalAlignment="Center" Height="Auto" TextWrapping="Wrap"                                           
+                                         VerticalAlignment="Center"  >
+                                            <TextBox.Text>
+                                                <Binding Path="NoofCycles" UpdateSourceTrigger="PropertyChanged" />
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                                        <TextBlock Grid.Row="2" x:Name="lblLineAPressure" Text="Allowable Pressure LineA" TextWrapping="Wrap" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Width="Auto" Foreground="Black" />
+                                        <TextBox Grid.Row="3" x:Name="txtLineAPressureInput" IsReadOnly="True" Background="Transparent" BorderBrush="Transparent" Foreground="DarkBlue" FontSize="23" FontWeight="Bold" HorizontalAlignment="Center" Height="Auto" TextWrapping="Wrap"  VerticalAlignment="Center"
+                                         Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                                            <TextBox.Text>
+                                                <Binding Path="LineAPressureInput" UpdateSourceTrigger="PropertyChanged" TargetNullValue="" ValidatesOnNotifyDataErrors="True" ValidatesOnExceptions="True" ValidatesOnDataErrors="True" NotifyOnValidationError="True">
+
+                                                </Binding>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Vertical">
+                                        <TextBlock Grid.Row="4" x:Name="lblLineBPressure" Text="Allowable Pressure LineB" TextWrapping="Wrap" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black" Width="Auto"  />
+                                        <TextBox Grid.Row="5" x:Name="txtLineBPressureInput" IsReadOnly="True" Background="Transparent" BorderBrush="Transparent" Foreground="DarkBlue" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center" TextWrapping="Wrap"   VerticalAlignment="Center" >
+                                            <TextBox.Text>
+                                                <Binding Path="LineBPressureInput" UpdateSourceTrigger="PropertyChanged"/>
+                                            </TextBox.Text>
+                                        </TextBox>
+                                    </StackPanel>-->
+
+
+                                    <!--new design-->
+                                    <Border BorderBrush="WhiteSmoke" BorderThickness="1.5" CornerRadius="5" Margin="1,2,1,2" Grid.Column="0">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="8*"/>
+                                                <RowDefinition Height="2*"/>
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Grid.Row="1">
+                                            <TextBlock Grid.Row="1" Text="Number of" HorizontalAlignment="Center" FontSize="12" FontWeight="DemiBold" VerticalAlignment="Center"  Margin="5,0,5,0"/>
+                                            <TextBlock Grid.Row="1" Text="Cycles" HorizontalAlignment="Center" FontSize="12" FontWeight="DemiBold" VerticalAlignment="Center"  Margin="5,0,5,0"/>
+                                            </StackPanel>
+                                            <TextBlock Grid.Row="0" Name="txtNoofCycles" FontSize="22" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"  FontFamily="Arial Black" FontWeight="Bold" 
+                                                   Text="{Binding NoofCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Foreground="DarkBlue">
+
+                                                <!--<TextBlock.Foreground>
+                                                    <SolidColorBrush x:Name="AnimateForeGround4" Color="DarkBlue" />
+                                                </TextBlock.Foreground>
+                                                <TextBlock.Triggers>
+                                                    <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="AnimateForeGround4" Storyboard.TargetProperty="Color"
+                                                                From="DarkOrange" To="DarkBlue" Duration="0:0:5" AutoReverse="True" RepeatBehavior="Forever" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </TextBlock.Triggers>-->
+                                            </TextBlock>
+                                          
+                                        </Grid>
+                                    </Border>
+                                        
+                                        <Border BorderBrush="WhiteSmoke" BorderThickness="1.5" CornerRadius="5" Grid.Column="1" Margin="1,2,1,2">
+                                        <Grid>   
+                                            <Grid.RowDefinitions>
+                                                 <RowDefinition Height="8*"/>
+                                                <RowDefinition Height="2*"/>                                               
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"   Margin="5,0,5,0" >
+                                                <TextBlock HorizontalAlignment="Center" FontSize="12" FontWeight="DemiBold" Text="Allowable Pressure"/>
+                                                <TextBlock HorizontalAlignment="Center" FontSize="12" FontWeight="DemiBold" Text="LineA"/>
+                                               
+                                            </StackPanel>
+                                            <TextBlock Grid.Row="0" x:Name="txtLineAPressureInput" FontSize="22"  FontWeight="Bold"  FontFamily="Arial Black" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                               Text="{Binding LineAPressureInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" Margin="5,0,5,0" TextWrapping="Wrap"  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" Foreground="DarkBlue"> 
+                                                <!--<TextBlock.Foreground>
+                                                    <SolidColorBrush x:Name="AnimateForeGround5" Color="DarkBlue" />
+                                                </TextBlock.Foreground>
+                                                <TextBlock.Triggers>
+                                                    <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="AnimateForeGround5" Storyboard.TargetProperty="Color"
+                                                                From="DarkBlue" To="DarkOrange" Duration="0:0:5" AutoReverse="True" RepeatBehavior="Forever" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </TextBlock.Triggers>-->
+                                            </TextBlock>
+                                        </Grid>
+                                    </Border>
+
+                                    <Border BorderBrush="WhiteSmoke" BorderThickness="1.5" CornerRadius="5" Grid.Column="2" Margin="1,2,1,2">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="8*"/>
+                                                <RowDefinition Height="2*"/>
+                                            </Grid.RowDefinitions>
+                                            <!--<StackPanel HorizontalAlignment="Stretch"  Orientation="Horizontal">-->
+
+                                            <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="5,0,5,0">
+                                                <TextBlock HorizontalAlignment="Center" FontSize="12" FontWeight="DemiBold" Text="Allowable Pressure" />
+                                                <TextBlock HorizontalAlignment="Center" FontSize="12" FontWeight="DemiBold" Text="LineB" />
+
+                                            </StackPanel>
+                                            <TextBlock Grid.Row="0" Name="txtLineBPressureInput" FontSize="22"  FontWeight="Bold"  FontFamily="Arial Black" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                               Text="{Binding LineBPressureInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,0" TextWrapping="Wrap" Foreground="DarkBlue">
+                                                <!--<TextBlock.Foreground>
+                                                    <SolidColorBrush x:Name="AnimateForeGround6" Color="DarkBlue" />
+                                                </TextBlock.Foreground>
+                                                <TextBlock.Triggers>
+                                                    <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="AnimateForeGround6" Storyboard.TargetProperty="Color"
+                                                                From="DarkOrange" To="DarkBlue" Duration="0:0:5" AutoReverse="True" RepeatBehavior="Forever" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </TextBlock.Triggers>-->
+                                            </TextBlock>
+                                        </Grid>
+                                        <!--</StackPanel>-->
+                                    </Border>
+
+                                    <Border BorderBrush="WhiteSmoke" BorderThickness="1.5" CornerRadius="5" Grid.Column="3" Margin="1,2,1,2">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="8*"/>
+                                                <RowDefinition Height="2*"/>
+                                            </Grid.RowDefinitions>
+                                            <!--<StackPanel HorizontalAlignment="Stretch"  Orientation="Horizontal">-->
+
+                                            <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="5,0,5,0">
+                                                <TextBlock HorizontalAlignment="Center" FontSize="12" FontWeight="DemiBold" Text="Cycles" />
+                                                <TextBlock HorizontalAlignment="Center" FontSize="12" FontWeight="DemiBold" Text="Completed" />
+
+                                            </StackPanel>
+                                            <TextBlock Grid.Row="0" Name="txtNoofCyclesCompleted" FontSize="22"  FontWeight="Bold"  FontFamily="Arial Black" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                               Text="0" Margin="5,0,5,0" TextWrapping="Wrap" Foreground="DarkBlue">
+                                                <!--<TextBlock.Foreground>
+                                                    <SolidColorBrush x:Name="AnimateForeGround7" Color="DarkBlue" />
+                                                </TextBlock.Foreground>
+                                                <TextBlock.Triggers>
+                                                    <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="AnimateForeGround7" Storyboard.TargetProperty="Color"
+                                                                From="DarkOrange" To="DarkBlue" Duration="0:0:5" AutoReverse="True" RepeatBehavior="Forever" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </TextBlock.Triggers>-->
+                                            </TextBlock>
+                                        </Grid>
+                                        <!--</StackPanel>-->
+                                    </Border>
+
+
+                                </Grid>
+                            </GroupBox>
+
+                            <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <GroupBox Grid.Row="0" Margin="3,0,0,5" Foreground="#9D2933" BorderBrush="Orange">
+                                    <GroupBox.Header>
+                                        <TextBlock FontWeight="Bold" Margin="0,0,0,1" >Device Live Data</TextBlock>
+
+                                    </GroupBox.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border BorderBrush="WhiteSmoke" BorderThickness="1.5" CornerRadius="5" Margin="1,2,1,2" Grid.Column="0">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="8*"/>
+                                                    <RowDefinition Height="2*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="1" Text="Flow" HorizontalAlignment="Center" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center"  Margin="5,0,5,0"/>
+                                                <!--<TextBlock Name="txtFlowTag" FontSize="10" FontWeight="DemiBold" Text="Address"/>-->
+                                                <TextBlock Grid.Row="0" Name="txtFlow" FontSize="40" Margin="5,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"  FontFamily="Arial Black" FontWeight="UltraBold" 
+                                                   Text="{Binding Flow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap">  <!---->
+                            
+                                                <TextBlock.Foreground>
+                                                    <SolidColorBrush x:Name="AnimateForeGround" Color="DarkBlue" />
+                                                </TextBlock.Foreground>
+                                                <TextBlock.Triggers>
+                                                    <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="AnimateForeGround" Storyboard.TargetProperty="Color"
+                                                                From="DarkOrange" To="DarkBlue" Duration="0:0:5" AutoReverse="True" RepeatBehavior="Forever" />
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </TextBlock.Triggers>
+                                            </TextBlock>
+                                          
+                                        </Grid>
+                                    </Border>
+                                        
+                                        <Border BorderBrush="WhiteSmoke" BorderThickness="1.5" CornerRadius="5" Grid.Column="1" Margin="1,2,1,2">
+                                        <Grid>   
+                                            <Grid.RowDefinitions>
+                                                 <RowDefinition Height="8*"/>
+                                                <RowDefinition Height="2*"/>                                               
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"   Margin="5,0,5,0" >
+                                                <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="DemiBold" Text="LineA" />
+                                                <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="DemiBold" Text="Pressure" />
+                                            </StackPanel>
+                                            <TextBlock Grid.Row="0" x:Name="txtPressureLineA" FontSize="40"  FontWeight="UltraBold"  FontFamily="Arial Black" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                               Text="{Binding PressureLineA, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,0" TextWrapping="Wrap">  <!---->
+                                                    <TextBlock.Foreground>
+                                                        <SolidColorBrush x:Name="AnimateForeGround1" Color="DarkBlue" />
+                                                    </TextBlock.Foreground>
+                                                    <TextBlock.Triggers>
+                                                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="AnimateForeGround1" Storyboard.TargetProperty="Color"
+                                                                From="DarkBlue" To="DarkOrange" Duration="0:0:5" AutoReverse="True" RepeatBehavior="Forever" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </EventTrigger>
+                                                    </TextBlock.Triggers>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Border>
+
+                                        <Border BorderBrush="WhiteSmoke" BorderThickness="1.5" CornerRadius="5" Grid.Column="2" Margin="1,2,1,2">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="8*"/>
+                                                    <RowDefinition Height="2*"/>
+                                                </Grid.RowDefinitions>
+                                                <!--<StackPanel HorizontalAlignment="Stretch"  Orientation="Horizontal">-->
+
+                                                <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="5,0,5,0">
+                                                    <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="DemiBold" Text="LineB" />
+                                                    <TextBlock HorizontalAlignment="Center" FontSize="15" FontWeight="DemiBold" Text="Pressure" />
+                                                </StackPanel>
+                                                <TextBlock Grid.Row="0" Name="txtPressureLineB" FontSize="40"  FontWeight="UltraBold"  FontFamily="Arial Black" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                               Text="{Binding PressureLineB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,0" TextWrapping="Wrap">
+                                                    <TextBlock.Foreground>
+                                                        <SolidColorBrush x:Name="AnimateForeGround2" Color="DarkBlue" />
+                                                    </TextBlock.Foreground>
+                                                    <TextBlock.Triggers>
+                                                        <EventTrigger RoutedEvent="TextBlock.Loaded">
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Storyboard.TargetName="AnimateForeGround2" Storyboard.TargetProperty="Color"
+                                                                From="DarkOrange" To="DarkBlue" Duration="0:0:5" AutoReverse="True" RepeatBehavior="Forever" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </EventTrigger>
+                                                    </TextBlock.Triggers>
+                                                </TextBlock>
+                                            </Grid>
+                                            <!--</StackPanel>-->
+                                        </Border>
+                                    </Grid>
+                                </GroupBox>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+               <Grid Grid.Column="1" Margin="10">
+                        <Grid.RowDefinitions>
+                            <!--<RowDefinition Height="3*"/>-->
+                            <RowDefinition Height="3*" />
+                            <RowDefinition Height="4*" />
+                        </Grid.RowDefinitions>
+                        <!--<Border BorderBrush="OrangeRed" BorderThickness="1" CornerRadius="5" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="3,5,3,0">
+                            <StackPanel Grid.Row="0" Margin="0,0,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock x:Name="txtNoofCyclesCompleted" FontSize="22" Margin="5,0,0,0" Text="0" FontWeight="UltraBold" Foreground="DarkBlue"   TextWrapping="Wrap" TextAlignment="Center"  />
+                                <TextBlock Text="Cycles Completed" Margin="5,7,3,0"  FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap" />
+
+                                -->
+                        <!--Background="LimeGreen"-->
+                        <!--
+                            </StackPanel>
+                        </Border>-->
+                        <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"  >
+                            <Button x:Name="btnStartStop"  ToolTip="Start Record"   HorizontalAlignment="Center"  Style="{StaticResource ButtonStyle}" 
+                          FontWeight="ExtraBold" BorderBrush="Transparent"   Click="btnStartStop_Click" VerticalAlignment="Center" Height="61"  >
+                                <Button.Content>
+                                    <StackPanel >
+                                        <Image x:Name="imgStartStop" Source="/ElpisOpcServer;component/Images/starticon.png" VerticalAlignment="Bottom" Height="55" Width="55" />
+                                        <Label x:Name="lblStartStop" Content="Start Record" Visibility="Collapsed"/>
+                                    </StackPanel>
+                                </Button.Content>
+                                <!--<Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    --><!--<Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtJobNumber}" Value="False"/>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtCustName}" Value="False"/>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtNoofCycles}" Value="False"/>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtLineAPressureInput}" Value="False"/>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtLineBPressureInput}" Value="False"/>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtBoreSize}" Value="False"/>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtRodSize}" Value="False"/>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtStrokeLength}" Value="False"/>-->
+                                                    <!--<Condition Binding="{Binding Path=IsChecked,ElementName=chkGenerateReport}" Value="False"/>
+                                        <Condition Binding="{Binding Path=IsEnabled,ElementName=btnReset}" Value="True"/>-->
+                                                    <!--<Condition Binding="{Binding Path=(IsReadOnly), ElementName=txtCustName}" Value="False"/>-->
+                                                    <!--<Condition Binding="{Binding Path=IsHitTestVisible}" Value="True"/>-->
+                                                    <!--<Condition Binding="{Binding Path=StartButtonEnable}" Value="True"/>--><!--
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                                --><!--<Setter Property="Background" Value="WhiteSmoke"/>--><!--
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>-->
+                            </Button>
+                            <!--<Button x:Name="btnGenerateReport" ToolTip="Generate Report" Content="Generate Report" Width="120" Height="30" FontWeight="ExtraBold" Click="btnGenerateReport_Click" IsEnabled="True" Padding="10,0,10,0"  />-->
+                        </StackPanel>
+                        <!--<StackPanel Grid.Row="2" Orientation="Vertical" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+                        <Button Name="btnReset" Content="Reset" HorizontalAlignment="Center" ToolTip="Reset Test" FontWeight="ExtraBold" Width="120" Click="btnReset_Click"/>
+                    </StackPanel>-->
+                        <Border  Grid.Row="1" BorderBrush="Brown" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="67" >
+                            <Grid  Grid.Row="0" Height="67" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="61*"/>
+                                    <ColumnDefinition Width="39*"/>
+                                    <ColumnDefinition Width="0*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!--<TextBlock Text="Stroke Test Status"  VerticalAlignment="Top" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" Margin="0,-7,0,0" />-->
+                                <StackPanel Name="blbStateON" Visibility="Hidden" Grid.ColumnSpan="2" >
+                                    <Image  Source="/ElpisOpcServer;component/Images/Green_light.png"   Height="67" ToolTip="Test is ON" />
+                                </StackPanel>
+                                <StackPanel Name="blbStateOFF" Grid.ColumnSpan="2">
+                                    <Image  Source="/ElpisOpcServer;component/Images/white_blub.png" Grid.ColumnSpan="2" Height="67" ToolTip="Test is OFF"/>
+                                </StackPanel>
+                                <!--<TextBlock x:Name="txtTriggerStatus" Text="{Binding TriggerStatusStrokeTest}" HorizontalAlignment="Center" FontSize="25" FontWeight="Bold" Foreground="Red" VerticalAlignment="Center"  TextWrapping="Wrap" TextAlignment="Center" Width="Auto" Height="27" Grid.ColumnSpan="2" />-->
+
+                                <!--Background="LimeGreen"-->
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1"  Background="WhiteSmoke">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+              <lvc:CartesianChart Name="chartFlow" Series="{Binding FlowSeriesCollection}" LegendLocation="Top" Background="White" Margin="6" DataHover="chartFlow_DataHover" >
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:AxesCollection>
+                            <lvc:Axis Title="Flow" LabelFormatter="{Binding YFormatter}" Foreground="Black" Position="RightTop">
+                            </lvc:Axis>
+                            <lvc:Axis Title="StrokeLength" LabelFormatter="{Binding YFormatter}" Foreground="Black">
+                            </lvc:Axis>
+                        </lvc:AxesCollection>
+                    </lvc:CartesianChart.AxisY>
+                    <lvc:CartesianChart.AxisX>
+
+                        <lvc:AxesCollection>
+                            <lvc:Axis Name="flowXAxis" Title="Time"  Labels="{Binding FlowLabels,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Foreground="Black" LabelsRotation="15" >
+                     
+            <!--not use
+                <lvc:Axis.Separator>
+                            <lvc:Separator Step="2" />
+                        </lvc:Axis.Separator>
+
+                <lvc:Axis.Separator >
+                            <lvc:Separator IsEnabled="False" Step="1"></lvc:Separator>
+                        </lvc:Axis.Separator>
+                not use-->
+                
+                            </lvc:Axis>
+                        </lvc:AxesCollection>
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
+                <lvc:CartesianChart Name="chartPressure" Grid.Column="1" Series="{Binding PressureSeriesCollection}" LegendLocation="Top" Background="White" Margin="6" >
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:AxesCollection>
+                            <lvc:Axis Title="PressureLineA" LabelFormatter="{Binding YFormatter}" Foreground="Black">
+                            </lvc:Axis>
+                            <lvc:Axis Title="PressureLineB" LabelFormatter="{Binding YFormatter}" Foreground="Black" Position="RightTop">
+                            </lvc:Axis>
+                        </lvc:AxesCollection>
+                    </lvc:CartesianChart.AxisY>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:AxesCollection>
+                            <lvc:Axis Name="pressureXAxis" Title="Time" Labels="{Binding PressureLineBLabels}" Foreground="Black" LabelsRotation="15"></lvc:Axis>
+                        </lvc:AxesCollection>
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
+            </Grid>
+
+        </Grid>
+    </ScrollViewer>
+</UserControl>

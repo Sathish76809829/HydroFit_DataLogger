@@ -1,0 +1,269 @@
+﻿<UserControl x:Class="ElpisOpcServer.LoggerViewUI"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ElpisOpcServer"
+       
+        mc:Ignorable="d"
+        d:DesignHeight="500" 
+        d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ElpisOpcServer;component/Styles/ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ElpisOpcServer;component/Styles/TileButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+
+    <Grid Grid.Row="0" Background="#FFE3D0BB">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="15"/>
+            <!--<RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>-->
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="#FFE3D0BB">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <!--<ColumnDefinition />
+                <ColumnDefinition />-->
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Grid.ColumnSpan="9" Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="12">Log Summary</TextBlock>
+                <!--<TextBlock VerticalAlignment="Center">Module</TextBlock>-->
+                <!--<ComboBox Name="comboBoxSectionList" Margin="5,0,0,0"
+                      VerticalAlignment="Bottom" 
+                      Loaded="ComboBox_Loaded"                       
+                      Background="Aqua"                        
+                      Style="{StaticResource ComboBoxUIStyle}"
+                      SelectionChanged="ComboBox_SelectionChanged" Width="130"/>-->
+            </StackPanel>
+            <StackPanel  Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <!--<TextBlock VerticalAlignment="Center">Event Type</TextBlock>-->
+                <!--<ComboBox Name="combobox_filter" Margin="0,0,0,0" HorizontalAlignment="Left"
+                      VerticalAlignment="Bottom"          
+                      Background="Aqua"                        
+                      Style="{StaticResource ComboBoxUIStyle}"
+                      SelectionChanged="combobox_filter_SelectionChanged" Width="130">
+                    <ComboBoxItem Selector.IsSelected="True" Content="Filter Event Type"  />
+                    <ComboBoxItem Content="All" />
+                    <ComboBoxItem Content="Error" />
+                    <ComboBoxItem Content="Information" />
+                    <ComboBoxItem Content="Warning" />
+                </ComboBox>-->
+            </StackPanel>
+
+            <!--<ToggleButton x:Name = "toggleBtnError" 
+                          Content = "Error" 
+                          Checked = "HandleCheckError" 
+                          Unchecked = "HandleUncheckedError"
+                          VerticalAlignment="Bottom" 
+                          HorizontalAlignment = "Center" 
+                          Grid.Column="2" 
+                          Margin="1,1,1,1"
+                          Style="{DynamicResource ToggleUI}" 
+                          Click="toggleBtnError_Click"
+                          IsChecked="True"/>
+            <ToggleButton x:Name = "toggleBtnInfo" 
+                          Content = "Information"
+                          Checked = "HandleCheckInfo" 
+                          Unchecked = "HandleUncheckedInfo"
+                          VerticalAlignment="Bottom"
+                          Style="{DynamicResource ToggleUI}"
+                          HorizontalAlignment = "Center" 
+                          Grid.Column="3"
+                          Margin="1,1,1,1"
+                          Click="toggleBtnInfo_Click"
+                          IsChecked="True">
+            </ToggleButton>
+            <ToggleButton x:Name = "toggleBtnWarning" 
+                          Content = "Warning" 
+                          Checked = "HandleCheckWarning" 
+                          Unchecked = "HandleUncheckedWarning"
+                          VerticalAlignment="Bottom"
+                          HorizontalAlignment = "Center"
+                          Grid.Row="0" 
+                          Grid.Column="4" 
+                           Margin="1,1,1,1"
+                          Style="{DynamicResource ToggleUI}"
+                          Click="toggleBtnWarning_Click"
+                          IsChecked="True">
+            </ToggleButton>-->
+
+            <StackPanel Grid.Column="5" Grid.Row="0" Grid.ColumnSpan="2" Background="Transparent" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Background="Transparent" BorderThickness="0" Margin="0,0,30,0"  Click="exportToCSV_Click">
+                    <Image Source="Images/Export_To_File_2.ico" Focusable="True" Height="17" Width="20" ToolTip="Export The Logs into .CSV File" />
+                </Button>
+                <Button Background="Transparent" BorderThickness="0" Margin="0,0,30,0" Click="clearBtn_Click" >
+                    <Image Source="Images/deletered.png" Width="20" Height="17" Focusable="True" ToolTip="Clear The Logs"  />
+                </Button>
+                <Button Background="Transparent" ToolTip="Copy Logs" BorderThickness="0" Margin="0,0,0,0" Click="copyToClipBoard_Click">
+                    <Image Source="Images/copy_2.png" Width="20" Height="17" Focusable="True" RenderTransformOrigin="0.5,0.5" >
+                        
+                    </Image>
+                </Button>
+            </StackPanel>
+            <!--<Button Name="exportToCSV" Background="#FFABB2B9"
+                    Grid.Row="0" 
+                    Grid.Column="4" 
+                    Foreground="Black" 
+                     Margin="1,1,1,1"
+                    VerticalAlignment="Bottom"  
+                    Style="{StaticResource MetroButton}" 
+                    ToolTip="Export to .csv file" HorizontalContentAlignment="Left"
+                    Click="exportToCSV_Click">
+                <StackPanel Background="#FFABB2B9" Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <Image Source="Images/export.png" Focusable="True" Height="17" Width="20" Margin="0,0,5,0"/>
+                    
+                </StackPanel>
+            </Button>-->
+            <!--<Button Name="clearBtn" 
+                    Grid.Row="0" 
+                    Grid.Column="5" 
+                    Margin="1,1,1,1"
+                    VerticalAlignment="Bottom" 
+                    Style="{StaticResource MetroButton}"
+                    ToolTip="Clear the list" 
+                    HorizontalContentAlignment="Left" 
+                    Click="clearBtn_Click" Background="#FFABB2B9" >
+                <StackPanel>
+                    <Image Source="Images/deletered.png" 
+                           Width="17" Height="17" 
+                           Focusable="True"/>
+                </StackPanel>
+            </Button>-->
+            <!--<Button Name="copyToClipBoard"
+                    Grid.Row="0" 
+                    Grid.Column="6"  
+                    BorderThickness="0" 
+                    VerticalAlignment="Bottom" 
+                    Margin="1,1,1,1"
+                    Style="{StaticResource MetroButton}" 
+                    Foreground="Black" 
+                    Width="73"
+                    HorizontalContentAlignment="Left"
+                    ToolTip="Copy to clipboard"
+                    HorizontalAlignment="Center" 
+                    Click="copyToClipBoard_Click" Background="#FFABB2B9">
+
+                <StackPanel >
+                    <Image Source="Images/copyclip_blued.png" 
+                           Width="20" Height="17" 
+                           Focusable="True">
+                        <Image.OpacityMask>
+                            <ImageBrush ImageSource="Images/copyclip_white.jpg"/>
+                        </Image.OpacityMask>
+                    </Image>
+                </StackPanel>
+            </Button>-->
+
+            <StackPanel Orientation="Horizontal">
+            </StackPanel>
+
+            <StackPanel Grid.Column="6" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0" Background="White" >                
+                <TextBox Name="searchBox"                      
+                     TextAlignment= "Left" BorderBrush="Transparent"
+                     Background="White"
+                     Foreground="Black" 
+                     VerticalAlignment="Bottom"    
+                     ToolTip="Search message" KeyDown="searchBox_KeyDown" 
+                     TextChanged="searchBox_TextChanged" Height="18" Width="118"  /> <!--BorderBrush="#FFABB2B9"-->
+                <Image Source="Images\Search_Icon_10.png"  Height="17" VerticalAlignment="Bottom" ToolTip="Search" Margin="0,0,5,0" HorizontalAlignment="Left" IsHitTestVisible="True"/>
+
+            </StackPanel>
+
+
+        </Grid>
+
+
+        <Grid Grid.ColumnSpan="16" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="704*"/>
+                <ColumnDefinition Width="33*"/>
+                <ColumnDefinition Width="63*"/>
+            </Grid.ColumnDefinitions>
+
+            <DataGrid x:Name="ListViewLogger" AutoGenerateColumns="False" RowBackground="Transparent"
+                  HorizontalContentAlignment="Stretch" Background="WhiteSmoke"
+                  VerticalContentAlignment="Stretch" Grid.ColumnSpan="3" GridLinesVisibility="Vertical"
+                      CanUserAddRows="False" IsReadOnly="True">
+                <DataGrid.Resources>
+                    <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Background" Value="#FFABB2B9" />
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Module}" HeaderStyle="{DynamicResource lbHeader1}">
+                        <DataGridTextColumn.Header>
+                            <ComboBox Name="comboBoxSectionList" Margin="5,0,0,0"
+                                          VerticalAlignment="Bottom" 
+                                          Loaded="ComboBox_Loaded"                                                                   
+                                          Style="{StaticResource ComboBoxUIStyle}"
+                                          BorderThickness="0"
+                                          SelectionChanged="ComboBox_SelectionChanged" Width="100">
+
+                            </ComboBox>
+                        </DataGridTextColumn.Header>                  
+                    </DataGridTextColumn>
+
+
+                    <DataGridTextColumn  Binding="{Binding EventType}" HeaderStyle="{DynamicResource lbHeader1}">
+                        <DataGridTextColumn.Header>
+                            <ComboBox Name="combobox_filter" Margin="0,0,0,0" HorizontalAlignment="Left"
+                      VerticalAlignment="Bottom"          
+                      Background="Aqua"    BorderThickness="0"                    
+                      Style="{StaticResource ComboBoxUIStyle}"
+                      SelectionChanged="combobox_filter_SelectionChanged" Width="100">
+                                <ComboBoxItem Selector.IsSelected="True" Content="Event Type"  />
+                                <ComboBoxItem Content="All" />
+                                <ComboBoxItem Content="Error" />
+                                <ComboBoxItem Content="Information" />
+                                <ComboBoxItem Content="Warning" />
+                            </ComboBox>
+                        </DataGridTextColumn.Header>
+                        
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Date}" Header="Date" HeaderStyle="{DynamicResource lbHeader1}"  >                        
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Source}" Header="Source" HeaderStyle="{DynamicResource lbHeader1}"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Event}" Header="Event" HeaderStyle="{DynamicResource lbHeader1}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            
+        </Grid>
+        <Grid Grid.Row="3">
+            <!--<Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF383DB2" Offset="0.446"/>
+                    <GradientStop Color="#FF1B22B2" Offset="0.679"/>
+                </LinearGradientBrush>
+            </Grid.Background>-->
+            <StackPanel Orientation="Horizontal" Background="#FFE3D0BB" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <TextBlock Name="lblPath" FontWeight="Bold" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Server Logs Available at: " />
+                <TextBlock Name="tbxPath" FontStyle="Normal" FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+</UserControl>
